@@ -10,7 +10,7 @@ int region::length = 80;
 
 
 region::region(FactionEnum setFaction):
-	city(),
+	city(Resources(), 0),
 	farm(),
 	mill(),
 	mine(),
