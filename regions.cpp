@@ -12,7 +12,7 @@ int region::size = 80;
 region::region(FactionEnum setFaction):
 	hexagon(size,6),
 	texture(nullptr),
-	city(),
+	city(Resources(), 0),
 	farm(),
 	mill(),
 	mine(),
