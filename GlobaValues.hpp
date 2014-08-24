@@ -37,6 +37,7 @@ const string resourcePath = "C:\\Users\\Blue\\Documents\\GitHub\\TraderGame\\";
 #endif
 #ifdef __linux__
 #define RESOURCE_FOLDER "../"
+#define RESOURCE_PATH "../"
 #endif
 #ifdef __APPLE__
 #define RESOURCE_FOLDER "Cry me a river, steve"

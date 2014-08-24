@@ -1,4 +1,9 @@
-#pragma once
+#ifndef CLICKABLERECTANGLE_H
+#define CLICKABLERECTANGLE_H
+
+
+
+
 
 
 class ClickableRectangle
@@ -17,3 +22,4 @@ public:
 	// Checks if the player has clicked on the button.
 	bool isClickedOn();
 };
+#endif /* CLICKABLERECTANGLE_H */

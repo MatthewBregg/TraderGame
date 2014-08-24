@@ -1,4 +1,9 @@
-#pragma once
+#ifndef CUSTOMIZEDTEXT_H
+#define CUSTOMIZEDTEXT_H
+
+
+
+
 
 #include <vector>	
 #include <iostream>			//File output un input
@@ -8,10 +13,11 @@
 #include <string>
 using namespace std;
 
-#include "GlobaValues.h"
+#include "GlobaValues.hpp"
 
 class CustomizedText: public sf::Text
 {
 public:
 	void init(string setString, int charSize, int posX, int posY, sf::Font* font = NULL);
 };
+#endif /* CUSTOMIZEDTEXT_H */

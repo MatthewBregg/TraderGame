@@ -1,3 +1,4 @@
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <vector>	
 #include <iostream>			//File output un input
@@ -8,12 +9,12 @@
 using namespace std;
 
 
-#include "ButtonSfml.h"
+#include "ButtonSfml.hpp"
 
 
-#include "GlobaValues.h"
-#include "GameViews.h"
-#include "CustomizedText.h"
+#include "GlobaValues.hpp"
+#include "GameViews.hpp"
+#include "CustomizedText.hpp"
 
 
 

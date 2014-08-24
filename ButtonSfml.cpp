@@ -1,4 +1,4 @@
-#include "ButtonSfml.h"
+#include "ButtonSfml.hpp"
 
 
 ButtonSfml::ButtonSfml(double setX, double setY, double setW, double setH, string setText, TextureIndex setTexture):

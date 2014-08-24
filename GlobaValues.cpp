@@ -1,4 +1,4 @@
-#include "GlobaValues.h"
+#include "GlobaValues.hpp"
 
 
 string getResourcePath()

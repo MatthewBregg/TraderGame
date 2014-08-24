@@ -1,8 +1,14 @@
-#pragma once
+#ifndef GAMEVIEWS_H
+#define GAMEVIEWS_H
 
 
-#include "ButtonSfml.h"
-#include "GlobaValues.h"
+
+
+
+
+
+#include "ButtonSfml.hpp"
+#include "GlobaValues.hpp"
 
 
 
@@ -18,3 +24,4 @@ public:
 
 };
 
+#endif /* GAMEVIEWS_H */

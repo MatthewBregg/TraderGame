@@ -5,9 +5,9 @@
 #include <array>
 #include <string>
 using namespace std;
-#include "CustomizedText.h"
+#include "CustomizedText.hpp"
 
-#include "GameViews.h"
+#include "GameViews.hpp"
 
 // The different parts of the programs' execution.
 enum GameView

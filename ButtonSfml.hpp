@@ -1,8 +1,13 @@
-#pragma once
+#ifndef BUTTONSFML_H
+#define BUTTONSFML_H
 
-#include "GlobaValues.h"
 
-#include "ClickableRectangle.h"
+
+
+
+#include "GlobaValues.hpp"
+
+#include "ClickableRectangle.hpp"
 
 
 
@@ -23,3 +28,4 @@ public:
 	void setPoz(double newX, double newY);
 };
 
+#endif /* BUTTONSFML_H */
