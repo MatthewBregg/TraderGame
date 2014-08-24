@@ -1,5 +1,5 @@
 #include <iostream>
-#include <stack>
+//#include <stack>
 #include "infrastructure.hpp"
 
 #ifndef REGIONS_H
@@ -11,10 +11,8 @@ public:
 //should probably write a copy and descructor 
   region(Faction* owner= 0, Farm* f = nullptr, WoodMill* m = nullptr, Mine* mi = nullptr, City* c = nullptr, TraderCentre* tc = nullptr):farm(f),mill(m),mine(mi),city(c),tradeCentre(tc)
   {
-    if(!owner)
-      {
-	owners.push_back(owner);
-      }
+    currentOwner = owner;
+    origOwner = owner;
   };
 private:
   Farm* farm;
@@ -22,7 +20,9 @@ private:
   Mine* mine;
   City* city;
   TraderCentre* tradeCentre;
-  std::stack<Faction*> owners;
+  Faction* currentOwner;
+  Faction* origOwner;
+  // std::stack<Faction*> owners;
   
   
 
