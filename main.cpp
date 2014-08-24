@@ -1,27 +1,77 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
+#include <vector>	
+#include <iostream>			//File output un input
+#include <fstream>    // fstream provides an interface to read and write data from files as input/output streams.
+#include <sstream>
+#include <array>
+#include <string>
+using namespace std;
+
+
+#include "ButtonSfml.h"
+
+
+#include "GlobaValues.h"
+#include "GameViews.h"
+#include "CustomizedText.h"
+
+
+
+
+
+void pollEvents(sf::RenderWindow* window)
+{
+    sf::Event event;
+
+	if ((previousLeftClickState == false) && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) // Clicked first
+	{
+		leftClickPressed = true;
+	}
+	else if (sf::Mouse::isButtonPressed(sf::Mouse::Left) == false) // Released
+	{
+		leftClickPressed = false;
+	}
+	previousLeftClickState = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+		
+	mouseX = sf::Mouse::getPosition(*window).x;
+	mouseY = sf::Mouse::getPosition(*window).y;
+	mouseScroll = 0; // Reset it, will be set later if MouseWheelMoved event has happened.
+    while (window->pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed)
+            window->close();
+		if (event.type == sf::Event::MouseWheelMoved)
+		{
+			mouseScroll = event.mouseWheel.delta; // Negative or positive depending on which way the player scrolls.
+		}
+		if (event.type == sf::Event::KeyPressed)
+		{
+			keys[event.key.code] = true;
+		}
+		if (event.type == sf::Event::KeyReleased)
+		{
+			keys[event.key.code] = false;
+		}
+	}
+}
 
 int main()
 {
-	// Can we get rid of the console somehow?
+	GameViews::init();
 
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+	sf::RenderWindow* window;
+	window = new sf::RenderWindow(sf::VideoMode(800, 600), "Sacrafice to Satan");
 
-    while (window.isOpen())
+    while (window->isOpen())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        window.clear();
-        window.draw(shape);
-        window.display();
+		pollEvents(window);
+		
+		window->clear(sf::Color(60, 60, 60));
+		GameViews::render(window);
+        window->display();
     }
 
+	GameViews::cleanUp();
+	delete window;
     return 0;
 }
