@@ -3,10 +3,6 @@
 
 
 
-
-
-
-
 #include "ButtonSfml.hpp"
 #include "GlobaValues.hpp"
 
