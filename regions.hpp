@@ -15,12 +15,8 @@ class region
 public:
 
 //should probably write a copy and descructor 
-  region(Faction* owner= 0, Farm* f = nullptr, WoodMill* m = nullptr, Mine* mi = nullptr, City* c = nullptr, TradeCentre* tc = nullptr):farm(f),mill(m),mine(mi),city(c),tradeCentre(tc),hexagon(length,height),texture(nullptr)
-  {
-    currentOwner = owner;
-    origOwner = owner;
-  };
-  region(FactionEnum setFaction);	
+
+  region(FactionEnum setFaction):texture(0),hexagon(height,length){};	
 private:
   static int length;
   static int height;
