@@ -10,7 +10,7 @@ using namespace std;
 
 
 #include "ButtonSfml.hpp"
-
+#include "regions.hpp"
 
 #include "GlobaValues.hpp"
 #include "GameViews.hpp"
@@ -60,7 +60,7 @@ int main()
 
 	sf::RenderWindow* window;
 	window = new sf::RenderWindow(sf::VideoMode(800, 600), "Traps are the best");
-
+	region R = region(nullFaction);
     while (window->isOpen())
     {
 		pollEvents(window);
@@ -68,6 +68,7 @@ int main()
 		window->clear(sf::Color(60, 60, 60));
 		GameViews::render(window);
         window->display();
+	R.draw(*window);
     }
 
 	GameViews::cleanUp();

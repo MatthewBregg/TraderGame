@@ -16,10 +16,11 @@ public:
 
 //should probably write a copy and descructor 
 
-  region(FactionEnum setFaction):texture(0),hexagon(height,length){};	
+  region(FactionEnum setFaction = nullFaction);
+  void draw(sf::RenderWindow& window);
 private:
-  static int length;
-  static int height;
+
+  static int size;
   sf::CircleShape hexagon;
   sf::Texture* texture;
   
@@ -30,10 +31,10 @@ private:
   WoodMill mill;
   Mine mine;
   TradeCentre tradeCentre;
-
-
   FactionEnum currentOwner;
   FactionEnum origOwner;
+  bool textSet;
+  
   // std::stack<Faction*> owners;
   
 };

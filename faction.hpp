@@ -5,9 +5,10 @@
 
 enum FactionEnum
 {
-	elfFaction,
-	dwarfFaction,
-	TOTAL_FACTIONS,
+  nullFaction,
+  elfFaction,
+  dwarfFaction,
+  TOTAL_FACTIONS,
 };
 
 class Faction
