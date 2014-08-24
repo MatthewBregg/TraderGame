@@ -6,6 +6,7 @@
 #include <string>
 using namespace std;
 #include "CustomizedText.hpp"
+#include "regions.hpp"
 
 #include "GameViews.hpp"
 
@@ -27,10 +28,8 @@ void GameViews::init()
 }
 
 
-
 void GameViews::render(sf::RenderWindow* window)
 {
-
 	if (gameView == mapView)										
 	{
 		charsetSelectButton.draw(window);

@@ -14,12 +14,10 @@ using namespace std;
 
 #include "GlobaValues.hpp"
 #include "GameViews.hpp"
-#include "CustomizedText.hpp"
 
 
 
-
-
+// Checks for input events (mouse, keyboard). 
 void pollEvents(sf::RenderWindow* window)
 {
     sf::Event event;
@@ -61,7 +59,7 @@ int main()
 	GameViews::init();
 
 	sf::RenderWindow* window;
-	window = new sf::RenderWindow(sf::VideoMode(800, 600), "Sacrafice to Satan");
+	window = new sf::RenderWindow(sf::VideoMode(800, 600), "Traps are the best");
 
     while (window->isOpen())
     {
