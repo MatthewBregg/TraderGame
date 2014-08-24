@@ -5,7 +5,7 @@
 class City
 {
 public:
-  City(Resources& r, int g = 0):resources(r),gold(g){};
+  City(Resources r , int g = 0):resources(r),gold(g){};
 
 
 private:
