@@ -3,10 +3,10 @@
 
 
 
-int region::size = HEX_SIZE; 
+int Region::size = HEX_SIZE; 
 
 
-region::region(FactionEnum setFaction):
+Region::Region(FactionEnum setFaction):
 	texture(nullptr),
 	city(Resources(), 0),
 	farm(),
@@ -21,7 +21,7 @@ region::region(FactionEnum setFaction):
   //hexagon.setPosition(sf::Vector2f(50,10));
 };
 
-void region::draw(sf::RenderWindow& window)
+void Region::draw(sf::RenderWindow& window)
 {
   for ( auto& i : hexagons)
     {
@@ -29,7 +29,7 @@ void region::draw(sf::RenderWindow& window)
     }
 }
 
-void region::setTexture(sf::Texture* tex)
+void Region::setTexture(sf::Texture* tex)
 {
   for ( auto& i : hexagons)
     {

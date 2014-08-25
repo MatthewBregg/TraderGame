@@ -2,10 +2,10 @@
 
 #ifndef INFRASTRUCTURE_H
 #define INFRASTRUCTURE_H
-class infrastructure
+class Infrastructure
 {
 public:
-  infrastructure(int p=0, int l =0, int g =0, int s= 0):potential(p),level(l),gold(g),stock(s){};
+  Infrastructure(int p=0, int l =0, int g =0, int s= 0):potential(p),level(l),gold(g),stock(s){};
 protected:
 
   int potential;
@@ -13,17 +13,17 @@ protected:
   int gold;
   int stock;
 };
-class Farm:infrastructure
+class Farm:Infrastructure
 {
 
 };
 
-class WoodMill:infrastructure
+class WoodMill:Infrastructure
 {
 
 };
 
-class Mine:infrastructure
+class Mine:Infrastructure
 {
 
 };

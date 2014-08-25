@@ -12,12 +12,12 @@
 #define REGIONS_H
 #define HEX_SIZE 80
 
-class region
+class Region
 {
 public:
 //should probably write a copy and descructor 
 
-  region(FactionEnum setFaction = nullFaction);
+  Region(FactionEnum setFaction = nullFaction);
   void draw(sf::RenderWindow& window);
 protected:
   void setPosition(const sf::Vector2f& pos);

@@ -60,7 +60,7 @@ int main()
 
 	sf::RenderWindow* window;
 	window = new sf::RenderWindow(sf::VideoMode(800, 600), "Traps are the best");
-	region R = region(nullFaction);
+	Region R = Region(nullFaction);
     while (window->isOpen())
     {
 		pollEvents(window);
