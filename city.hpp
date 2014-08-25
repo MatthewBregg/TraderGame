@@ -8,7 +8,7 @@ class City
 public:
   City(Resources r, int g);
 
-  void draw(sf::RenderWindow& window);
+  void draw();
   void refreshAfterTurn();
 
 private:

@@ -15,7 +15,7 @@ ButtonSfml::ButtonSfml(double setX, double setY, double setW, double setH, strin
 	buttonText.setPosition(sprite.getPosition());
 }
 
-void ButtonSfml::draw(sf::RenderWindow* window)
+void ButtonSfml::draw()
 {
 	double textWidth = 0; // Width of the string in text, used for centering the text on the buttons.
 	for (int i = 0; i < buttonText.getString().getSize(); ++i)

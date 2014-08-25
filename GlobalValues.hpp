@@ -25,22 +25,18 @@ using namespace std;
 #include <string>
 
 
+extern sf::RenderWindow* window;
 
 
-#ifdef WIN32 
+#ifdef _WIN32			 // Defined for both 32-bit and 64-bit environments 
 // Character '\', which is a special formatting character. \\ to fix it
 #define RESOURCE_PATH "C:\\Users\\Blue\\Documents\\GitHub\\TraderGame\\"
 #endif
-#ifdef WIN64
-// Character '\', which is a special formatting character. \\ to fix it
-const string resourcePath = "C:\\Users\\Blue\\Documents\\GitHub\\TraderGame\\";
-#endif
 #ifdef __linux__
-#define RESOURCE_FOLDER "../"
 #define RESOURCE_PATH "../"
 #endif
 #ifdef __APPLE__
-#define RESOURCE_FOLDER "Cry me a river, steve"
+#define RESOURCE_PATH "Cry me a river, steve"
 #endif  
 //Shoudln't these paths be local? That way, someone can install this wherever. 
 //EX, ../resources

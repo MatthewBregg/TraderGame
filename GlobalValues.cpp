@@ -1,6 +1,8 @@
 #include "GlobalValues.hpp"
 
 
+sf::RenderWindow* window;
+
 string getResourcePath()
 {
 	return RESOURCE_PATH;
@@ -9,8 +11,7 @@ string getResourcePath()
 // Given 15, will return a rand nr between 0-14
 int getRandomNumber(int range)
 {
-	int xRan;
-	srand( time(0)); // This will ensure a really randomized number by help of time.
+	srand(time(0)); // This will ensure a really randomized number by help of time.
 	return rand()%range; 
 }
 

@@ -17,12 +17,12 @@
 	populationText.setPosition(200, 200);
  };
 
-void City::draw(sf::RenderWindow& window)
+void City::draw()
 {
 	stringstream stream1;
 	stream1 << population;
 	populationText.setString(stream1.str());
-	window.draw(populationText);
+	window->draw(populationText);
 }
 void City::refreshAfterTurn()
 {

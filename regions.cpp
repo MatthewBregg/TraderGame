@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Texture.hpp"
+#include "GlobalValues.hpp"
 
 
 #include "regions.hpp"
@@ -35,13 +36,13 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 	}
 };
 
-void Region::draw(sf::RenderWindow& window)
+void Region::draw()
 {
 	for (std::vector<sf::Sprite>::iterator it = hexagons.begin(); it != hexagons.end(); ++it)
 	{
-		window.draw(*it);
+		window->draw(*it);
 	}
-	city.draw(window);
+	city.draw();
 }
 void Region::updateAfterTurn()
 {

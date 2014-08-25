@@ -13,7 +13,7 @@ class GameViews
 public:
 
 	static void init();
-	static void render(sf::RenderWindow* window);
+	static void render();
 
 	static void cleanUp();
 

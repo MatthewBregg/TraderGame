@@ -59,17 +59,14 @@ int main()
 {
 	GameViews::init();
 
-	sf::RenderWindow* window;
 	window = new sf::RenderWindow(sf::VideoMode(800, 600), "Traps are the best");
-
 
     while (window->isOpen())
     {
 		pollEvents(window);
 		
 		window->clear(sf::Color(60, 60, 60));
-		GameViews::render(window);
-
+		GameViews::render();
         window->display();
     }
 

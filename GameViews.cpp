@@ -28,12 +28,12 @@ void GameViews::init()
 
 }
 
-void GameViews::render(sf::RenderWindow* window)
+void GameViews::render()
 {
 	if (gameView == mapView)										
 	{
-		EndTurnButton.draw(window);
-		R.draw(*window);
+		EndTurnButton.draw();
+		R.draw();
 
 		if (EndTurnButton.isClickedOn())
 		{

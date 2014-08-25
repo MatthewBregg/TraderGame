@@ -19,7 +19,7 @@ public:
 //should probably write a copy and descructor 
 
   Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture);
-  void draw(sf::RenderWindow& window);
+  void draw();
   void updateAfterTurn();
 protected:
   void setPosition(const sf::Vector2f& pos);
