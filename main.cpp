@@ -67,8 +67,9 @@ int main()
 		
 		window->clear(sf::Color(60, 60, 60));
 		GameViews::render(window);
-        window->display();
 	R.draw(*window);
+        window->display();
+
     }
 
 	GameViews::cleanUp();

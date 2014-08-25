@@ -9,15 +9,20 @@
 
 #ifndef REGIONS_H
 #define REGIONS_H
+#define HEX_SIZE 80
 
 class region
 {
 public:
-
+friend
 //should probably write a copy and descructor 
 
   region(FactionEnum setFaction = nullFaction);
   void draw(sf::RenderWindow& window);
+protected:
+  void setPosition(const sf::Vector2f& pos);
+  sf::Vector2f& getPosition() {return position;};
+  void setTexture(sf::Texture* tex);
 private:
 
   static int size;
@@ -33,7 +38,7 @@ private:
   TradeCentre tradeCentre;
   FactionEnum currentOwner;
   FactionEnum origOwner;
-  bool textSet;
+  sf::Vector2f position;
   
   // std::stack<Faction*> owners;
   
