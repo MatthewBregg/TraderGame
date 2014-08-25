@@ -13,7 +13,7 @@
 #include <string>
 using namespace std;
 
-#include "GlobaValues.hpp"
+#include "GlobalValues.hpp"
 
 class CustomizedText: public sf::Text
 {

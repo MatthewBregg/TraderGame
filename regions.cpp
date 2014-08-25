@@ -6,9 +6,6 @@
 int region::size = HEX_SIZE; 
 
 
-
-
-
 region::region(FactionEnum setFaction):
 	hexagon(size,6),
 	texture(nullptr),

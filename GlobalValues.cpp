@@ -1,4 +1,4 @@
-#include "GlobaValues.hpp"
+#include "GlobalValues.hpp"
 
 
 string getResourcePath()
@@ -37,7 +37,6 @@ extern double mouseX = 0;		// Mouse coords since sf::Mouse::getPosition(*window)
 extern double mouseY = 0;
 
 
-sf::Texture texturePointer[totalTextures];
 
 // The size of the whole monitor.
 int getMonitorWidth()
