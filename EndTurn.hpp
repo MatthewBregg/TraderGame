@@ -6,6 +6,8 @@ class EndTurn
 {
 public:
 
+	static void draw();
+	static void refresh();
 
   static void endTurn();
 

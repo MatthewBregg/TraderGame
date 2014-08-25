@@ -20,8 +20,6 @@ enum GameView
 GameView gameView = mapView;
 
 
-ButtonSfml EndTurnButton(300, 400, 150, 150, "End turn", buttonTexture1);
-	
 void GameViews::init()
 {
 
@@ -31,15 +29,10 @@ void GameViews::render()
 {
 	if (gameView == mapView)										
 	{
-		EndTurnButton.draw();
 		R.draw();
-
-		if (EndTurnButton.isClickedOn())
-		{
-			EndTurn::endTurn();
-		}
+		EndTurn::draw();
+		EndTurn::refresh();
 	}
-
 }
 void GameViews::cleanUp()
 {

@@ -59,7 +59,7 @@ int main()
 {
 	GameViews::init();
 
-	window = new sf::RenderWindow(sf::VideoMode(800, 600), "Traps are the best");
+	window = new sf::RenderWindow(sf::VideoMode(getWindowWidth(), getWindowHeight()), "Traps are the best");
 
     while (window->isOpen())
     {

@@ -9,6 +9,8 @@ std::vector<sf::Vector2f> getHexPos()
 {
 	std::vector<sf::Vector2f> hexPos;
 	hexPos.push_back(sf::Vector2f(100,50));
+	hexPos.push_back(sf::Vector2f(100,270));
+	hexPos.push_back(sf::Vector2f(-90,160));
 	return hexPos;
 }
 Region R(getHexPos(), elfFaction, grassLandsHexTexture);
@@ -18,8 +20,8 @@ int Region::size = HEX_SIZE;
 
 Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture):
 	texture(nullptr),
-	city(Resources(40, 0, 0), 20),
-	farm(1, 4, 10, 0),
+	city("Bronx", Resources(40, 0, 0), 20),
+	farm(1, 6, 10, 0),
 	mill(0, 0, 0, 0),
 	mine(0, 0, 0, 0),
 	tradeCentre(),
@@ -42,11 +44,14 @@ void Region::draw()
 	{
 		window->draw(*it);
 	}
-	city.draw(200, 100);
+	city.draw(400, 100);
 	
-	farm.draw(200, 200);
-	//mill.draw(200, 210);
-	//mine.draw(200, 260);
+	farm.draw(400, 200);
+	//mill.draw(400, 210);
+	//mine.draw(400, 260);
+
+	// To check if there are any bugs when exchanging gold.
+	drawText(strPlusX("Total gold: ", city.getGold() + farm.getGold()), 150, 500);
 }
 
 double buyingPrice = 0;
@@ -59,13 +64,14 @@ void Region::updateAfterTurn()
 		farm.acceptDeal();
 	}
 
-	city.refreshAfterTurn(farm.giveUpkeep());
+	// Farm also returns the upkeep value to the city.
+	// I don't like this, since each function is doing several things.
+	city.refreshAfterTurn(
+		farm.refreshAfterTurn()
+		);
 
-	farm.refreshAfterTurn();
 	//mill.refreshAfterTurn();
 	//mine.refreshAfterTurn();
-	// Infrastructure has to pay upkeep to the city
-
 }
 
 

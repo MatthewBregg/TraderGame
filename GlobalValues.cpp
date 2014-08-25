@@ -53,28 +53,13 @@ int getMonitorHeight()
 // Returns the size of the programs' window. Can be less or eaqual to monitor size, but never larger. It should be used when creating the window.
 int getWindowWidth()
 {
-	static int windowWidth = 0;
-	if ((getMonitorWidth() >= 1366) && (getMonitorHeight() >= 768))
-	{
-		windowWidth = 1366;
-	}
-	else  // less than 1366
-	{
-		windowWidth = getMonitorWidth();
-	}
+	static int windowWidth = 800;
+
 	return windowWidth;
 }
 int getWindowHeight()
 {
-	static int windowHeight = 0;
-	if ((getMonitorWidth() >= 1366) && (getMonitorHeight() >= 768))
-	{
-		windowHeight = 768;
-	}
-	else  // less than 768
-	{
-		windowHeight = getMonitorWidth();
-	}
+	static int windowHeight = 600;
 
 	return windowHeight;
 }

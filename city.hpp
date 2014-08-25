@@ -7,7 +7,7 @@
 class City
 {
 public:
-	City(Resources r, int g);
+	City(string setName, Resources r, int g);
 
 	void draw(double x, double y);
 	void refreshAfterTurn(double upkeepFromInfrastructures);
@@ -15,16 +15,17 @@ public:
 	double getBuyingPrice();
 	unsigned int getPopulationFoodReq();
 	double getPopulationChange();
-
 	bool cityWouldAcceptDeal(double offeredPrice);
 	void acceptDeal(double price);
+	double getGold();
+
 private:
+	string name;
 	Resources resources;
 	double gold;
 	unsigned int population;
 
 	void updatePopulation();
-
 
 };
 

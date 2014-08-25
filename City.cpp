@@ -4,7 +4,8 @@
 
 
 
- City::City(Resources r, int g):
+ City::City(string setName, Resources r, int g):
+	name(setName),
 	resources(r),
 	gold(g),
 	population(10000)
@@ -13,10 +14,16 @@
 
 void City::draw(double x, double y)
 {
-	drawText(strPlusX("Population: ", population), x, y);
-	drawText(strPlusX("Population change: ", getPopulationChange()), x + 170, y);
-	drawText(strPlusX("Food in stock: ", resources.getFood()), x, y + 25);
-	drawText(strPlusX("Food required: ", getPopulationFoodReq()), x + 170, y + 25);
+	drawText(name, x - 60, y);
+
+	stringstream popString;	
+	popString << "Population: " << population << "(*" << getPopulationChange() << ")";
+	drawText(popString.str(), x, y);
+
+	stringstream foodStockString;	
+	foodStockString << "Food in stock: " << resources.getFood() << "(-" << getPopulationFoodReq() << ")";
+	drawText(foodStockString.str(), x, y + 25);
+
 	drawText(strPlusX("Gold: ", gold), x, y + 50);
 	drawText(strPlusX("Buys for: ", getBuyingPrice()), x + 170, y + 50);
 }
@@ -29,7 +36,7 @@ void City::refreshAfterTurn(double upkeepFromInfrastructures)
 
 double City::getBuyingPrice()
 {
-	double buyingPrice = (gold + getPopulationFoodReq() + 1) / (resources.getFood() + 1);
+	double buyingPrice = (gold + getPopulationFoodReq() + 1) / (resources.getFood() + 2);
 	if (buyingPrice > gold)  // Can't buy more than you have. 
 	{
 		return gold;
@@ -70,16 +77,22 @@ bool City::cityWouldAcceptDeal(double offeredPrice)
 	}
 	return false;
 }
+
 void City::acceptDeal(double price)
 {
 	gold -= price;
 	resources.addFood(1);
 }
 
+double City::getGold()
+{
+	return gold;
+}
+
+// ------------------------------ Private
 
 void City::updatePopulation()
 {
 	resources.subtractFood(getPopulationFoodReq());
 	population *= getPopulationChange();
 }
-

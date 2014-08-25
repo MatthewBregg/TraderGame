@@ -7,23 +7,23 @@
 class Infrastructure
 {
 public:
-  Infrastructure(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock);
+	Infrastructure(unsigned int setLevel, unsigned int setMaxLevel, double setGold, int setStock);
 
-  void draw(double x, double y);
-  void refreshAfterTurn();
+	void draw(double x, double y);
+	// Returns the upkeep for that turn.
+	double refreshAfterTurn();
  
-  double wouldSellFor();
-  double upkeep();
-  void acceptDeal();
-
-  double giveUpkeep();
+	double wouldSellFor();
+	double upkeep();
+	void acceptDeal();
+	double getGold();
 
   virtual string getName() = 0;
 protected:
 	sf::Text infrastructureText;
 
 	unsigned int level;
-	unsigned int maxPotential;
+	unsigned int maxLevel;
 	double gold;
 	unsigned int inStock;
 };
