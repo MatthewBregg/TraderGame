@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "resources.hpp"
+#include "Resources.hpp"
 
 Resources::Resources(int f, int w, int i):
 	food(f),

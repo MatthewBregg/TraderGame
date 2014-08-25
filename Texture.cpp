@@ -4,20 +4,15 @@
 
 #include "Texture.hpp"
 
-static sf::Texture texturePointer[totalTextures];	 
-void initTextures()
-{
-	if (!texturePointer[buttonTexture1].loadFromFile(getResourcePath() + "buttonNext.png"))	{		/*// error...#*/	}
-	if (!texturePointer[grassLandsHexTexture].loadFromFile(getResourcePath() + "grasslandsHex.png"))	{		/*// error...#*/	}
-
-	
-}
 
 sf::Texture* getTexture(TextureIndex textureIndex)
 {
+	static sf::Texture texturePointer[totalTextures];	
+
 	if (texturePointer[textureIndex].getSize().x == 0 && texturePointer[textureIndex].getSize().y == 0)
 	{
-		initTextures();
+		if (!texturePointer[buttonTexture1].loadFromFile(getResourcePath() + "buttonNext.png"))	{		/*// error...#*/	}
+		if (!texturePointer[grassLandsHexTexture].loadFromFile(getResourcePath() + "grasslandsHex.png"))	{		/*// error...#*/	}
 	}
 	return &texturePointer[textureIndex];
 }

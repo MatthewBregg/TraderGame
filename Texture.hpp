@@ -5,8 +5,6 @@
 #define TEXTURE_H
 
 
-
-
 enum TextureIndex
 {
 	buttonTexture1,
@@ -16,7 +14,5 @@ enum TextureIndex
 };
 
 extern sf::Texture* getTexture(TextureIndex textureIndex);
-
-
 
 #endif /* TEXTURE_H */

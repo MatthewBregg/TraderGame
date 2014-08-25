@@ -6,6 +6,8 @@ ButtonSfml::ButtonSfml(double setX, double setY, double setW, double setH, strin
 	textureIndex(setTexture)
 {
 	sprite.setPosition(setX, setY);
+	sprite.setTexture(*getTexture(textureIndex));
+	sprite.setScale(w / getTexture(textureIndex)->getSize().x, h/ getTexture(textureIndex)->getSize().y);
 	
 	buttonText.setFont(*getCustomFont()); 
 	buttonText.setCharacterSize(30); 
@@ -15,9 +17,6 @@ ButtonSfml::ButtonSfml(double setX, double setY, double setW, double setH, strin
 
 void ButtonSfml::draw(sf::RenderWindow* window)
 {
-	sprite.setTexture(*getTexture(textureIndex));
-	sprite.setScale(w / getTexture(textureIndex)->getSize().x, h/ getTexture(textureIndex)->getSize().y);
-	
 	double textWidth = 0; // Width of the string in text, used for centering the text on the buttons.
 	for (int i = 0; i < buttonText.getString().getSize(); ++i)
 	{

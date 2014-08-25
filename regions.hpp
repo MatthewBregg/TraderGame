@@ -1,9 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 //#include <stack>
-#include "infrastructure.hpp"
-#include "city.hpp"
-#include "faction.hpp"
+#include "Infrastructure.hpp"
+#include "City.hpp"
+#include "Faction.hpp"
 #include "TradeCentre.hpp"
 #include "Texture.hpp"
 #include <vector>

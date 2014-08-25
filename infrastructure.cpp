@@ -1,4 +1,4 @@
-#include "infrastructure.hpp"
+#include "Infrastructure.hpp"
 
 
 infrastructure::infrastructure(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock):

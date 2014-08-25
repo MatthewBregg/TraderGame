@@ -1,15 +1,10 @@
 #ifndef BUTTONSFML_H
 #define BUTTONSFML_H
 
-
-
-
-
 #include "GlobalValues.hpp"
 
 #include "ClickableRectangle.hpp"
 #include "Texture.hpp"
-
 
 
 class ButtonSfml: public ClickableRectangle

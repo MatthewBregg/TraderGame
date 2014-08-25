@@ -1,5 +1,5 @@
 #include <iostream>
-#include "resources.hpp"
+#include "Resources.hpp"
 #ifndef CITY_H
 #define CITY_H
 class City
