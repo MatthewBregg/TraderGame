@@ -6,6 +6,7 @@
 #include "faction.hpp"
 #include "TradeCentre.hpp"
 #include <vector>
+#include <initializer_list>
 
 
 #ifndef REGIONS_H
@@ -17,7 +18,8 @@ class Region
 public:
 //should probably write a copy and descructor 
 
-  Region(FactionEnum setFaction = nullFaction);
+  Region(std::initializer_list<sf::Vector2f> poses,FactionEnum setFaction = nullFaction);
+  Region(std::vector<sf::Vector2f> poses,FactionEnum setFaction = nullFaction);
   void draw(sf::RenderWindow& window);
 protected:
   void setPosition(const sf::Vector2f& pos);
