@@ -1,68 +1,87 @@
 #include <iostream>
+#include "Texture.hpp"
+#include "GlobalValues.hpp"
+
+
 #include "regions.hpp"
 
-
+std::vector<sf::Vector2f> getHexPos()
+{
+	std::vector<sf::Vector2f> hexPos;
+	hexPos.push_back(sf::Vector2f(100,50));
+	hexPos.push_back(sf::Vector2f(100,270));
+	hexPos.push_back(sf::Vector2f(-90,160));
+	return hexPos;
+}
+Region R(getHexPos(), elfFaction, grassLandsHexTexture);
 
 int Region::size = HEX_SIZE; 
 
 
-Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction):
+Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture):
 	texture(nullptr),
-	city(Resources(), 0),
-	farm(),
-	mill(),
-	mine(),
+	city("Bronx", Resources(40, 0, 0), 20),
+	farm(1, 6, 10, 0),
+	mill(0, 0, 0, 0),
+	mine(0, 0, 0, 0),
 	tradeCentre(),
 	currentOwner(setFaction),
 	origOwner(setFaction)
 
 {
-  for (auto& i : poses)
-    {
-      sf::CircleShape temp(size,6);
-      temp.setPosition(i);
-      hexagons.push_back(temp);
-    }
-  //hexagon.setFillColor(sf::Color(150, 50, 250));
-  //hexagon.setPosition(sf::Vector2f(50,10));
+	for (std::vector<sf::Vector2f>::iterator it = poses.begin(); it != poses.end(); ++it)
+	{
+		sf::Sprite temp;
+		temp.setTexture(*getTexture(hexTexture));
+		temp.setPosition(*it);
+		hexagons.push_back(temp);
+	}
 };
 
-Region::Region(std::initializer_list<sf::Vector2f> poses, FactionEnum setFaction):
-	texture(nullptr),
-	city(Resources(), 0),
-	farm(),
-	mill(),
-	mine(),
-	tradeCentre(),
-	currentOwner(setFaction),
-	origOwner(setFaction)
-
+void Region::draw()
 {
+	for (std::vector<sf::Sprite>::iterator it = hexagons.begin(); it != hexagons.end(); ++it)
+	{
+		window->draw(*it);
+	}
+	city.draw(400, 100);
+	
+	farm.draw(400, 200);
+	//mill.draw(400, 210);
+	//mine.draw(400, 260);
 
-  for (auto& i : poses)
-    {
-      sf::CircleShape temp(size,6);
-      temp.setPosition(i);
-      hexagons.push_back(temp);
-    }
-  
-  //hexagon.setFillColor(sf::Color(150, 50, 250));
-  //hexagon.setPosition(sf::Vector2f(50,10));
-};
-
-void Region::draw(sf::RenderWindow& window)
-{
-  for ( auto& i : hexagons)
-    {
-  window.draw(i);
-    }
+	// To check if there are any bugs when exchanging gold.
+	drawText(strPlusX("Total gold: ", city.getGold() + farm.getGold()), 150, 500);
 }
+
+double buyingPrice = 0;
+double sellingPrice = 0;
+void Region::updateAfterTurn()
+{
+	while (city.cityWouldAcceptDeal(farm.wouldSellFor())) 
+	{
+		city.acceptDeal(farm.wouldSellFor());
+		farm.acceptDeal();
+	}
+
+	// Farm also returns the upkeep value to the city.
+	// I don't like this, since each function is doing several things.
+	city.refreshAfterTurn(
+		farm.refreshAfterTurn()
+		);
+
+	//mill.refreshAfterTurn();
+	//mine.refreshAfterTurn();
+}
+
 
 void Region::setTexture(sf::Texture* tex)
 {
-  for ( auto& i : hexagons)
-    {
-      i.setTexture(tex); 
+	for (std::vector<sf::Sprite>::iterator it = hexagons.begin(); it != hexagons.end(); ++it)
+	{
+		(*it).setTexture(*tex); 
     }
 }
+
+
 

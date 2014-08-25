@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "resources.hpp"
+#include "Resources.hpp"
 
 Resources::Resources(int f, int w, int i):
 	food(f),
@@ -28,7 +28,27 @@ void Resources::add(const Resources& addedResources)
 // Subtracts reducedResources number of resources from the caller.
 void Resources::subtract(const Resources& reducedResources)
 {
- 	food += reducedResources.food;
+	subtractFood(reducedResources.food);
 	wood += reducedResources.wood;
 	iron += reducedResources.iron;
+}
+
+unsigned int Resources::getFood()
+{
+	return food;
+}
+void Resources::addFood(int foodAdded)
+{
+	food += foodAdded;
+}
+void Resources::subtractFood(int foodLost)
+{
+	if (food < foodLost)
+	{
+		food = 0;
+	}
+	else
+	{
+		food -= foodLost;
+	}
 }

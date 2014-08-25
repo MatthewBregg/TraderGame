@@ -5,7 +5,6 @@
 
 enum FactionEnum
 {
-  nullFaction,
   elfFaction,
   dwarfFaction,
   TOTAL_FACTIONS,

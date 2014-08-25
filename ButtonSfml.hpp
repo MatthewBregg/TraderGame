@@ -1,15 +1,10 @@
 #ifndef BUTTONSFML_H
 #define BUTTONSFML_H
 
-
-
-
-
 #include "GlobalValues.hpp"
 
 #include "ClickableRectangle.hpp"
 #include "Texture.hpp"
-
 
 
 class ButtonSfml: public ClickableRectangle
@@ -21,7 +16,7 @@ class ButtonSfml: public ClickableRectangle
 public:
 	ButtonSfml(double setX, double setY, double setW, double setH, string setText, TextureIndex setTexture);
 
-	void draw(sf::RenderWindow* window);
+	void draw();
 
 	void setText(string setText);
 	void setText(wstring setText);

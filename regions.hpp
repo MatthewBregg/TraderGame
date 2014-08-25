@@ -1,27 +1,26 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 //#include <stack>
-#include "infrastructure.hpp"
-#include "city.hpp"
-#include "resources.hpp"
-#include "faction.hpp"
+#include "Infrastructure.hpp"
+#include "City.hpp"
+#include "Faction.hpp"
 #include "TradeCentre.hpp"
+#include "Texture.hpp"
 #include <vector>
-#include <initializer_list>
-
 
 #ifndef REGIONS_H
 #define REGIONS_H
-#define HEX_SIZE 80
+
+const int HEX_SIZE = 80;
 
 class Region
 {
 public:
 //should probably write a copy and descructor 
 
-  Region(std::initializer_list<sf::Vector2f> poses,FactionEnum setFaction = nullFaction);
-  Region(std::vector<sf::Vector2f> poses,FactionEnum setFaction = nullFaction);
-  void draw(sf::RenderWindow& window);
+  Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture);
+  void draw();
+  void updateAfterTurn();
 protected:
   void setPosition(const sf::Vector2f& pos);
 
@@ -29,7 +28,7 @@ protected:
 private:
 
   static int size;
-  std::vector<sf::CircleShape> hexagons;
+  std::vector<sf::Sprite> hexagons;
   sf::Texture* texture;
   
   // std::stack<Faction*> owners;
@@ -46,5 +45,8 @@ private:
   // std::stack<Faction*> owners;
   
 };
+
+
+extern Region R;
 
 #endif /* REGIONS_H */

@@ -1,36 +1,53 @@
 #include <iostream>
+#include "GlobalValues.hpp"
 
 #ifndef INFRASTRUCTURE_H
 #define INFRASTRUCTURE_H
 
-class infrastructure
+class Infrastructure
 {
 public:
-  infrastructure(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock);
+	Infrastructure(unsigned int setLevel, unsigned int setMaxLevel, double setGold, int setStock);
 
+	void draw(double x, double y);
+	// Returns the upkeep for that turn.
+	double refreshAfterTurn();
+ 
+	double wouldSellFor();
+	double upkeep();
+	void acceptDeal();
+	double getGold();
+
+  virtual string getName() = 0;
 protected:
+	sf::Text infrastructureText;
 
-  unsigned int level;
-  unsigned int maxPotential;
-  double gold;
-  int inStock;
+	unsigned int level;
+	unsigned int maxLevel;
+	double gold;
+	unsigned int inStock;
 };
 
-class Farm: public infrastructure
+
+
+class Farm: public Infrastructure
 {
 public:
-	Farm();
+	Farm(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock);
+	virtual string getName();
 };
 
-class WoodMill: public infrastructure
+class WoodMill: public Infrastructure
 {
 public:
-	WoodMill();
+	WoodMill(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock);
+	virtual string getName();
 };
 
-class Mine: public infrastructure
+class Mine: public Infrastructure
 {
 public:
-	Mine();
+	Mine(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock);
+	virtual string getName();
 };
 #endif /* INFRASTRUCTURE_H */

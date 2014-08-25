@@ -1,6 +1,8 @@
 #include "GlobalValues.hpp"
 
 
+sf::RenderWindow* window;
+
 string getResourcePath()
 {
 	return RESOURCE_PATH;
@@ -9,8 +11,7 @@ string getResourcePath()
 // Given 15, will return a rand nr between 0-14
 int getRandomNumber(int range)
 {
-	int xRan;
-	srand( time(0)); // This will ensure a really randomized number by help of time.
+	srand(time(0)); // This will ensure a really randomized number by help of time.
 	return rand()%range; 
 }
 
@@ -52,28 +53,13 @@ int getMonitorHeight()
 // Returns the size of the programs' window. Can be less or eaqual to monitor size, but never larger. It should be used when creating the window.
 int getWindowWidth()
 {
-	static int windowWidth = 0;
-	if ((getMonitorWidth() >= 1366) && (getMonitorHeight() >= 768))
-	{
-		windowWidth = 1366;
-	}
-	else  // less than 1366
-	{
-		windowWidth = getMonitorWidth();
-	}
+	static int windowWidth = 800;
+
 	return windowWidth;
 }
 int getWindowHeight()
 {
-	static int windowHeight = 0;
-	if ((getMonitorWidth() >= 1366) && (getMonitorHeight() >= 768))
-	{
-		windowHeight = 768;
-	}
-	else  // less than 768
-	{
-		windowHeight = getMonitorWidth();
-	}
+	static int windowHeight = 600;
 
 	return windowHeight;
 }
@@ -81,3 +67,18 @@ int getWindowHeight()
 
 bool keys[256];
 int mouseScroll = 0; // Negative or positive depending on which way the player scrolls.
+
+
+sf::Text freeText;
+// Some methods for drawing text without having to create text objects on their side. 
+void drawText(string text, double x, double y)
+{
+	freeText.setFont(*getCustomFont()); 
+	freeText.setCharacterSize(14); 
+	freeText.setString(text);
+	freeText.setPosition(x, y);
+	window->draw(freeText);
+}
+
+
+

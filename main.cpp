@@ -22,7 +22,8 @@ void pollEvents(sf::RenderWindow* window)
 {
     sf::Event event;
 
-	if ((previousLeftClickState == false) && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) // Clicked first
+	leftClickPressed = false;
+	if ((previousLeftClickState == false) && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) // Click down for the first time.
 	{
 		leftClickPressed = true;
 	}
@@ -58,20 +59,15 @@ int main()
 {
 	GameViews::init();
 
-	sf::RenderWindow* window;
-	window = new sf::RenderWindow(sf::VideoMode(800, 600), "Traps are the best");
-	Region R = Region({sf::Vector2f(10,50)},nullFaction);
+	window = new sf::RenderWindow(sf::VideoMode(getWindowWidth(), getWindowHeight()), "Traps are the best");
+
     while (window->isOpen())
     {
 		pollEvents(window);
 		
 		window->clear(sf::Color(60, 60, 60));
-		GameViews::render(window);
-
-		R.draw(*window);
+		GameViews::render();
         window->display();
-
-
     }
 
 	GameViews::cleanUp();

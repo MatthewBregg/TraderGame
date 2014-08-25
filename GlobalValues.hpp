@@ -25,22 +25,18 @@ using namespace std;
 #include <string>
 
 
+extern sf::RenderWindow* window;
 
 
-#ifdef WIN32 
+#ifdef _WIN32			 // Defined for both 32-bit and 64-bit environments 
 // Character '\', which is a special formatting character. \\ to fix it
 #define RESOURCE_PATH "C:\\Users\\Blue\\Documents\\GitHub\\TraderGame\\"
 #endif
-#ifdef WIN64
-// Character '\', which is a special formatting character. \\ to fix it
-const string resourcePath = "C:\\Users\\Blue\\Documents\\GitHub\\TraderGame\\";
-#endif
 #ifdef __linux__
-#define RESOURCE_FOLDER "../"
 #define RESOURCE_PATH "../"
 #endif
 #ifdef __APPLE__
-#define RESOURCE_FOLDER "Cry me a river, steve"
+#define RESOURCE_PATH "Cry me a river, steve"
 #endif  
 //Shoudln't these paths be local? That way, someone can install this wherever. 
 //EX, ../resources
@@ -52,8 +48,9 @@ extern int getRandomNumber(int range);
 
 extern sf::Font* getCustomFont();
 
-// Can't use sf::Mouse::isButtonPressed(sf::Mouse::Left) since it is always true. This one resets to false after doing some action
-// and is set to true only when left click is pressed again. 
+// sf::Mouse::isButtonPressed(sf::Mouse::Left) since it is always true while the click is down. 
+// (Meaning buttons will get clicked 20 times per sec. leftClickPressed resets to false after 1 
+// refresh and is set to true only when left click is released and pressed again. 
 extern bool leftClickPressed;
 extern bool previousLeftClickState;  // Left click on previous refresh. 
 extern double mouseX;		// Mouse coords since sf::Mouse::getPosition(*window).x is too long.
@@ -69,4 +66,20 @@ extern int getWindowHeight();
 
 extern bool keys[256];
 extern int mouseScroll; // Negative or positive depending on which way the player scrolls.
+
+
+// Some methods for drawing text like this "something: x".
+extern void drawText(string text, double x, double y);
+
+template <typename SOME_VALUE>
+// Methods for adding string and some value together, be it a string or a number or 
+// whatever. As long as stringstream supports it. 
+string strPlusX(string text, SOME_VALUE value)
+{
+	stringstream textString;	textString << text << value;
+	return textString.str();
+}
+
+
+
 #endif /* GlobalValues_H */

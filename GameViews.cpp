@@ -5,9 +5,9 @@
 #include <array>
 #include <string>
 using namespace std;
-#include "CustomizedText.hpp"
 #include "regions.hpp"
 #include "Texture.hpp"
+#include "EndTurn.hpp"
 
 #include "GameViews.hpp"
 
@@ -20,27 +20,19 @@ enum GameView
 GameView gameView = mapView;
 
 
-ButtonSfml charsetSelectButton(300, 400, 150, 150, "Traps", buttonTexture1);
-	
-
 void GameViews::init()
 {
-	initTextures();
+
 }
 
-
-void GameViews::render(sf::RenderWindow* window)
+void GameViews::render()
 {
 	if (gameView == mapView)										
 	{
-		charsetSelectButton.draw(window);
-
-		if (charsetSelectButton.isClickedOn())
-		{
-			window->close();
-		}
+		R.draw();
+		EndTurn::draw();
+		EndTurn::refresh();
 	}
-
 }
 void GameViews::cleanUp()
 {
