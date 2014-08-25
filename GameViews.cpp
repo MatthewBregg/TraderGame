@@ -5,7 +5,7 @@
 #include <array>
 #include <string>
 using namespace std;
-#include "regions.hpp"
+#include "Regions.hpp"
 #include "Texture.hpp"
 #include "EndTurn.hpp"
 

@@ -10,7 +10,7 @@ using namespace std;
 
 
 #include "ButtonSfml.hpp"
-#include "regions.hpp"
+#include "Regions.hpp"
 
 #include "GlobalValues.hpp"
 #include "GameViews.hpp"

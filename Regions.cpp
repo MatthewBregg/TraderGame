@@ -3,7 +3,7 @@
 #include "GlobalValues.hpp"
 
 
-#include "regions.hpp"
+#include "Regions.hpp"
 
 std::vector<sf::Vector2f> getHexPos()
 {
