@@ -2,15 +2,22 @@
 #include "Resources.hpp"
 #ifndef CITY_H
 #define CITY_H
+
 class City
 {
 public:
-  City(Resources r , int g = 0):resources(r),gold(g){};
+  City(Resources r, int g);
 
+  void draw(sf::RenderWindow& window);
+  void refreshAfterTurn();
 
 private:
   Resources resources;
   double gold;
+  unsigned int population;
+
+	sf::Text populationText;
+
 };
 
 

@@ -20,6 +20,7 @@ public:
 
   Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture);
   void draw(sf::RenderWindow& window);
+  void updateAfterTurn();
 protected:
   void setPosition(const sf::Vector2f& pos);
 
@@ -44,5 +45,7 @@ private:
   // std::stack<Faction*> owners;
   
 };
+
+extern Region R;
 
 #endif /* REGIONS_H */

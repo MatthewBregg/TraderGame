@@ -22,7 +22,8 @@ void pollEvents(sf::RenderWindow* window)
 {
     sf::Event event;
 
-	if ((previousLeftClickState == false) && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) // Clicked first
+	leftClickPressed = false;
+	if ((previousLeftClickState == false) && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) // Click down for the first time.
 	{
 		leftClickPressed = true;
 	}

@@ -52,8 +52,9 @@ extern int getRandomNumber(int range);
 
 extern sf::Font* getCustomFont();
 
-// Can't use sf::Mouse::isButtonPressed(sf::Mouse::Left) since it is always true. This one resets to false after doing some action
-// and is set to true only when left click is pressed again. 
+// sf::Mouse::isButtonPressed(sf::Mouse::Left) since it is always true while the click is down. 
+// (Meaning buttons will get clicked 20 times per sec. leftClickPressed resets to false after 1 
+// refresh and is set to true only when left click is released and pressed again. 
 extern bool leftClickPressed;
 extern bool previousLeftClickState;  // Left click on previous refresh. 
 extern double mouseX;		// Mouse coords since sf::Mouse::getPosition(*window).x is too long.

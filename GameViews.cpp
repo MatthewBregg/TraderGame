@@ -8,6 +8,7 @@ using namespace std;
 #include "CustomizedText.hpp"
 #include "regions.hpp"
 #include "Texture.hpp"
+#include "EndTurn.hpp"
 
 #include "GameViews.hpp"
 
@@ -20,18 +21,8 @@ enum GameView
 GameView gameView = mapView;
 
 
-ButtonSfml charsetSelectButton(300, 400, 150, 150, "Traps", buttonTexture1);
+ButtonSfml EndTurnButton(300, 400, 150, 150, "End turn", buttonTexture1);
 	
-
-std::vector<sf::Vector2f> getHexPos()
-{
-	std::vector<sf::Vector2f> hexPos;
-	hexPos.push_back(sf::Vector2f(100,50));
-	return hexPos;
-}
-
-
-Region R(getHexPos(), elfFaction, grassLandsHexTexture);
 void GameViews::init()
 {
 
@@ -41,12 +32,12 @@ void GameViews::render(sf::RenderWindow* window)
 {
 	if (gameView == mapView)										
 	{
-		charsetSelectButton.draw(window);
+		EndTurnButton.draw(window);
 		R.draw(*window);
 
-		if (charsetSelectButton.isClickedOn())
+		if (EndTurnButton.isClickedOn())
 		{
-			window->close();
+			EndTurn::endTurn();
 		}
 	}
 
