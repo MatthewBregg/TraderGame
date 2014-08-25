@@ -4,7 +4,7 @@
 
 
 #include "ButtonSfml.hpp"
-#include "GlobaValues.hpp"
+#include "GlobalValues.hpp"
 
 
 

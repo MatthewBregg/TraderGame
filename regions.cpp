@@ -2,12 +2,7 @@
 #include "regions.hpp"
 
 
-
 int region::size = 80; 
-
-
-
-
 
 region::region(FactionEnum setFaction):
 	hexagon(size,6),

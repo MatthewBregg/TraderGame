@@ -1,5 +1,5 @@
-#ifndef GLOBAVALUES_H
-#define GLOBAVALUES_H
+#ifndef GlobalValues_H
+#define GlobalValues_H
 
 
 
@@ -59,14 +59,6 @@ extern bool previousLeftClickState;  // Left click on previous refresh.
 extern double mouseX;		// Mouse coords since sf::Mouse::getPosition(*window).x is too long.
 extern double mouseY;
 
-enum TextureIndex
-{
-	buttonTexture1,
-
-	totalTextures,
-};
-extern sf::Texture texturePointer[totalTextures];
-
 
 extern int getMonitorWidth();
 extern int getMonitorHeight();
@@ -77,4 +69,4 @@ extern int getWindowHeight();
 
 extern bool keys[256];
 extern int mouseScroll; // Negative or positive depending on which way the player scrolls.
-#endif /* GLOBAVALUES_H */
+#endif /* GlobalValues_H */

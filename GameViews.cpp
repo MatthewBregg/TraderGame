@@ -7,6 +7,7 @@
 using namespace std;
 #include "CustomizedText.hpp"
 #include "regions.hpp"
+#include "Texture.hpp"
 
 #include "GameViews.hpp"
 
@@ -24,7 +25,7 @@ ButtonSfml charsetSelectButton(300, 400, 150, 150, "Traps", buttonTexture1);
 
 void GameViews::init()
 {
-	if (!texturePointer[buttonTexture1].loadFromFile(getResourcePath() + "buttonNext.png"))	{		/*// error...#*/	}
+	initTextures();
 }
 
 

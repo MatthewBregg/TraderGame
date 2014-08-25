@@ -5,9 +5,10 @@
 
 
 
-#include "GlobaValues.hpp"
+#include "GlobalValues.hpp"
 
 #include "ClickableRectangle.hpp"
+#include "Texture.hpp"
 
 
 

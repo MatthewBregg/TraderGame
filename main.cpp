@@ -12,7 +12,7 @@ using namespace std;
 #include "ButtonSfml.hpp"
 #include "regions.hpp"
 
-#include "GlobaValues.hpp"
+#include "GlobalValues.hpp"
 #include "GameViews.hpp"
 
 
@@ -67,8 +67,9 @@ int main()
 		
 		window->clear(sf::Color(60, 60, 60));
 		GameViews::render(window);
-        window->display();
-	R.draw(*window);
+     	R.draw(*window);
+		window->display();
+
     }
 
 	GameViews::cleanUp();

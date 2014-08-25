@@ -1,4 +1,4 @@
-#include "GlobaValues.hpp"
+#include "GlobalValues.hpp"
 
 #include "ClickableRectangle.hpp"
 
