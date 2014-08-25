@@ -7,7 +7,6 @@ int region::size = HEX_SIZE;
 
 
 region::region(FactionEnum setFaction):
-	hexagon(size,6),
 	texture(nullptr),
 	city(Resources(), 0),
 	farm(),
@@ -15,19 +14,26 @@ region::region(FactionEnum setFaction):
 	mine(),
 	tradeCentre(),
 	currentOwner(setFaction),
-	origOwner(setFaction),
-	position(sf::Vector2f(10,50))
+	origOwner(setFaction)
+
 {
-hexagon.setFillColor(sf::Color(150, 50, 250));
- hexagon.setPosition(position);
+  //hexagon.setFillColor(sf::Color(150, 50, 250));
+  //hexagon.setPosition(sf::Vector2f(50,10));
 };
 
 void region::draw(sf::RenderWindow& window)
 {
-  window.draw(hexagon);
+  for ( auto& i : hexagons)
+    {
+  window.draw(i);
+    }
 }
-void region::setPosition(const sf::Vector2f& pos)
+
+void region::setTexture(sf::Texture* tex)
 {
-  position = pos;
-  hexagon.setPosition(pos);
+  for ( auto& i : hexagons)
+    {
+      i.setTexture(tex); 
+    }
 }
+
