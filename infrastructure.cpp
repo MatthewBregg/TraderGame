@@ -28,19 +28,15 @@ void Infrastructure::draw(double x, double y)
 }
 void Infrastructure::refreshAfterTurn()
 {
-	if (gold >= upkeep())
-	{
-		gold -= upkeep();
-	}
-	else
-	{
-		level--;
-	}
-	inStock += level + 1;
+
 }
 
 double Infrastructure::wouldSellFor()
 {
+	if (inStock <= 0)
+	{
+		return 100000;
+	}
 	return (upkeep() + gold + 1) / double(inStock);
 }
 double Infrastructure::upkeep()
@@ -48,9 +44,28 @@ double Infrastructure::upkeep()
 	return level;
 }
 
+void Infrastructure::acceptDeal()
+{
+	gold += wouldSellFor();
+	inStock--;
+}
 
+double Infrastructure::giveUpkeep()
+{
+	double returnedUpkeep = upkeep();
+	if (gold >= upkeep())
+	{
+		gold -= upkeep(); 
+	}
+	else
+	{
+		returnedUpkeep = gold;
+		level--;
+	}
+	inStock += level + 1;
 
-
+	return returnedUpkeep;
+}
 
 Farm::Farm(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock):
 	Infrastructure(setLevel, setMaxPotential, setGold, setGold)

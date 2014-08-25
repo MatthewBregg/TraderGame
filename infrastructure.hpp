@@ -14,6 +14,10 @@ public:
  
   double wouldSellFor();
   double upkeep();
+  void acceptDeal();
+
+  double giveUpkeep();
+
   virtual string getName() = 0;
 protected:
 	sf::Text infrastructureText;

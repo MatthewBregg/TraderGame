@@ -15,21 +15,27 @@ void City::draw(double x, double y)
 {
 	drawText(strPlusX("Population: ", population), x, y);
 	drawText(strPlusX("Population change: ", getPopulationChange()), x + 170, y);
-	drawText(strPlusX("Food in stock: ", resources.getFood()), x, y + 30);
-	drawText(strPlusX("Food required: ", getPopulationFoodReq()), x + 170, y + 30);
+	drawText(strPlusX("Food in stock: ", resources.getFood()), x, y + 25);
+	drawText(strPlusX("Food required: ", getPopulationFoodReq()), x + 170, y + 25);
+	drawText(strPlusX("Gold: ", gold), x, y + 50);
+	drawText(strPlusX("Buys for: ", getBuyingPrice()), x + 170, y + 50);
 }
-void City::refreshAfterTurn()
+void City::refreshAfterTurn(double upkeepFromInfrastructures)
 {
+	gold += upkeepFromInfrastructures;
 	updatePopulation();
 }
 
-void City::updatePopulation()
+
+double City::getBuyingPrice()
 {
-	resources.subtractFood(getPopulationFoodReq());
-	population *= getPopulationChange();
+	double buyingPrice = (gold + getPopulationFoodReq() + 1) / (resources.getFood() + 1);
+	if (buyingPrice > gold)  // Can't buy more than you have. 
+	{
+		return gold;
+	}
+	return buyingPrice;
 }
-
-
 unsigned int City::getPopulationFoodReq()
 {
 	return ceil(double(population)/2000.0);
@@ -53,3 +59,27 @@ double City::getPopulationChange()
 		return 0.9;		// Litte food, population decreases.
 	}
 }
+
+bool City::cityWouldAcceptDeal(double offeredPrice)
+{
+	// Can only accept the deal if the price is less than the one we would like,
+	// as well as we have enough gold in the first place for the deal to occur.
+	if (getBuyingPrice() > offeredPrice && gold > offeredPrice)
+	{
+		return true;
+	}
+	return false;
+}
+void City::acceptDeal(double price)
+{
+	gold -= price;
+	resources.addFood(1);
+}
+
+
+void City::updatePopulation()
+{
+	resources.subtractFood(getPopulationFoodReq());
+	population *= getPopulationChange();
+}
+

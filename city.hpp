@@ -10,8 +10,14 @@ public:
 	City(Resources r, int g);
 
 	void draw(double x, double y);
-	void refreshAfterTurn();
+	void refreshAfterTurn(double upkeepFromInfrastructures);
+	
+	double getBuyingPrice();
+	unsigned int getPopulationFoodReq();
+	double getPopulationChange();
 
+	bool cityWouldAcceptDeal(double offeredPrice);
+	void acceptDeal(double price);
 private:
 	Resources resources;
 	double gold;
@@ -19,8 +25,7 @@ private:
 
 	void updatePopulation();
 
-	unsigned int getPopulationFoodReq();
-	double getPopulationChange();
+
 };
 
 

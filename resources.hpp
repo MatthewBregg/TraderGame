@@ -18,6 +18,7 @@ public:
 
   
 	unsigned int getFood();
+	void addFood(int foodAdded);
 	void subtractFood(int foodLost);
 
 private:

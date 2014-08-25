@@ -48,13 +48,24 @@ void Region::draw()
 	//mill.draw(200, 210);
 	//mine.draw(200, 260);
 }
+
+double buyingPrice = 0;
+double sellingPrice = 0;
 void Region::updateAfterTurn()
 {
-	city.refreshAfterTurn();
+	while (city.cityWouldAcceptDeal(farm.wouldSellFor())) 
+	{
+		city.acceptDeal(farm.wouldSellFor());
+		farm.acceptDeal();
+	}
+
+	city.refreshAfterTurn(farm.giveUpkeep());
 
 	farm.refreshAfterTurn();
 	//mill.refreshAfterTurn();
 	//mine.refreshAfterTurn();
+	// Infrastructure has to pay upkeep to the city
+
 }
 
 

@@ -37,6 +37,10 @@ unsigned int Resources::getFood()
 {
 	return food;
 }
+void Resources::addFood(int foodAdded)
+{
+	food += foodAdded;
+}
 void Resources::subtractFood(int foodLost)
 {
 	if (food < foodLost)
