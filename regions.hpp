@@ -14,7 +14,6 @@
 class region
 {
 public:
-friend
 //should probably write a copy and descructor 
 
   region(FactionEnum setFaction = nullFaction);
