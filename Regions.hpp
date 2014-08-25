@@ -11,7 +11,7 @@
 #ifndef REGIONS_H
 #define REGIONS_H
 
-const int HEX_SIZE = 80;
+const int DEFAULT_HEX_SIZE = 80; //This should eventually be calculated by starting res
 
 class Region
 {
@@ -26,7 +26,7 @@ protected:
 
   void setTexture(sf::Texture* tex);
 private:
-
+  void resize(int s);
   static int size;
   std::vector<sf::Sprite> hexagons;
   sf::Texture* texture;

@@ -15,7 +15,13 @@ std::vector<sf::Vector2f> getHexPos()
 }
 Region R(getHexPos(), elfFaction, grassLandsHexTexture);
 
-int Region::size = HEX_SIZE; 
+int Region::size = DEFAULT_HEX_SIZE; 
+void Region::resize(int s)
+{
+
+  //todo
+
+}
 
 
 Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture):
@@ -40,7 +46,7 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 
 void Region::draw()
 {
-	for (std::vector<sf::Sprite>::iterator it = hexagons.begin(); it != hexagons.end(); ++it)
+  for (std::vector<sf::Sprite>::iterator it = hexagons.begin(); it != hexagons.end(); ++it)
 	{
 		window->draw(*it);
 	}
