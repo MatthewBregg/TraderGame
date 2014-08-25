@@ -3,6 +3,7 @@
 //#include <stack>
 #include "infrastructure.hpp"
 #include "city.hpp"
+#include "resources.hpp"
 #include "faction.hpp"
 #include "TradeCentre.hpp"
 #include <vector>
