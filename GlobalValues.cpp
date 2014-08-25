@@ -82,3 +82,18 @@ int getWindowHeight()
 
 bool keys[256];
 int mouseScroll = 0; // Negative or positive depending on which way the player scrolls.
+
+
+sf::Text freeText;
+// Some methods for drawing text without having to create text objects on their side. 
+void drawText(string text, double x, double y)
+{
+	freeText.setFont(*getCustomFont()); 
+	freeText.setCharacterSize(14); 
+	freeText.setString(text);
+	freeText.setPosition(x, y);
+	window->draw(freeText);
+}
+
+
+

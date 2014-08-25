@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Resources.hpp"
+#include "GlobalValues.hpp"
 #ifndef CITY_H
 #define CITY_H
 
@@ -15,8 +16,6 @@ private:
 	Resources resources;
 	double gold;
 	unsigned int population;
-
-	sf::Text populationText;
 
 	void updatePopulation();
 

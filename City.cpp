@@ -1,5 +1,4 @@
-#include "CustomizedText.hpp"
-
+#include "GlobalValues.hpp"
 
 #include "City.hpp"
 
@@ -10,33 +9,14 @@
 	gold(g),
 	population(10000)
  {
- 	populationText.setFont(*getCustomFont()); 
-	populationText.setCharacterSize(16); 
-	populationText.setPosition(200, 200);
  };
 
 void City::draw(double x, double y)
 {
-	stringstream cityPopulation;	cityPopulation << "Population: " << population;
-	populationText.setString(cityPopulation.str());
-	populationText.setPosition(x, y);
-	window->draw(populationText);
-	
-	stringstream cityPopulationChange;	cityPopulationChange << "Population change: " << getPopulationChange();
-	populationText.setString(cityPopulationChange.str());
-	populationText.setPosition(x + 170, y);
-	window->draw(populationText);
-	
-
-	stringstream foodInStock;	foodInStock << "Food in stock: " << resources.getFood();
-	populationText.setString(foodInStock.str());
-	populationText.setPosition(x, y + 30);
-	window->draw(populationText);
-
-	stringstream foodRequirement;	foodRequirement << "Food required: " << getPopulationFoodReq();  
-	populationText.setString(foodRequirement.str());
-	populationText.setPosition(x + 170, y + 30);
-	window->draw(populationText);
+	drawText(strPlusX("Population: ", population), x, y);
+	drawText(strPlusX("Population change: ", getPopulationChange()), x + 170, y);
+	drawText(strPlusX("Food in stock: ", resources.getFood()), x, y + 30);
+	drawText(strPlusX("Food required: ", getPopulationFoodReq()), x + 170, y + 30);
 }
 void City::refreshAfterTurn()
 {

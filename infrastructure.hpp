@@ -11,7 +11,8 @@ public:
 
   void draw(double x, double y);
   void refreshAfterTurn();
-
+ 
+  double wouldSellFor();
   double upkeep();
   virtual string getName() = 0;
 protected:
@@ -20,27 +21,29 @@ protected:
 	unsigned int level;
 	unsigned int maxPotential;
 	double gold;
-	int inStock;
+	unsigned int inStock;
 };
+
+
 
 class Farm: public Infrastructure
 {
 public:
-	Farm();
+	Farm(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock);
 	virtual string getName();
 };
 
 class WoodMill: public Infrastructure
 {
 public:
-	WoodMill();
+	WoodMill(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock);
 	virtual string getName();
 };
 
 class Mine: public Infrastructure
 {
 public:
-	Mine();
+	Mine(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock);
 	virtual string getName();
 };
 #endif /* INFRASTRUCTURE_H */

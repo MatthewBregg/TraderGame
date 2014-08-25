@@ -5,7 +5,6 @@
 #include <array>
 #include <string>
 using namespace std;
-#include "CustomizedText.hpp"
 #include "regions.hpp"
 #include "Texture.hpp"
 #include "EndTurn.hpp"

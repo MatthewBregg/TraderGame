@@ -66,4 +66,20 @@ extern int getWindowHeight();
 
 extern bool keys[256];
 extern int mouseScroll; // Negative or positive depending on which way the player scrolls.
+
+
+// Some methods for drawing text like this "something: x".
+extern void drawText(string text, double x, double y);
+
+template <typename SOME_VALUE>
+// Methods for adding string and some value together, be it a string or a number or 
+// whatever. As long as stringstream supports it. 
+string strPlusX(string text, SOME_VALUE value)
+{
+	stringstream textString;	textString << text << value;
+	return textString.str();
+}
+
+
+
 #endif /* GlobalValues_H */
