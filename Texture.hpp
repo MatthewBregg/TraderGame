@@ -10,12 +10,12 @@
 enum TextureIndex
 {
 	buttonTexture1,
+	grassLandsHexTexture,
 
 	totalTextures,
 };
-extern sf::Texture texturePointer[totalTextures];
 
-extern void initTextures();
+extern sf::Texture* getTexture(TextureIndex textureIndex);
 
 
 

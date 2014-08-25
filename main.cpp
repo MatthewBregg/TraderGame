@@ -60,7 +60,8 @@ int main()
 
 	sf::RenderWindow* window;
 	window = new sf::RenderWindow(sf::VideoMode(800, 600), "Traps are the best");
-	Region R = Region({sf::Vector2f(10,50)},nullFaction);
+
+
     while (window->isOpen())
     {
 		pollEvents(window);
@@ -68,10 +69,7 @@ int main()
 		window->clear(sf::Color(60, 60, 60));
 		GameViews::render(window);
 
-		R.draw(*window);
         window->display();
-
-
     }
 
 	GameViews::cleanUp();

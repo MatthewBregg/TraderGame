@@ -23,17 +23,26 @@ GameView gameView = mapView;
 ButtonSfml charsetSelectButton(300, 400, 150, 150, "Traps", buttonTexture1);
 	
 
-void GameViews::init()
+std::vector<sf::Vector2f> getHexPos()
 {
-	initTextures();
+	std::vector<sf::Vector2f> hexPos;
+	hexPos.push_back(sf::Vector2f(100,50));
+	return hexPos;
 }
 
+
+Region R(getHexPos(), elfFaction, grassLandsHexTexture);
+void GameViews::init()
+{
+
+}
 
 void GameViews::render(sf::RenderWindow* window)
 {
 	if (gameView == mapView)										
 	{
 		charsetSelectButton.draw(window);
+		R.draw(*window);
 
 		if (charsetSelectButton.isClickedOn())
 		{

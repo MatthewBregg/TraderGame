@@ -5,21 +5,20 @@
 #include "city.hpp"
 #include "faction.hpp"
 #include "TradeCentre.hpp"
+#include "Texture.hpp"
 #include <vector>
-#include <initializer_list>
-
 
 #ifndef REGIONS_H
 #define REGIONS_H
-#define HEX_SIZE 80
+
+const int HEX_SIZE = 80;
 
 class Region
 {
 public:
 //should probably write a copy and descructor 
 
-  Region(std::initializer_list<sf::Vector2f> poses,FactionEnum setFaction = nullFaction);
-  Region(std::vector<sf::Vector2f> poses,FactionEnum setFaction = nullFaction);
+  Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture);
   void draw(sf::RenderWindow& window);
 protected:
   void setPosition(const sf::Vector2f& pos);
@@ -28,7 +27,7 @@ protected:
 private:
 
   static int size;
-  std::vector<sf::CircleShape> hexagons;
+  std::vector<sf::Sprite> hexagons;
   sf::Texture* texture;
   
   // std::stack<Faction*> owners;

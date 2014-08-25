@@ -1,4 +1,7 @@
 #include <iostream>
+#include "Texture.hpp"
+
+
 #include "regions.hpp"
 
 
@@ -6,7 +9,7 @@
 int Region::size = HEX_SIZE; 
 
 
-Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction):
+Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture):
 	texture(nullptr),
 	city(Resources(), 0),
 	farm(),
@@ -17,52 +20,28 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction):
 	origOwner(setFaction)
 
 {
-  for (auto& i : poses)
-    {
-      sf::CircleShape temp(size,6);
-      temp.setPosition(i);
-      hexagons.push_back(temp);
-    }
-  //hexagon.setFillColor(sf::Color(150, 50, 250));
-  //hexagon.setPosition(sf::Vector2f(50,10));
-};
-
-Region::Region(std::initializer_list<sf::Vector2f> poses, FactionEnum setFaction):
-	texture(nullptr),
-	city(Resources(), 0),
-	farm(),
-	mill(),
-	mine(),
-	tradeCentre(),
-	currentOwner(setFaction),
-	origOwner(setFaction)
-
-{
-
-  for (auto& i : poses)
-    {
-      sf::CircleShape temp(size,6);
-      temp.setPosition(i);
-      hexagons.push_back(temp);
-    }
-  
-  //hexagon.setFillColor(sf::Color(150, 50, 250));
-  //hexagon.setPosition(sf::Vector2f(50,10));
+	for (std::vector<sf::Vector2f>::iterator it = poses.begin(); it != poses.end(); ++it)
+	{
+		sf::Sprite temp;
+		temp.setTexture(*getTexture(hexTexture));
+		temp.setPosition(*it);
+		hexagons.push_back(temp);
+	}
 };
 
 void Region::draw(sf::RenderWindow& window)
 {
-  for ( auto& i : hexagons)
-    {
-  window.draw(i);
-    }
+	for (std::vector<sf::Sprite>::iterator it = hexagons.begin(); it != hexagons.end(); ++it)
+	{
+		window.draw(*it);
+	}
 }
 
 void Region::setTexture(sf::Texture* tex)
 {
-  for ( auto& i : hexagons)
-    {
-      i.setTexture(tex); 
+	for (std::vector<sf::Sprite>::iterator it = hexagons.begin(); it != hexagons.end(); ++it)
+	{
+		(*it).setTexture(*tex); 
     }
 }
 
