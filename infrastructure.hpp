@@ -7,6 +7,7 @@ class infrastructure
 {
 public:
   infrastructure(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock);
+
 protected:
 
   unsigned int level;

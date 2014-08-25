@@ -5,27 +5,28 @@
 #include "city.hpp"
 #include "faction.hpp"
 #include "TradeCentre.hpp"
+#include <vector>
 
 
 #ifndef REGIONS_H
 #define REGIONS_H
 #define HEX_SIZE 80
 
-class region
+class Region
 {
 public:
 //should probably write a copy and descructor 
 
-  region(FactionEnum setFaction = nullFaction);
+  Region(FactionEnum setFaction = nullFaction);
   void draw(sf::RenderWindow& window);
 protected:
   void setPosition(const sf::Vector2f& pos);
-  sf::Vector2f& getPosition() {return position;};
+
   void setTexture(sf::Texture* tex);
 private:
 
   static int size;
-  sf::CircleShape hexagon;
+  std::vector<sf::CircleShape> hexagons;
   sf::Texture* texture;
   
   // std::stack<Faction*> owners;
@@ -37,7 +38,7 @@ private:
   TradeCentre tradeCentre;
   FactionEnum currentOwner;
   FactionEnum origOwner;
-  sf::Vector2f position;
+
   
   // std::stack<Faction*> owners;
   
