@@ -26,7 +26,6 @@ protected:
 
   void setTexture(sf::Texture* tex);
 private:
-
   static int size;
   std::vector<sf::Sprite> hexagons;
   sf::Texture* texture;
@@ -40,18 +39,19 @@ private:
   TradeCentre tradeCentre;
   FactionEnum currentOwner;
   FactionEnum origOwner;
-
-  
-  // std::stack<Faction*> owners;
   
 };
 class Map
 {
 private:
-  std::vector<Region> regions;
+  vector<Region*> regions;
+  
+
+  
+
 };
 
 
-extern Region R;
+extern Region R; //?
 
 #endif /* REGIONS_H */
