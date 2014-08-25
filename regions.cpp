@@ -18,7 +18,7 @@ int Region::size = HEX_SIZE;
 
 Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture):
 	texture(nullptr),
-	city(Resources(), 20),
+	city(Resources(40, 0, 0), 20),
 	farm(),
 	mill(),
 	mine(),
@@ -42,11 +42,19 @@ void Region::draw()
 	{
 		window->draw(*it);
 	}
-	city.draw();
+	city.draw(200, 100);
+	
+	farm.draw(200, 160);
+	mill.draw(200, 180);
+	mine.draw(200, 200);
 }
 void Region::updateAfterTurn()
 {
 	city.refreshAfterTurn();
+
+	farm.refreshAfterTurn();
+	mill.refreshAfterTurn();
+	mine.refreshAfterTurn();
 }
 
 
