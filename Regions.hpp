@@ -47,6 +47,10 @@ private:
 };
 class Map
 {
+public:
+  void draw();
+  void updateAfterTurn();
+  Map(std::vector<Region> R);
 private:
   std::vector<Region> regions;
 };

@@ -89,5 +89,23 @@ void Region::setTexture(sf::Texture* tex)
     }
 }
 
+void Map::draw()
+{
 
+  for ( auto& i : regions)
+    {
+      i.draw();
+    }
+}
 
+void Map::updateAfterTurn()
+{
+
+  for ( auto& i : regions)
+    {
+      i.updateAfterTurn();
+    }
+}
+Map::Map(std::vector<Region> R):regions(R)
+{
+}
