@@ -35,7 +35,7 @@ void GameViews::render()
 		EndTurn::refresh();
 	}
 }
-void GameViews::scroll(sf::Clock clock)
+void GameViews::scroll(const sf::Clock clock)
 {
   //71 is left, 72 is right, 73 is up, 74 is downs
 
@@ -64,6 +64,7 @@ void GameViews::scroll(sf::Clock clock)
       view->setCenter(400,300); //These should later not be hardcoded, to better handle resizing.
       window->setView(*view);
     }
+
 }
 void GameViews::cleanUp()
 {
