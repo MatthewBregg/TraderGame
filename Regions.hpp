@@ -56,6 +56,7 @@ private:
 };
 
 
-extern Region R;
+//extern Region R;
+extern Map M;
 
 #endif /* REGIONS_H */

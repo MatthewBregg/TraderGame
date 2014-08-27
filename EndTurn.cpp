@@ -22,5 +22,5 @@ void EndTurn::refresh()
 void EndTurn::endTurn()
 {
 
-	R.updateAfterTurn();
+	M.updateAfterTurn();
 }

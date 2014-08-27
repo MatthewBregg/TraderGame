@@ -5,15 +5,9 @@
 
 #include "Regions.hpp"
 
-std::vector<sf::Vector2f> getHexPos()
-{
-	std::vector<sf::Vector2f> hexPos;
-	hexPos.push_back(sf::Vector2f(100,50));
-	hexPos.push_back(sf::Vector2f(100,270));
-	hexPos.push_back(sf::Vector2f(-90,160));
-	return hexPos;
-}
-Region R(getHexPos(), elfFaction, grassLandsHexTexture);
+
+
+
 
 int Region::size = DEFAULT_HEX_SIZE; 
 void Region::resize(int s)
@@ -109,3 +103,15 @@ void Map::updateAfterTurn()
 Map::Map(std::vector<Region> R):regions(R)
 {
 }
+std::vector<sf::Vector2f> getHexPos()
+{
+	std::vector<sf::Vector2f> hexPos;
+	hexPos.push_back(sf::Vector2f(100,50));
+	hexPos.push_back(sf::Vector2f(100,270));
+	hexPos.push_back(sf::Vector2f(-90,160));
+	return hexPos;
+}
+
+Region R(getHexPos(), elfFaction, grassLandsHexTexture);
+
+ Map M= Map( vector<Region>{R});

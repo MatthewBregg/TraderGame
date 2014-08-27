@@ -16,6 +16,7 @@ enum GameView
 {
 	startMenuView,
 	mapView,
+
 };
 GameView gameView = mapView;
 
@@ -29,7 +30,7 @@ void GameViews::render()
 {
 	if (gameView == mapView)										
 	{
-		R.draw();
+		M.draw();
 		EndTurn::draw();
 		EndTurn::refresh();
 	}
