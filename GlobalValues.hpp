@@ -26,7 +26,7 @@ using namespace std;
 
 
 extern sf::RenderWindow* window;
-
+extern sf::View* view;
 
 #ifdef _WIN32			 // Defined for both 32-bit and 64-bit environments 
 // Character '\', which is a special formatting character. \\ to fix it
@@ -36,7 +36,7 @@ extern sf::RenderWindow* window;
 #define RESOURCE_PATH "../"
 #endif
 #ifdef __APPLE__
-#define RESOURCE_PATH "Cry me a river, steve"
+#define RESOURCE_PATH "../" //Should work fine for osx also
 #endif  
 //Shoudln't these paths be local? That way, someone can install this wherever. 
 //EX, ../resources

@@ -2,6 +2,7 @@
 
 
 sf::RenderWindow* window;
+sf::View* view;
 
 string getResourcePath()
 {
@@ -32,10 +33,10 @@ sf::Font* getCustomFont()
 
 // Can't use sf::Mouse::isButtonPressed(sf::Mouse::Left) since it is always true. This one resets to false after doing some action
 // and is set to true only when left click is pressed again. 
-extern bool leftClickPressed = false;
-extern bool previousLeftClickState = sf::Mouse::isButtonPressed(sf::Mouse::Left);  // Left click on previous refresh. 
-extern double mouseX = 0;		// Mouse coords since sf::Mouse::getPosition(*window).x is too long.
-extern double mouseY = 0;
+bool leftClickPressed = false;
+bool previousLeftClickState = sf::Mouse::isButtonPressed(sf::Mouse::Left);  // Left click on previous refresh. 
+double mouseX = 0;		// Mouse coords since sf::Mouse::getPosition(*window).x is too long.
+double mouseY = 0;
 
 
 

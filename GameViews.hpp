@@ -12,11 +12,12 @@
 class GameViews
 {
 public:
+  static void scroll(sf::Time Time);
 
-	static void init();
-	static void render();
+  static void init();
+  static void render();
 
-	static void cleanUp();
+  static void cleanUp();
 
 
 };

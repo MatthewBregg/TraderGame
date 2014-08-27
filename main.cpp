@@ -36,8 +36,11 @@ void pollEvents(sf::RenderWindow* window)
 	mouseX = sf::Mouse::getPosition(*window).x;
 	mouseY = sf::Mouse::getPosition(*window).y;
 	mouseScroll = 0; // Reset it, will be set later if MouseWheelMoved event has happened.
+
+	sf::Clock clock; //we need something like this to keep movement from being jerky
     while (window->pollEvent(event))
     {
+
         if (event.type == sf::Event::Closed)
             window->close();
 		if (event.type == sf::Event::MouseWheelMoved)
@@ -47,12 +50,19 @@ void pollEvents(sf::RenderWindow* window)
 		if (event.type == sf::Event::KeyPressed)
 		{
 			keys[event.key.code] = true;
+	
+
 		}
+
+		GameViews::scroll(sf::Time(clock.getElapsedTime()));		
 		if (event.type == sf::Event::KeyReleased)
 		{
 			keys[event.key.code] = false;
 		}
+		clock.restart();
 	}
+    
+
 }
 
 int main()
@@ -60,7 +70,9 @@ int main()
 	GameViews::init();
 
 	window = new sf::RenderWindow(sf::VideoMode(getWindowWidth(), getWindowHeight()), "Traps are the best");
-
+	view = new sf::View(sf::Vector2f(400,300), sf::Vector2f(800,600));
+	window->setView(*view);
+	
     while (window->isOpen())
     {
 		pollEvents(window);
@@ -68,6 +80,7 @@ int main()
 		window->clear(sf::Color(60, 60, 60));
 		GameViews::render();
         window->display();
+
     }
 
 	GameViews::cleanUp();

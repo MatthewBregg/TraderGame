@@ -35,6 +35,36 @@ void GameViews::render()
 		EndTurn::refresh();
 	}
 }
+void GameViews::scroll(sf::Time time)
+{
+  //71 is left, 72 is right, 73 is up, 74 is downs
+
+  if (keys[71])
+    {
+      view->move(-1*time.asMicroseconds(),0);
+      window->setView(*view);
+    }
+  if (keys[72])
+    {
+      view->move(1*time.asMicroseconds(),0);
+      window->setView(*view);
+    }
+  if (keys[73])
+    {
+      view->move(0,-1*time.asMicroseconds());
+      window->setView(*view);
+    }
+  if (keys[74])
+    {
+      view->move(0,1*time.asMicroseconds());
+      window->setView(*view);
+    }
+  if (keys[17])
+    {
+      view->setCenter(400,300); //These should later not be hardcoded, to better handle resizing.
+      window->setView(*view);
+    }
+}
 void GameViews::cleanUp()
 {
 
