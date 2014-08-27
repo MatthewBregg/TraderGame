@@ -42,12 +42,12 @@ sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
  mouseY = worldPos.y;
 	mouseScroll = 0; // Reset it, will be set later if MouseWheelMoved event has happened.
 
-	sf::Clock clock; //we need something like this to keep movement from being jerky
+	sf::Clock keyClock; //we need something like this to keep movement from being jerky
     while (window->pollEvent(event))
     {
       //Put keyboard events here
-      GameViews::scroll(clock);		
-      clock.restart();
+      GameViews::scroll(keyClock);		
+      keyClock.restart();
         if (event.type == sf::Event::Closed)
             window->close();
 		if (event.type == sf::Event::MouseWheelMoved)
@@ -57,6 +57,7 @@ sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
 		if (event.type == sf::Event::KeyPressed)
 		{
 			keys[event.key.code] = true;
+			keyClock.restart();
 	
 
 		}
@@ -65,6 +66,7 @@ sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
 		if (event.type == sf::Event::KeyReleased)
 		{
 			keys[event.key.code] = false;
+			keyClock.restart();
 		}
 	
 	}
