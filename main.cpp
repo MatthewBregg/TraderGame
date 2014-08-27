@@ -33,14 +33,21 @@ void pollEvents(sf::RenderWindow* window)
 	}
 	previousLeftClickState = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 		
-	mouseX = sf::Mouse::getPosition(*window).x;
-	mouseY = sf::Mouse::getPosition(*window).y;
+
+sf::Vector2i pixelPos = sf::Mouse::getPosition(*window);
+sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
+
+
+ mouseX = worldPos.x;
+ mouseY = worldPos.y;
 	mouseScroll = 0; // Reset it, will be set later if MouseWheelMoved event has happened.
 
 	sf::Clock clock; //we need something like this to keep movement from being jerky
     while (window->pollEvent(event))
     {
-
+      //Put keyboard events here
+      GameViews::scroll(clock);		
+      clock.restart();
         if (event.type == sf::Event::Closed)
             window->close();
 		if (event.type == sf::Event::MouseWheelMoved)
@@ -54,12 +61,12 @@ void pollEvents(sf::RenderWindow* window)
 
 		}
 
-		GameViews::scroll(sf::Time(clock.getElapsedTime()));		
+
 		if (event.type == sf::Event::KeyReleased)
 		{
 			keys[event.key.code] = false;
 		}
-		clock.restart();
+	
 	}
     
 
@@ -73,8 +80,11 @@ int main()
 	view = new sf::View(sf::Vector2f(400,300), sf::Vector2f(800,600));
 	window->setView(*view);
 	
+	
     while (window->isOpen())
     {
+
+      window->setView(*view);
 		pollEvents(window);
 		
 		window->clear(sf::Color(60, 60, 60));

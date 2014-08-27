@@ -44,7 +44,7 @@ extern string getResourcePath();
 
 // Given 15, will return a rand nr between 0-14
 extern int getRandomNumber(int range);
-
+extern double SCROLL_SPEED;
 
 extern sf::Font* getCustomFont();
 

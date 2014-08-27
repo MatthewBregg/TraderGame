@@ -65,7 +65,7 @@ int getWindowHeight()
 	return windowHeight;
 }
 
-
+double SCROLL_SPEED = 1;
 bool keys[256];
 int mouseScroll = 0; // Negative or positive depending on which way the player scrolls.
 
