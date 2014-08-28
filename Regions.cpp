@@ -6,7 +6,17 @@
 #include "Regions.hpp"
 
 
+
+
+
 int Region::size = DEFAULT_HEX_SIZE; 
+void Region::resize(int s)
+{
+
+  //todo
+
+}
+
 
 Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture):
 	texture(nullptr),
