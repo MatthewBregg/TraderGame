@@ -37,9 +37,9 @@ void GameViews::render()
 }
 void GameViews::scroll(const sf::Clock& clock)
 {
-  //71 is left, 72 is right, 73 is up, 74 is downs
+  //71 is left, 72 is right, 73 is up, 74 is down
 
-  if (keys[71])
+  if (keys[71])  
     {
       view->move(-SCROLL_SPEED*clock.getElapsedTime().asMicroseconds(),0);
       window->setView(*view);

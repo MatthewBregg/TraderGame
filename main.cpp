@@ -57,11 +57,8 @@ sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
 		if (event.type == sf::Event::KeyPressed)
 		{
 			keys[event.key.code] = true;
-			keyClock.restart();
-	
-
+			keyClock.restart();	
 		}
-
 
 		if (event.type == sf::Event::KeyReleased)
 		{
