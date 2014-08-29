@@ -55,9 +55,9 @@ void GameViews::scroll(const sf::Time& clock)
      {
        change = 50;
      }
-   cout << change * 100 << std::endl;
+ 
 
-  
+   std::cout << "POS IS " << view->getCenter().x << " " << view->getCenter().y << std::endl; 
 
   if (keys[71])
     {
