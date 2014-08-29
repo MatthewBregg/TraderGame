@@ -22,14 +22,14 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 	for (std::vector<sf::Vector2f>::iterator it = poses.begin(); it != poses.end(); ++it)
 	{
 		sf::Sprite temp;
-		temp.setTexture(*getTexture(hexTexture));
+		temp.setTexture(getTexture(hexTexture));
 		temp.setPosition(*it);
 		hexagons.push_back(temp);
 	}
 
 	menu.setPosition(500, 80);
-	menu.setTexture(*getTexture(buttonTexture1));
-	menu.setScale(290.0 / getTexture(buttonTexture1)->getSize().x, 350.0 / getTexture(buttonTexture1)->getSize().y);
+	menu.setTexture(getTexture(buttonTexture1));
+	menu.setScale(290.0 / getTexture(buttonTexture1).getSize().x, 350.0 / getTexture(buttonTexture1).getSize().y);
 };
 
 void Region::draw()

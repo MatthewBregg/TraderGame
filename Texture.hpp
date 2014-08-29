@@ -4,6 +4,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
+// All TextureIndex names should match the name of the texture itself.  
 
 enum TextureIndex
 {
@@ -14,6 +15,6 @@ enum TextureIndex
 	totalTextures,
 };
 
-extern sf::Texture* getTexture(TextureIndex textureIndex);
+extern const sf::Texture& getTexture(TextureIndex textureIndex);
 
 #endif /* TEXTURE_H */

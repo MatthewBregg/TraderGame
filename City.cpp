@@ -13,8 +13,8 @@ City::City(string setName, Resources r, int g, int xPos, int yPos):
 	population(10000)
  {
 	citySprite.setPosition(xPos, yPos);
-	citySprite.setTexture(*getTexture(randomCityTexture));
-	citySprite.setScale(CITY_SIZE / getTexture(randomCityTexture)->getSize().x, CITY_SIZE / getTexture(randomCityTexture)->getSize().y);
+	citySprite.setTexture(getTexture(randomCityTexture));
+	citySprite.setScale(CITY_SIZE / getTexture(randomCityTexture).getSize().x, CITY_SIZE / getTexture(randomCityTexture).getSize().y);
 
  };
 
