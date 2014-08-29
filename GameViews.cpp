@@ -32,15 +32,25 @@ void GameViews::render()
 {
 	if (gameView == mapView)										
 	{
+		// If "end turn" is clicked on, ignore the input for the map. 
+		// Since the map might interpret the click as the player trying
+		// to select something.
+		if (EndTurn::handleInput())
+		{
+		}
+		else if (M.handleInput())
+		{
+
+		}
+
 		M.draw();
 		EndTurn::draw();
-		EndTurn::refresh();
 	}
 }
 void GameViews::scroll(const sf::Time& clock)
 {
   //71 is left, 72 is right, 73 is up, 74 is downs
-  double change = clock.asMicroseconds()/100 * SCROLL_SPEED;
+  int change = clock.asMicroseconds()/100 * SCROLL_SPEED;
    if ( change > 50 )
      {
        change = 50;

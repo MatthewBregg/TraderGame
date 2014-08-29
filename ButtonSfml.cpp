@@ -6,8 +6,8 @@ ButtonSfml::ButtonSfml(double setX, double setY, double setW, double setH, strin
 	textureIndex(setTexture)
 {
 	sprite.setPosition(setX, setY);
-	sprite.setTexture(*getTexture(textureIndex));
-	sprite.setScale(w / getTexture(textureIndex)->getSize().x, h/ getTexture(textureIndex)->getSize().y);
+	sprite.setTexture(getTexture(textureIndex));
+	sprite.setScale(w / getTexture(textureIndex).getSize().x, h / getTexture(textureIndex).getSize().y);
 	
 	buttonText.setFont(*getCustomFont()); 
 	buttonText.setCharacterSize(30); 

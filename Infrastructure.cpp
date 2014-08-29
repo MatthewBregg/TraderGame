@@ -4,7 +4,7 @@
 #include "Infrastructure.hpp"
 
 
-Infrastructure::Infrastructure(unsigned int setLevel, unsigned int setMaxLevel, double setGold, int setStock):
+Infrastructure::Infrastructure(unsigned int setLevel, unsigned int setMaxLevel, double setGold, int setStock, int xPos, int yPos):
   level(setLevel),
   maxLevel(setMaxLevel),
   gold(setGold),
@@ -15,22 +15,27 @@ Infrastructure::Infrastructure(unsigned int setLevel, unsigned int setMaxLevel, 
 	infrastructureText.setPosition(200, 200);
 };
 
-void Infrastructure::draw(double x, double y)
+void Infrastructure::draw()
 {
-	drawText(getName(), x - 60, y);
-
-	stringstream goldString;	
-	goldString << "Gold: " << gold << "(-" << upkeep() << ")";
-	drawText(goldString.str(), x, y);
-
-	stringstream levelString;	
-	levelString << "Level: " << level << "/" << maxLevel;
-	drawText(levelString.str(), x, y + 20);
-
-	drawText(strPlusX("Stock: ", inStock), x, y + 40);
-	drawText(strPlusX("Sells for: ", wouldSellFor()), x + 170, y + 40);
 
 }
+void Infrastructure::drawMenu(double x, double y)
+{
+	drawText(getName(), x + 60, y);
+
+	stringstream goldString;
+	goldString << "Gold: " << gold << "(-" << upkeep() << ")";
+	drawText(goldString.str(), x + 20, y + 15);
+
+	stringstream levelString;
+	levelString << "Level: " << level << "/" << maxLevel;
+	drawText(levelString.str(), x + 20, y + 30);
+
+	drawText(strPlusX("Stock: ", inStock), x + 20, y + 45);
+	drawText(strPlusX("Sells for: ", wouldSellFor()), x + 20, y + 60);
+
+}
+
 // Returns the upkeep for that turn.
 double Infrastructure::refreshAfterTurn()
 {
@@ -84,8 +89,8 @@ double Infrastructure::getGold()
 }
 
 
-Farm::Farm(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock):
-	Infrastructure(setLevel, setMaxPotential, setGold, setGold)
+Farm::Farm(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock, int xPos, int yPos) :
+	Infrastructure(setLevel, setMaxPotential, setGold, setGold, xPos, yPos)
 {
 
 }
@@ -94,8 +99,8 @@ string Farm::getName()
 	return "Farm";
 }
 
-WoodMill::WoodMill(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock):
-	Infrastructure(setLevel, setMaxPotential, setGold, setGold)
+WoodMill::WoodMill(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock, int xPos, int yPos) :
+	Infrastructure(setLevel, setMaxPotential, setGold, setGold, xPos, yPos)
 {
 
 }
@@ -104,8 +109,8 @@ string WoodMill::getName()
 	return "Woodmill";
 }
 
-Mine::Mine(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock):
-	Infrastructure(setLevel, setMaxPotential, setGold, setGold)
+Mine::Mine(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock, int xPos, int yPos) :
+	Infrastructure(setLevel, setMaxPotential, setGold, setGold, xPos, yPos)
 {
 
 }

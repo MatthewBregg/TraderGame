@@ -16,39 +16,43 @@ const int DEFAULT_HEX_SIZE = 80; //This should eventually be calculated by start
 class Region
 {
 public:
-//should probably write a copy and descructor 
+	//should probably write a copy and descructor 
+		// Why? If you mean saving, there should be a constructor that takes raw binary data, but that comes later.
 
-  Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture);
-  void draw();
-  void updateAfterTurn();
+	Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture);
+	void draw();
+	void drawMenu();
+	bool handleInput();
+	void updateAfterTurn();
+	
+	static City* Region::selectedCity;
+
 protected:
-  void setPosition(const sf::Vector2f& pos);
+	void setPosition(const sf::Vector2f& pos);
 
-  void setTexture(sf::Texture* tex);
+	void setTexture(sf::Texture* tex);
 private:
-  void resize(int s);
-  static int size;
-  std::vector<sf::Sprite> hexagons;
-  sf::Texture* texture;
-  
-  // std::stack<Faction*> owners;
 
-  City city;
-  Farm farm;
-  WoodMill mill;
-  Mine mine;
-  TradeCentre tradeCentre;
-  FactionEnum currentOwner;
-  FactionEnum origOwner;
 
+	std::vector<sf::Sprite> hexagons;
+    sf::Texture* texture;
   
-  // std::stack<Faction*> owners;
-  
+	City city;
+	Farm farm;
+	WoodMill mill;
+	Mine mine;
+	TradeCentre tradeCentre;
+	FactionEnum currentOwner;
+	FactionEnum origOwner;
+
+	sf::Sprite menu;
+
 };
 class Map
 {
 public:
   void draw();
+  bool handleInput();
   void updateAfterTurn();
   Map(std::vector<Region> R);
 private:

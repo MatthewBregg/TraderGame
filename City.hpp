@@ -1,15 +1,17 @@
 #include <iostream>
 #include "Resources.hpp"
 #include "GlobalValues.hpp"
+#include "ClickableRectangle.hpp"
 #ifndef CITY_H
 #define CITY_H
 
-class City
+class City : public ClickableRectangle
 {
 public:
-	City(string setName, Resources r, int g);
+	City(string setName, Resources r, int g, int xPos, int yPos);
 
-	void draw(double x, double y);
+	void draw();
+	void drawMenu(double x, double y);
 	void refreshAfterTurn(double upkeepFromInfrastructures);
 	
 	double getBuyingPrice();
@@ -24,6 +26,9 @@ private:
 	Resources resources;
 	double gold;
 	unsigned int population;
+
+	sf::Sprite citySprite;
+
 
 	void updatePopulation();
 

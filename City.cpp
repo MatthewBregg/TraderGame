@@ -1,38 +1,48 @@
 #include "GlobalValues.hpp"
+#include "Texture.hpp"
 
 #include "City.hpp"
 
+const double CITY_SIZE = 100;
 
-
- City::City(string setName, Resources r, int g):
+City::City(string setName, Resources r, int g, int xPos, int yPos):
+	ClickableRectangle(xPos, yPos, CITY_SIZE, CITY_SIZE),
 	name(setName),
 	resources(r),
 	gold(g),
 	population(10000)
  {
+	citySprite.setPosition(xPos, yPos);
+	citySprite.setTexture(getTexture(randomCityTexture));
+	citySprite.setScale(CITY_SIZE / getTexture(randomCityTexture).getSize().x, CITY_SIZE / getTexture(randomCityTexture).getSize().y);
+
  };
 
-void City::draw(double x, double y)
+void City::draw()
 {
-	drawText(name, x - 60, y);
-
-	stringstream popString;	
-	popString << "Population: " << population << "(*" << getPopulationChange() << ")";
-	drawText(popString.str(), x, y);
-
-	stringstream foodStockString;	
-	foodStockString << "Food in stock: " << resources.getFood() << "(-" << getPopulationFoodReq() << ")";
-	drawText(foodStockString.str(), x, y + 25);
-
-	drawText(strPlusX("Gold: ", gold), x, y + 50);
-	drawText(strPlusX("Buys for: ", getBuyingPrice()), x + 170, y + 50);
+	window->draw(citySprite);
 }
+void City::drawMenu(double x, double y)
+{
+	drawText(name, x + 60, y + 20);
+
+	stringstream popString;
+	popString << "Population: " << population << "(*" << getPopulationChange() << ")";
+	drawText(popString.str(), x + 20, y + 40);
+
+	stringstream foodStockString;
+	foodStockString << "Food in stock: " << resources.getFood() << "(-" << getPopulationFoodReq() << ")";
+	drawText(foodStockString.str(), x + 20, y + 55);
+
+	drawText(strPlusX("Gold: ", gold), x + 20, y + 70);
+	drawText(strPlusX("Buys food for: ", getBuyingPrice()), x + 20, y + 85);
+}
+
 void City::refreshAfterTurn(double upkeepFromInfrastructures)
 {
 	gold += upkeepFromInfrastructures;
 	updatePopulation();
 }
-
 
 double City::getBuyingPrice()
 {

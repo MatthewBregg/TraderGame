@@ -6,24 +6,14 @@
 #include "Regions.hpp"
 
 
-
-
-
-int Region::size = DEFAULT_HEX_SIZE; 
-void Region::resize(int s)
-{
-
-  //todo
-
-}
-
+City* Region::selectedCity = nullptr;
 
 Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture):
 	texture(nullptr),
-	city("Bronx", Resources(40, 0, 0), 20),
-	farm(1, 6, 10, 0),
-	mill(0, 0, 0, 0),
-	mine(0, 0, 0, 0),
+	city("Bronx", Resources(40, 0, 0), 20, 170, 120),
+	farm(1, 6, 10, 0, 170, 120),
+	mill(0, 0, 0, 0, 0, 0),
+	mine(0, 0, 0, 0, 0, 0),
 	tradeCentre(),
 	currentOwner(setFaction),
 	origOwner(setFaction)
@@ -32,10 +22,14 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 	for (std::vector<sf::Vector2f>::iterator it = poses.begin(); it != poses.end(); ++it)
 	{
 		sf::Sprite temp;
-		temp.setTexture(*getTexture(hexTexture));
+		temp.setTexture(getTexture(hexTexture));
 		temp.setPosition(*it);
 		hexagons.push_back(temp);
 	}
+
+	menu.setPosition(500, 80);
+	menu.setTexture(getTexture(buttonTexture1));
+	menu.setScale(290.0 / getTexture(buttonTexture1).getSize().x, 350.0 / getTexture(buttonTexture1).getSize().y);
 };
 
 void Region::draw()
@@ -44,14 +38,43 @@ void Region::draw()
 	{
 		window->draw(*it);
 	}
-	city.draw(400, 100);
-	
-	farm.draw(400, 200);
+
+	city.draw();
+	farm.draw();
 	//mill.draw(400, 210);
 	//mine.draw(400, 260);
 
 	// To check if there are any bugs when exchanging gold.
 	drawText(strPlusX("Total gold: ", city.getGold() + farm.getGold()), 150, 500);
+
+
+	drawMenu();
+}
+void Region::drawMenu()
+{
+	if (selectedCity == &city)
+	{
+		window->draw(menu);
+		city.drawMenu(menu.getPosition().x, menu.getPosition().y);
+		farm.drawMenu(menu.getPosition().x, menu.getPosition().y + 150);
+	}
+}
+
+bool Region::handleInput()
+{
+	if (city.isClickedOn())
+	{
+		if (selectedCity == &city)  // Already selected.
+		{
+			selectedCity = nullptr;  // So deselect.
+		}
+		else
+		{
+			selectedCity = &city;
+		}
+		return true;
+	}
+	return false;
 }
 
 double buyingPrice = 0;
@@ -86,23 +109,35 @@ void Region::setTexture(sf::Texture* tex)
 void Map::draw()
 {
 
-  for ( auto& i : regions)
-    {
-      i.draw();
-    }
+	for ( auto& i : regions)
+	{
+		i.draw();
+	}
+}
+bool Map::handleInput()
+{
+	for (auto& i : regions)
+	{
+		i.handleInput();
+		return true;
+	}
+	// Some empty spot clicked, deselect the city.
+	Region::selectedCity = nullptr;  
+	return false;
 }
 
 void Map::updateAfterTurn()
 {
-
-  for ( auto& i : regions)
+	for ( auto& i : regions)
     {
-      i.updateAfterTurn();
+		i.updateAfterTurn();
     }
 }
-Map::Map(std::vector<Region> R):regions(R)
+Map::Map(std::vector<Region> R):
+	regions(R)
 {
 }
+
 std::vector<sf::Vector2f> getHexPos()
 {
 	std::vector<sf::Vector2f> hexPos;
@@ -111,7 +146,6 @@ std::vector<sf::Vector2f> getHexPos()
 	hexPos.push_back(sf::Vector2f(-90,160));
 	return hexPos;
 }
-
 Region R(getHexPos(), elfFaction, grassLandsHexTexture);
 
  Map M= Map( vector<Region>{R});
