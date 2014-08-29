@@ -20,7 +20,7 @@ void Region::resize(int s)
 
 Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture):
 	texture(nullptr),
-	city("Bronx", Resources(40, 0, 0), 20, poses.at(0).x + 70, poses.at(0).y + 60),
+	city("Bronx", Resources(40, 0, 0), 20),
 	farm(1, 6, 10, 0),
 	mill(0, 0, 0, 0),
 	mine(0, 0, 0, 0),
