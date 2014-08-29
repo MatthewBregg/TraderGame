@@ -25,7 +25,7 @@ public:
 	bool handleInput();
 	void updateAfterTurn();
 	
-	static City* Region::selectedCity;
+  static City* selectedCity;
 
 protected:
 	void setPosition(const sf::Vector2f& pos);
