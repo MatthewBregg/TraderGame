@@ -12,7 +12,7 @@
 class GameViews
 {
 public:
-  static void scroll(const sf::Clock& clock );
+  static void scroll(const sf::Time& Time );
 
   static void init();
   static void render();

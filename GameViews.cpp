@@ -35,28 +35,35 @@ void GameViews::render()
 		EndTurn::refresh();
 	}
 }
-void GameViews::scroll(const sf::Clock& clock)
+void GameViews::scroll(const sf::Time& clock)
 {
   //71 is left, 72 is right, 73 is up, 74 is downs
+  double change = clock.asMicroseconds()/100 * SCROLL_SPEED;
+   if ( change > 50 )
+     {
+       change = 50;
+     }
+
+  
 
   if (keys[71])
     {
-      view->move(-SCROLL_SPEED*clock.getElapsedTime().asMicroseconds(),0);
+      view->move(-change,0);
       window->setView(*view);
     }
   if (keys[72])
     {
-      view->move(SCROLL_SPEED*clock.getElapsedTime().asMicroseconds(),0);
+      view->move(change,0);
       window->setView(*view);
     }
   if (keys[73])
     {
-      view->move(0,-SCROLL_SPEED*clock.getElapsedTime().asMicroseconds());
+      view->move(0,-change);
       window->setView(*view);
     }
   if (keys[74])
     {
-      view->move(0,SCROLL_SPEED*clock.getElapsedTime().asMicroseconds());
+      view->move(0,change);
       window->setView(*view);
     }
   if (keys[17])

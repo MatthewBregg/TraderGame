@@ -15,7 +15,17 @@ using namespace std;
 #include "GlobalValues.hpp"
 #include "GameViews.hpp"
 
-
+sf::Clock fpsTime;
+sf::Time getAverageFPSTime()
+{
+  static long long fpscount = 1;
+  sf::Time temp = runtime.getElapsedTime() / fpscount;
+  if ( runtime.getElapsedTime() > sf::seconds(500))
+    {
+      runtime.restart();
+    }
+  return temp;
+}
 
 // Checks for input events (mouse, keyboard). 
 void pollEvents(sf::RenderWindow* window)
@@ -42,12 +52,11 @@ sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
  mouseY = worldPos.y;
 	mouseScroll = 0; // Reset it, will be set later if MouseWheelMoved event has happened.
 
-	sf::Clock keyClock; //we need something like this to keep movement from being jerky
+
     while (window->pollEvent(event))
     {
-      //Put keyboard events here
-      GameViews::scroll(keyClock);		
-      keyClock.restart();
+
+
         if (event.type == sf::Event::Closed)
             window->close();
 		if (event.type == sf::Event::MouseWheelMoved)
@@ -56,8 +65,10 @@ sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
 		}
 		if (event.type == sf::Event::KeyPressed)
 		{
+
 			keys[event.key.code] = true;
-			keyClock.restart();
+
+		
 	
 
 		}
@@ -66,7 +77,7 @@ sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
 		if (event.type == sf::Event::KeyReleased)
 		{
 			keys[event.key.code] = false;
-			keyClock.restart();
+
 		}
 	
 	}
@@ -76,24 +87,28 @@ sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
 
 int main()
 {
+
 	GameViews::init();
 
 	window = new sf::RenderWindow(sf::VideoMode(getWindowWidth(), getWindowHeight()), "Traps are the best");
 	view = new sf::View(sf::Vector2f(400,300), sf::Vector2f(800,600));
 	window->setView(*view);
-	
-	
-    while (window->isOpen())
-    {
 
-      window->setView(*view);
-		pollEvents(window);
+	window->setFramerateLimit(10);	
+	
+	while (window->isOpen())
+	  {
+
+	    window->setView(*view);
+	    pollEvents(window);
 		
-		window->clear(sf::Color(60, 60, 60));
-		GameViews::render();
-        window->display();
+	    window->clear(sf::Color(60, 60, 60));
+	    GameViews::render();
+	    GameViews::scroll(getAverageFPSTime());		
+	    window->display();
+	    fpsTime.restart();
 
-    }
+	  }
 
 	GameViews::cleanUp();
 	delete window;
