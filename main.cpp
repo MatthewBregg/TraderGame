@@ -17,24 +17,24 @@ using namespace std;
 
 sf::Clock fpsTime;
 
-sf::Time getAverageFPSTime()
-{
-  static long long fpscount = 1;
-  static sf::Time fpsSum(sf::seconds(0));
-  fpsSum += fpsTime.getElapsedTime();
-  fpscount++;
-  sf::Time temp = (fpsSum / fpscount);
+// sf::Time getAverageFPSTime()
+// {
+//   static long long fpscount = 1;
+//   static sf::Time fpsSum(sf::seconds(0));
+//   fpsSum += fpsTime.getElapsedTime();
+//   fpscount++;
+//   sf::Time temp = (fpsSum / fpscount);
   
  
-  if ( fpsSum.asSeconds() > 2)
-    {
+//   if ( fpsSum.asSeconds() > 2)
+//     {
 
 
-      fpsSum=sf::seconds(0);
-      fpscount = 1;
-    }
-  return temp;
-}
+//       fpsSum=sf::seconds(0);
+//       fpscount = 1;
+//     }
+//   return temp;
+// }
 
 // Checks for input events (mouse, keyboard). 
 void pollEvents(sf::RenderWindow* window)
@@ -113,8 +113,8 @@ int main()
 		
 	    window->clear(sf::Color(60, 60, 60));
 	    GameViews::render();
-	    sf::Time avgFPS = getAverageFPSTime();
-	    GameViews::scroll(avgFPS);		
+	    //	    sf::Time avgFPS = getAverageFPSTime();
+	    GameViews::scroll(fpsTime.getElapsedTime());		
 	    //   window->draw(mapSize); //Turn this on to see the map boundaries
 	    window->display();
 

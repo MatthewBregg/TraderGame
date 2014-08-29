@@ -49,15 +49,23 @@ void GameViews::render()
 }
 void GameViews::scroll(const sf::Time& clock)
 {
+  static sf::Time lasttime(sf::seconds(0));
   //71 is left, 72 is right, 73 is up, 74 is downs
-  int change = clock.asMicroseconds()/100 * SCROLL_SPEED;
+  if (lasttime.asMicroseconds() != 0)
+    {
+      if (abs(lasttime.asMicroseconds() - clock.asMicroseconds()) > lasttime.asMicroseconds()) // a bit spaghetti, but whatever
+	{
+	  return;
+	}
+    }
+  int change = ((((clock + lasttime)).asMicroseconds())/2)/100 * SCROLL_SPEED;
    if ( change > 50 )
      {
        change = 50;
-     }
- 
-
+     }  
+   lasttime = clock;
    std::cout << "POS IS " << view->getCenter().x << " " << view->getCenter().y << std::endl; 
+   cout << "Change is " << change << endl;
 
   if (keys[71])
     {
