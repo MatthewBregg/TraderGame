@@ -94,7 +94,7 @@ int main()
 	view = new sf::View(sf::Vector2f(400,300), sf::Vector2f(800,600));
 	window->setView(*view);
 
-	window->setFramerateLimit(120);	
+	window->setFramerateLimit(60);	
 	
 	while (window->isOpen())
 	  {
