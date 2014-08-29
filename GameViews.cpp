@@ -23,6 +23,8 @@ GameView gameView = mapView;
 
 void GameViews::init()
 {
+  mapSize.setOrigin((-getWindowWidth()/2)+mapSize.getSize().x/2,-(getWindowHeight()/2-mapSize.getSize().y/2));
+  //Should center the map boundaries.
 
 }
 
@@ -43,27 +45,52 @@ void GameViews::scroll(const sf::Time& clock)
      {
        change = 50;
      }
+   cout << change * 100 << std::endl;
 
   
 
   if (keys[71])
     {
       view->move(-change,0);
+      if ( !mapSize.getGlobalBounds().contains(view->getCenter()))
+	{
+
+	  view->move(change,0);
+
+	}
       window->setView(*view);
     }
   if (keys[72])
     {
       view->move(change,0);
+      if ( !mapSize.getGlobalBounds().contains(view->getCenter()))
+	{
+
+	  view->move(-change,0);
+
+	}
       window->setView(*view);
     }
   if (keys[73])
     {
       view->move(0,-change);
+      if ( !mapSize.getGlobalBounds().contains(view->getCenter()))
+	{
+
+	  view->move(0,change);
+
+	}
       window->setView(*view);
     }
   if (keys[74])
     {
       view->move(0,change);
+      if ( !mapSize.getGlobalBounds().contains(view->getCenter()))
+	{
+
+	  view->move(0,-change);
+
+	}
       window->setView(*view);
     }
   if (keys[17])

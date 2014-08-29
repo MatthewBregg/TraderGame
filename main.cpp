@@ -16,15 +16,20 @@ using namespace std;
 #include "GameViews.hpp"
 
 sf::Clock fpsTime;
+
 sf::Time getAverageFPSTime()
 {
   static long long fpscount = 1;
   static sf::Time fpsSum(sf::seconds(0));
   fpsSum += fpsTime.getElapsedTime();
   fpscount++;
-  sf::Time temp = fpsSum / fpscount;
-  if ( fpsSum > sf::seconds(500))
+  sf::Time temp = (fpsSum / fpscount);
+  
+ 
+  if ( fpsSum.asSeconds() > 2)
     {
+
+
       fpsSum=sf::seconds(0);
       fpscount = 1;
     }
@@ -98,7 +103,7 @@ int main()
 	view = new sf::View(sf::Vector2f(400,300), sf::Vector2f(800,600));
 	window->setView(*view);
 
-	window->setFramerateLimit(60);	
+	window->setFramerateLimit(30);	
 	
 	while (window->isOpen())
 	  {
@@ -108,9 +113,11 @@ int main()
 		
 	    window->clear(sf::Color(60, 60, 60));
 	    GameViews::render();
-	    GameViews::scroll(getAverageFPSTime());		
+	    sf::Time avgFPS = getAverageFPSTime();
+	    GameViews::scroll(avgFPS);		
+	    //   window->draw(mapSize); //Turn this on to see the map boundaries
 	    window->display();
-	    cout << 1.0/getAverageFPSTime().asMilliseconds() << std::endl;
+
 	    fpsTime.restart();
 
 

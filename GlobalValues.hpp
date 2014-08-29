@@ -47,6 +47,8 @@ extern int getRandomNumber(int range);
 extern double SCROLL_SPEED;
 extern sf::Clock runtime;
 
+extern sf::RectangleShape mapSize;
+
 extern sf::Font* getCustomFont();
 
 // sf::Mouse::isButtonPressed(sf::Mouse::Left) since it is always true while the click is down. 
