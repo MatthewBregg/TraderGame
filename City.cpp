@@ -1,32 +1,42 @@
 #include "GlobalValues.hpp"
+#include "Texture.hpp"
 
 #include "City.hpp"
 
+const double CITY_SIZE = 100;
 
-
- City::City(string setName, Resources r, int g):
+City::City(string setName, Resources r, int g, int xPos, int yPos):
 	name(setName),
 	resources(r),
 	gold(g),
 	population(10000)
  {
+	citySprite.setPosition(xPos, yPos);
+	citySprite.setTexture(*getTexture(randomCityTexture));
+	citySprite.setScale(CITY_SIZE / getTexture(randomCityTexture)->getSize().x, CITY_SIZE / getTexture(randomCityTexture)->getSize().y);
+
  };
 
 void City::draw(double x, double y)
 {
+	window->draw(citySprite);
+}
+void City::drawMenu(double x, double y)
+{
 	drawText(name, x - 60, y);
 
-	stringstream popString;	
+	stringstream popString;
 	popString << "Population: " << population << "(*" << getPopulationChange() << ")";
 	drawText(popString.str(), x, y);
 
-	stringstream foodStockString;	
+	stringstream foodStockString;
 	foodStockString << "Food in stock: " << resources.getFood() << "(-" << getPopulationFoodReq() << ")";
 	drawText(foodStockString.str(), x, y + 25);
 
 	drawText(strPlusX("Gold: ", gold), x, y + 50);
 	drawText(strPlusX("Buys for: ", getBuyingPrice()), x + 170, y + 50);
 }
+
 void City::refreshAfterTurn(double upkeepFromInfrastructures)
 {
 	gold += upkeepFromInfrastructures;

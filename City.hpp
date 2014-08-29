@@ -7,9 +7,10 @@
 class City
 {
 public:
-	City(string setName, Resources r, int g);
+	City(string setName, Resources r, int g, int xPos, int yPos);
 
 	void draw(double x, double y);
+	void drawMenu(double x, double y);
 	void refreshAfterTurn(double upkeepFromInfrastructures);
 	
 	double getBuyingPrice();
@@ -24,6 +25,9 @@ private:
 	Resources resources;
 	double gold;
 	unsigned int population;
+
+	sf::Sprite citySprite;
+
 
 	void updatePopulation();
 

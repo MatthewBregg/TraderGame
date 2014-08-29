@@ -13,6 +13,7 @@ sf::Texture* getTexture(TextureIndex textureIndex)
 	{
 		if (!texturePointer[buttonTexture1].loadFromFile(getResourcePath() + "buttonNext.png"))	{		/*// error...#*/	}
 		if (!texturePointer[grassLandsHexTexture].loadFromFile(getResourcePath() + "grasslandsHex.png"))	{		/*// error...#*/	}
+		if (!texturePointer[randomCityTexture].loadFromFile(getResourcePath() + "randomCityTexture.png"))	{		/*// error...#*/ }
 	}
 	return &texturePointer[textureIndex];
 }
