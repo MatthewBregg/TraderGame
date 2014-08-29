@@ -5,7 +5,7 @@
 
 #include "EndTurn.hpp"
 
-ButtonSfml EndTurnButton(getWindowWidth() - 200, getWindowHeight() - 200, 150, 150, "End turn", buttonTexture1);
+ButtonSfml EndTurnButton(getWindowWidth() - 150, getWindowHeight() - 150, 130, 130, "End turn", buttonTexture1);
 
 void EndTurn::draw()
 {

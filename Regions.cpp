@@ -7,23 +7,12 @@
 
 
 
-
-
-int Region::size = DEFAULT_HEX_SIZE; 
-void Region::resize(int s)
-{
-
-  //todo
-
-}
-
-
 Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture):
 	texture(nullptr),
 	city("Bronx", Resources(40, 0, 0), 20, 170, 120),
-	farm(1, 6, 10, 0),
-	mill(0, 0, 0, 0),
-	mine(0, 0, 0, 0),
+	farm(1, 6, 10, 0, 170, 120),
+	mill(0, 0, 0, 0, 0, 0),
+	mine(0, 0, 0, 0, 0, 0),
 	tradeCentre(),
 	currentOwner(setFaction),
 	origOwner(setFaction)
@@ -36,6 +25,10 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 		temp.setPosition(*it);
 		hexagons.push_back(temp);
 	}
+
+	menu.setPosition(500, 80);
+	menu.setTexture(*getTexture(buttonTexture1));
+	menu.setScale(290.0 / getTexture(buttonTexture1)->getSize().x, 350.0 / getTexture(buttonTexture1)->getSize().y);
 };
 
 void Region::draw()
@@ -44,14 +37,23 @@ void Region::draw()
 	{
 		window->draw(*it);
 	}
-	city.draw(400, 100);
-	
-	farm.draw(400, 200);
+
+	city.draw();
+	farm.draw();
 	//mill.draw(400, 210);
 	//mine.draw(400, 260);
 
 	// To check if there are any bugs when exchanging gold.
 	drawText(strPlusX("Total gold: ", city.getGold() + farm.getGold()), 150, 500);
+
+	drawMenu();
+}
+void Region::drawMenu()
+{
+	window->draw(menu);
+	city.drawMenu(menu.getPosition().x, menu.getPosition().y);
+	farm.drawMenu(menu.getPosition().x, menu.getPosition().y + 150);
+
 }
 
 double buyingPrice = 0;

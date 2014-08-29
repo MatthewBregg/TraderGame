@@ -17,24 +17,24 @@ City::City(string setName, Resources r, int g, int xPos, int yPos):
 
  };
 
-void City::draw(double x, double y)
+void City::draw()
 {
 	window->draw(citySprite);
 }
 void City::drawMenu(double x, double y)
 {
-	drawText(name, x - 60, y);
+	drawText(name, x + 60, y + 20);
 
 	stringstream popString;
 	popString << "Population: " << population << "(*" << getPopulationChange() << ")";
-	drawText(popString.str(), x, y);
+	drawText(popString.str(), x + 20, y + 40);
 
 	stringstream foodStockString;
 	foodStockString << "Food in stock: " << resources.getFood() << "(-" << getPopulationFoodReq() << ")";
-	drawText(foodStockString.str(), x, y + 25);
+	drawText(foodStockString.str(), x + 20, y + 55);
 
-	drawText(strPlusX("Gold: ", gold), x, y + 50);
-	drawText(strPlusX("Buys for: ", getBuyingPrice()), x + 170, y + 50);
+	drawText(strPlusX("Gold: ", gold), x + 20, y + 70);
+	drawText(strPlusX("Buys food for: ", getBuyingPrice()), x + 20, y + 85);
 }
 
 void City::refreshAfterTurn(double upkeepFromInfrastructures)

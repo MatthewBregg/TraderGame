@@ -9,7 +9,7 @@ class City
 public:
 	City(string setName, Resources r, int g, int xPos, int yPos);
 
-	void draw(double x, double y);
+	void draw();
 	void drawMenu(double x, double y);
 	void refreshAfterTurn(double upkeepFromInfrastructures);
 	

@@ -7,9 +7,10 @@
 class Infrastructure
 {
 public:
-	Infrastructure(unsigned int setLevel, unsigned int setMaxLevel, double setGold, int setStock);
+	Infrastructure(unsigned int setLevel, unsigned int setMaxLevel, double setGold, int setStock, int xPos, int yPos);
 
-	void draw(double x, double y);
+	void draw();
+	void drawMenu(double x, double y);
 	// Returns the upkeep for that turn.
 	double refreshAfterTurn();
  
@@ -33,21 +34,21 @@ protected:
 class Farm: public Infrastructure
 {
 public:
-	Farm(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock);
+	Farm(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock, int xPos, int yPos);
 	virtual string getName();
 };
 
 class WoodMill: public Infrastructure
 {
 public:
-	WoodMill(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock);
+	WoodMill(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock, int xPos, int yPos);
 	virtual string getName();
 };
 
 class Mine: public Infrastructure
 {
 public:
-	Mine(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock);
+	Mine(unsigned int setLevel, unsigned int setMaxPotential, double setGold, int setStock, int xPos, int yPos);
 	virtual string getName();
 };
 #endif /* INFRASTRUCTURE_H */

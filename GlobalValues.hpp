@@ -70,7 +70,7 @@ extern int mouseScroll; // Negative or positive depending on which way the playe
 
 
 // Some methods for drawing text like this "something: x".
-extern void drawText(string text, double x, double y);
+extern void drawText(string text, int x, int y);
 
 template <typename SOME_VALUE>
 // Methods for adding string and some value together, be it a string or a number or 

@@ -20,19 +20,16 @@ public:
 
   Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture);
   void draw();
+  void drawMenu();
   void updateAfterTurn();
 protected:
   void setPosition(const sf::Vector2f& pos);
 
   void setTexture(sf::Texture* tex);
 private:
-  void resize(int s);
-  static int size;
   std::vector<sf::Sprite> hexagons;
   sf::Texture* texture;
   
-  // std::stack<Faction*> owners;
-
   City city;
   Farm farm;
   WoodMill mill;
@@ -41,9 +38,8 @@ private:
   FactionEnum currentOwner;
   FactionEnum origOwner;
 
-  
-  // std::stack<Faction*> owners;
-  
+  sf::Sprite menu;
+
 };
 class Map
 {

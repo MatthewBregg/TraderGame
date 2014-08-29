@@ -72,7 +72,7 @@ int mouseScroll = 0; // Negative or positive depending on which way the player s
 
 sf::Text freeText;
 // Some methods for drawing text without having to create text objects on their side. 
-void drawText(string text, double x, double y)
+void drawText(string text, int x, int y)
 {
 	freeText.setFont(*getCustomFont()); 
 	freeText.setCharacterSize(14); 
