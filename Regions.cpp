@@ -6,6 +6,7 @@
 #include "Regions.hpp"
 
 
+City* Region::selectedCity = nullptr;
 
 Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture):
 	texture(nullptr),
@@ -46,14 +47,34 @@ void Region::draw()
 	// To check if there are any bugs when exchanging gold.
 	drawText(strPlusX("Total gold: ", city.getGold() + farm.getGold()), 150, 500);
 
+
 	drawMenu();
 }
 void Region::drawMenu()
 {
-	window->draw(menu);
-	city.drawMenu(menu.getPosition().x, menu.getPosition().y);
-	farm.drawMenu(menu.getPosition().x, menu.getPosition().y + 150);
+	if (selectedCity == &city)
+	{
+		window->draw(menu);
+		city.drawMenu(menu.getPosition().x, menu.getPosition().y);
+		farm.drawMenu(menu.getPosition().x, menu.getPosition().y + 150);
+	}
+}
 
+bool Region::handleInput()
+{
+	if (city.isClickedOn())
+	{
+		if (selectedCity == &city)  // Already selected.
+		{
+			selectedCity = nullptr;  // So deselect.
+		}
+		else
+		{
+			selectedCity = &city;
+		}
+		return true;
+	}
+	return false;
 }
 
 double buyingPrice = 0;
@@ -88,23 +109,35 @@ void Region::setTexture(sf::Texture* tex)
 void Map::draw()
 {
 
-  for ( auto& i : regions)
-    {
-      i.draw();
-    }
+	for ( auto& i : regions)
+	{
+		i.draw();
+	}
+}
+bool Map::handleInput()
+{
+	for (auto& i : regions)
+	{
+		i.handleInput();
+		return true;
+	}
+	// Some empty spot clicked, deselect the city.
+	Region::selectedCity = nullptr;  
+	return false;
 }
 
 void Map::updateAfterTurn()
 {
-
-  for ( auto& i : regions)
+	for ( auto& i : regions)
     {
-      i.updateAfterTurn();
+		i.updateAfterTurn();
     }
 }
-Map::Map(std::vector<Region> R):regions(R)
+Map::Map(std::vector<Region> R):
+	regions(R)
 {
 }
+
 std::vector<sf::Vector2f> getHexPos()
 {
 	std::vector<sf::Vector2f> hexPos;
@@ -113,7 +146,6 @@ std::vector<sf::Vector2f> getHexPos()
 	hexPos.push_back(sf::Vector2f(-90,160));
 	return hexPos;
 }
-
 Region R(getHexPos(), elfFaction, grassLandsHexTexture);
 
  Map M= Map( vector<Region>{R});

@@ -11,12 +11,14 @@ void EndTurn::draw()
 {
 	EndTurnButton.draw();
 }
-void EndTurn::refresh()
+bool EndTurn::handleInput()
 {
 	if (EndTurnButton.isClickedOn())
 	{
 		EndTurn::endTurn();
+		return true;
 	}
+	return false;
 }
 
 void EndTurn::endTurn()

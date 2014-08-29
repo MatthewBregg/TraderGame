@@ -6,6 +6,7 @@
 const double CITY_SIZE = 100;
 
 City::City(string setName, Resources r, int g, int xPos, int yPos):
+	ClickableRectangle(xPos, yPos, CITY_SIZE, CITY_SIZE),
 	name(setName),
 	resources(r),
 	gold(g),
@@ -42,7 +43,6 @@ void City::refreshAfterTurn(double upkeepFromInfrastructures)
 	gold += upkeepFromInfrastructures;
 	updatePopulation();
 }
-
 
 double City::getBuyingPrice()
 {

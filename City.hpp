@@ -1,10 +1,11 @@
 #include <iostream>
 #include "Resources.hpp"
 #include "GlobalValues.hpp"
+#include "ClickableRectangle.hpp"
 #ifndef CITY_H
 #define CITY_H
 
-class City
+class City : public ClickableRectangle
 {
 public:
 	City(string setName, Resources r, int g, int xPos, int yPos);
