@@ -19,10 +19,14 @@ sf::Clock fpsTime;
 sf::Time getAverageFPSTime()
 {
   static long long fpscount = 1;
-  sf::Time temp = runtime.getElapsedTime() / fpscount;
-  if ( runtime.getElapsedTime() > sf::seconds(500))
+  static sf::Time fpsSum(sf::seconds(0));
+  fpsSum += fpsTime.getElapsedTime();
+  fpscount++;
+  sf::Time temp = fpsSum / fpscount;
+  if ( fpsSum > sf::seconds(500))
     {
-      runtime.restart();
+      fpsSum=sf::seconds(0);
+      fpscount = 1;
     }
   return temp;
 }
@@ -94,7 +98,7 @@ int main()
 	view = new sf::View(sf::Vector2f(400,300), sf::Vector2f(800,600));
 	window->setView(*view);
 
-	window->setFramerateLimit(60);	
+	window->setFramerateLimit(12);	
 	
 	while (window->isOpen())
 	  {
@@ -106,7 +110,9 @@ int main()
 	    GameViews::render();
 	    GameViews::scroll(getAverageFPSTime());		
 	    window->display();
+	    cout << 1.0/getAverageFPSTime().asMilliseconds() << std::endl;
 	    fpsTime.restart();
+
 
 	  }
 
