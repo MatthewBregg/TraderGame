@@ -65,7 +65,7 @@ int getWindowHeight()
 	return windowHeight;
 }
 sf::Clock runtime;
-double SCROLL_SPEED = 5;
+double SCROLL_SPEED = 10;
 bool keys[256];
 int mouseScroll = 0; // Negative or positive depending on which way the player scrolls.
 sf::RectangleShape mapSize(sf::Vector2f(2000,2000));

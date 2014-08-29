@@ -50,6 +50,7 @@ void GameViews::render()
 void GameViews::scroll(const sf::Time& clock)
 {
   static sf::Time lasttime(sf::seconds(0));
+  static int oldchange(0);
   //71 is left, 72 is right, 73 is up, 74 is downs
   if (lasttime.asMicroseconds() != 0)
     {
@@ -59,6 +60,7 @@ void GameViews::scroll(const sf::Time& clock)
 	}
     }
   int change = ((((clock + lasttime)).asMicroseconds())/2)/100 * SCROLL_SPEED;
+  change = (change+oldchange)/2;
    if ( change > 50 )
      {
        change = 50;
