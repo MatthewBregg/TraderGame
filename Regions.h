@@ -20,6 +20,7 @@ class Region
 public:
 	//should probably write a copy and descructor 
 		// Why? If you mean saving, there should be a constructor that takes raw binary data, but that comes later.
+  //Originally had pointers, now we don't so not needed
 
 	Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture, string cityName, double cityGold);
 	void draw();
@@ -67,9 +68,9 @@ private:
 	std::vector<Region> regions;
 
 	// Returns the city offering the largest price for 1 unit of food.
-	City* World::getMaxBuyingPrice();
+	City* getMaxBuyingPrice();
 	// Returns the farm asking for the smallest price for 1 unit of food. 
-	Farm* World::getMinSellingPrice();
+	Farm* getMinSellingPrice();
 };
 
 extern World world;
