@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include "Texture.hpp"
 #include "GlobalValues.hpp"
 
@@ -8,9 +8,9 @@
 
 City* Region::selectedCity = nullptr;
 
-Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture):
+Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture, string cityName):
 	texture(nullptr),
-	city("Bronx", Resources(40, 0, 0), 20, 170, 120),
+	city(cityName, Resources(40, 0, 0), 20, poses.at(0).x + 75, poses.at(0).y + 70),
 	farm(1, 6, 10, 0, 170, 120),
 	mill(0, 0, 0, 0, 0, 0),
 	mine(0, 0, 0, 0, 0, 0),
@@ -19,11 +19,13 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 	origOwner(setFaction)
 
 {
-	for (std::vector<sf::Vector2f>::iterator it = poses.begin(); it != poses.end(); ++it)
+	for (auto& pos : poses)
 	{
 		sf::Sprite temp;
 		temp.setTexture(getTexture(hexTexture));
-		temp.setPosition(*it);
+		temp.setPosition(pos);
+		temp.setScale(DEFAULT_HEX_SIZE / getTexture(hexTexture).getSize().x,
+					  DEFAULT_HEX_SIZE / getTexture(hexTexture).getSize().y);
 		hexagons.push_back(temp);
 	}
 
@@ -34,9 +36,9 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 
 void Region::draw()
 {
-  for (std::vector<sf::Sprite>::iterator it = hexagons.begin(); it != hexagons.end(); ++it)
-	{
-		window->draw(*it);
+	for (auto& hexSprite : hexagons)
+	{	  
+		window->draw(hexSprite);
 	}
 
 	city.draw();
@@ -97,7 +99,6 @@ void Region::updateAfterTurn()
 	//mine.refreshAfterTurn();
 }
 
-
 void Region::setTexture(sf::Texture* tex)
 {
 	for (std::vector<sf::Sprite>::iterator it = hexagons.begin(); it != hexagons.end(); ++it)
@@ -106,46 +107,79 @@ void Region::setTexture(sf::Texture* tex)
     }
 }
 
-void Map::draw()
-{
+// ----------- MAP
 
+World world;
+
+// Hexes are structured like this:
+// 8  9 11 12 13 
+//  4  5  6  7  
+// 0  1  2  3    
+// This method, given an index, returns the world px position.
+const int HEX_PER_ROW = 4;
+sf::Vector2f getHexPos(int index)
+{
+	// ((index % 6) % 2) - ofset every second row. 
+	return sf::Vector2f(
+		DEFAULT_HEX_SIZE * 1.5 * (index % HEX_PER_ROW) + (DEFAULT_HEX_SIZE * 0.75) * ((index / HEX_PER_ROW) % 2),
+		-DEFAULT_HEX_SIZE * 0.43 * (index / HEX_PER_ROW)
+		);
+}
+
+World::World() 
+{
+	std::vector<sf::Vector2f> hexPos;
+
+	hexPos.push_back(getHexPos(0));
+	hexPos.push_back(getHexPos(4));
+	hexPos.push_back(getHexPos(1));
+	hexPos.push_back(getHexPos(5));
+	regions.push_back(Region(hexPos, elfFaction, grassLandsHex, "Rivendell"));
+	hexPos.clear();
+
+	hexPos.push_back(getHexPos(2));
+	hexPos.push_back(getHexPos(6));
+	hexPos.push_back(getHexPos(3));
+	hexPos.push_back(getHexPos(7));
+	regions.push_back(Region(hexPos, dwarfFaction, woodlandsHex, "Khazad-dum"));
+}
+
+void World::draw()
+{
 	for ( auto& i : regions)
 	{
 		i.draw();
 	}
 }
-bool Map::handleInput()
+void World::drawMenu()
 {
 	for (auto& i : regions)
 	{
-		i.handleInput();
-		return true;
+		i.drawMenu();
 	}
-	// Some empty spot clicked, deselect the city.
-	Region::selectedCity = nullptr;  
+}
+bool World::handleInput()
+{
+	for (auto& i : regions)
+	{
+		if (i.handleInput())
+		{
+			return true;
+		}
+	}
+	if (leftClickPressed)
+	{
+		// Some empty spot clicked, deselect the city.
+		Region::selectedCity = nullptr;
+	}
 	return false;
 }
 
-void Map::updateAfterTurn()
+void World::updateAfterTurn()
 {
 	for ( auto& i : regions)
     {
 		i.updateAfterTurn();
     }
 }
-Map::Map(std::vector<Region> R):
-	regions(R)
-{
-}
 
-std::vector<sf::Vector2f> getHexPos()
-{
-	std::vector<sf::Vector2f> hexPos;
-	hexPos.push_back(sf::Vector2f(100,50));
-	hexPos.push_back(sf::Vector2f(100,270));
-	hexPos.push_back(sf::Vector2f(-90,160));
-	return hexPos;
-}
-Region R(getHexPos(), elfFaction, grassLandsHexTexture);
-
- Map M= Map( vector<Region>{R});

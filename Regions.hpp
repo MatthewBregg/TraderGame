@@ -11,7 +11,7 @@
 #ifndef REGIONS_H
 #define REGIONS_H
 
-const int DEFAULT_HEX_SIZE = 80; //This should eventually be calculated by starting res
+const double DEFAULT_HEX_SIZE = 256; //This should eventually be calculated by starting res
 
 class Region
 {
@@ -19,7 +19,7 @@ public:
 	//should probably write a copy and descructor 
 		// Why? If you mean saving, there should be a constructor that takes raw binary data, but that comes later.
 
-	Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture);
+	Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture, string cityName);
 	void draw();
 	void drawMenu();
 	bool handleInput();
@@ -48,19 +48,19 @@ private:
 	sf::Sprite menu;
 
 };
-class Map
+class World
 {
 public:
+	World();
+
   void draw();
+  void drawMenu();
   bool handleInput();
   void updateAfterTurn();
-  Map(std::vector<Region> R);
 private:
   std::vector<Region> regions;
 };
 
-
-//extern Region R;
-extern Map M;
+extern World world;
 
 #endif /* REGIONS_H */

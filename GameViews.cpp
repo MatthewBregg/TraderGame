@@ -38,12 +38,13 @@ void GameViews::render()
 		if (EndTurn::handleInput())
 		{
 		}
-		else if (M.handleInput())
+		else if (world.handleInput())
 		{
 
 		}
 
-		M.draw();
+		world.draw();
+		world.drawMenu();
 		EndTurn::draw();
 	}
 }

@@ -24,5 +24,5 @@ bool EndTurn::handleInput()
 void EndTurn::endTurn()
 {
 
-	M.updateAfterTurn();
+	world.updateAfterTurn();
 }
