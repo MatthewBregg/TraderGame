@@ -1,18 +1,15 @@
 #include "Texture.h"
+#include <assert.h>
 
 
 #include "Graph.h"
 
-Graph::Graph(int setX, int setY):
+Graph::Graph(int setX, int setY) :
+initialised(false),
 xPos(setX),
 yPos(setY),
 maxValue(0)
 {
-	vector<double> temp;
-	values.push_back(temp);
-	values.push_back(temp);
-	values.push_back(temp);
-
 	background.setPosition(xPos, yPos);
 	background.setTexture(getTexture(buttonTexture1));
 	background.setScale(200.0 / getTexture(buttonTexture1).getSize().x, 100.0 / getTexture(buttonTexture1).getSize().y);
@@ -23,52 +20,49 @@ const int DIST_BETWEEN_POINTS = 10;
 const int MAX_POINTS = 20;
 void Graph::draw()
 {
+	assert(initialised && "Graph should be initialised before being drawn.");
+
 	window->draw(background);
 	
 	drawText(strPlusX("", maxValue), xPos - 50, yPos - 10);
 
-	int counter = 0;
-	for (int i = 0; i < values.at(0).size(); ++i)
+	for (int entity = 0; entity < entities.size(); ++entity)
 	{
-		dataPoint.setFillColor(sf::Color::Green);
-		dataPoint.setPosition(xPos + counter * DIST_BETWEEN_POINTS, yPos + 100 - (values.at(0).at(i) / maxValue) * 100);
-		window->draw(dataPoint);
-
-		dataPoint.setFillColor(sf::Color::Red);
-		dataPoint.setPosition(xPos + counter * DIST_BETWEEN_POINTS, yPos + 100 - (values.at(1).at(i) / maxValue) * 100);
-		window->draw(dataPoint);
-
-		dataPoint.setFillColor(sf::Color::Blue);
-		dataPoint.setPosition(xPos + counter * DIST_BETWEEN_POINTS, yPos + 100 - (values.at(2).at(i) / maxValue) * 100);
-		window->draw(dataPoint);
-		counter++;
+		for (int i = 0; i < entities.at(entity).size(); ++i)
+		{
+			dataPoint.setFillColor(colors.at(entity));
+			dataPoint.setPosition(int(xPos + i * DIST_BETWEEN_POINTS), int(yPos + 100 - (entities.at(entity).at(i) / maxValue) * 100));
+			window->draw(dataPoint);
+		}
 	}
 }
-void Graph::update(double newValue1, double newValue2, double newValue3)
+void Graph::update(unsigned int index, int newValue)
 {
-	values.at(0).push_back(newValue1);
-	values.at(1).push_back(newValue2);
-	values.at(2).push_back(newValue3);
+	assert(index < entities.size());
 
+	vector<double>* entity = &entities.at(index);
+	entity->push_back(newValue);
 
-	if (newValue1 > maxValue)
+	if (newValue > maxValue)
 	{
-		maxValue = newValue1;
+		maxValue = newValue;
 	}
-	if (newValue2 > maxValue)
-	{
-		maxValue = newValue2;
-	}	
-	if (newValue3 > maxValue)
-	{
-		maxValue = newValue3;
-	}
-	if (values.at(0).size() > MAX_POINTS)  
+
+	if (entity->size() > MAX_POINTS)
 	{
 		// Remove the oldest value.
-		values.at(0).erase(values.at(0).begin());
-		values.at(1).erase(values.at(1).begin());
-		values.at(2).erase(values.at(2).begin());
+		entity->erase(entity->begin());
 	}
 }
 
+void Graph::initialise(int numberOfEntities, vector<sf::Color> setColors)
+{
+	vector<double> temp;
+	for (int i = 0; i < numberOfEntities; ++i)
+	{
+		entities.push_back(temp);
+	}
+	colors = setColors;
+
+	initialised = true;
+}

@@ -138,6 +138,8 @@ populationGraph(50, 400)
 	hexPos.push_back(getHexPos(13));
 	regions.push_back(Region(hexPos, elfFaction, grassLandsHex, "Shire", 5));
 	hexPos.clear();
+
+	//populationGraph.initialise(regions.size(), vector < sf::Color > { sf::Color::Red, sf::Color::Green, sf::Color::Blue });
 }
 
 void World::draw()
@@ -213,12 +215,11 @@ void World::updateAfterTurn()
 {
 	handleTrading();
 
-	for ( auto& region : regions)
+	for (int i = 0; i < regions.size(); ++i)
     {
-		region.updateAfterTurn();
+		regions.at(i).updateAfterTurn();
+		populationGraph.update(i, regions.at(i).city.getPopulation());
     }
-
-	populationGraph.update(regions.at(0).city.getPopulation(), regions.at(1).city.getPopulation(), regions.at(2).city.getPopulation());
 }
 
 // ------------- Private

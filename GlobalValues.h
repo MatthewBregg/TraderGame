@@ -2,9 +2,8 @@
 #define GlobalValues_H
 
 
-
-
 #include <iostream>
+#include <assert.h>
 using namespace std;
 #include <SFML/Graphics.hpp>
 
