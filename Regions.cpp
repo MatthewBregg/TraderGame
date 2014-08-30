@@ -139,7 +139,7 @@ populationGraph(50, 400)
 	regions.push_back(Region(hexPos, elfFaction, grassLandsHex, "Shire", 5));
 	hexPos.clear();
 
-	//populationGraph.initialise(regions.size(), vector < sf::Color > { sf::Color::Red, sf::Color::Green, sf::Color::Blue });
+	populationGraph.initialise(regions.size(), vector < sf::Color > { sf::Color::Red, sf::Color::Green, sf::Color::Blue });
 }
 
 void World::draw()
