@@ -1,7 +1,7 @@
 #include <iostream>
-#include "GlobalValues.hpp"
+#include "GlobalValues.h"
 
-#include "Infrastructure.hpp"
+#include "Infrastructure.h"
 
 
 Infrastructure::Infrastructure(unsigned int setLevel, unsigned int setMaxLevel, double setGold, int setStock, int xPos, int yPos):

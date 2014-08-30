@@ -3,9 +3,9 @@
 
 
 
-#include "ButtonSfml.hpp"
-#include "GlobalValues.hpp"
-#include "Regions.hpp"
+#include "ButtonSfml.h"
+#include "GlobalValues.h"
+#include "Regions.h"
 
 
 

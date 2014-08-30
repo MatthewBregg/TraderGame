@@ -9,11 +9,11 @@
 using namespace std;
 
 
-#include "ButtonSfml.hpp"
-#include "Regions.hpp"
+#include "ButtonSfml.h"
+#include "Regions.h"
 
-#include "GlobalValues.hpp"
-#include "GameViews.hpp"
+#include "GlobalValues.h"
+#include "GameViews.h"
 
 sf::Clock fpsTime;
 

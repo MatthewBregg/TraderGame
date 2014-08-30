@@ -1,9 +1,9 @@
 
-#include "Regions.hpp"
-#include "ButtonSfml.hpp"
+#include "Regions.h"
+#include "ButtonSfml.h"
 
 
-#include "EndTurn.hpp"
+#include "EndTurn.h"
 
 ButtonSfml EndTurnButton(getWindowWidth() - 150, getWindowHeight() - 150, 130, 130, "End turn", buttonTexture1);
 

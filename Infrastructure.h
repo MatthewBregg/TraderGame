@@ -1,5 +1,5 @@
 #include <iostream>
-#include "GlobalValues.hpp"
+#include "GlobalValues.h"
 
 #ifndef INFRASTRUCTURE_H
 #define INFRASTRUCTURE_H

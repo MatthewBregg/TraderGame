@@ -1,7 +1,7 @@
 #include <iostream>
-#include "Resources.hpp"
-#include "GlobalValues.hpp"
-#include "ClickableRectangle.hpp"
+#include "Resources.h"
+#include "GlobalValues.h"
+#include "ClickableRectangle.h"
 #ifndef CITY_H
 #define CITY_H
 

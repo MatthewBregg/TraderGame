@@ -1,6 +1,6 @@
-#include "GlobalValues.hpp"
+#include "GlobalValues.h"
 
-#include "ClickableRectangle.hpp"
+#include "ClickableRectangle.h"
 
 ClickableRectangle::ClickableRectangle(double setX, double setY, double setW, double setH):
 	x(setX),

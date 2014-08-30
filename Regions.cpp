@@ -1,9 +1,9 @@
 ﻿#include <iostream>
-#include "Texture.hpp"
-#include "GlobalValues.hpp"
+#include "Texture.h"
+#include "GlobalValues.h"
 
 
-#include "Regions.hpp"
+#include "Regions.h"
 
 
 City* Region::selectedCity = nullptr;

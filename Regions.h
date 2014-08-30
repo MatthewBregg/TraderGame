@@ -1,11 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 //#include <stack>
-#include "Infrastructure.hpp"
-#include "City.hpp"
-#include "Faction.hpp"
-#include "TradeCentre.hpp"
-#include "Texture.hpp"
+#include "Infrastructure.h"
+#include "City.h"
+#include "Faction.h"
+#include "TradeCentre.h"
+#include "Texture.h"
 #include <vector>
 
 #ifndef REGIONS_H

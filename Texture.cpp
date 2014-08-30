@@ -1,8 +1,8 @@
 #include <iostream>
-#include "GlobalValues.hpp"
+#include "GlobalValues.h"
 
 
-#include "Texture.hpp"
+#include "Texture.h"
 
 
 const sf::Texture& getTexture(TextureIndex textureIndex)

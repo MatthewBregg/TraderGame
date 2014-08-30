@@ -1,4 +1,4 @@
-#include "GlobalValues.hpp"
+#include "GlobalValues.h"
 
 
 sf::RenderWindow* window;

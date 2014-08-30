@@ -5,11 +5,11 @@
 #include <array>
 #include <string>
 using namespace std;
-#include "Regions.hpp"
-#include "Texture.hpp"
-#include "EndTurn.hpp"
+#include "Regions.h"
+#include "Texture.h"
+#include "EndTurn.h"
 
-#include "GameViews.hpp"
+#include "GameViews.h"
 
 // The different parts of the programs' execution.
 enum GameView

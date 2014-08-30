@@ -1,7 +1,7 @@
-#include "GlobalValues.hpp"
-#include "Texture.hpp"
+#include "GlobalValues.h"
+#include "Texture.h"
 
-#include "City.hpp"
+#include "City.h"
 
 const double CITY_SIZE = 100;
 

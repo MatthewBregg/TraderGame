@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Resources.hpp"
+#include "Resources.h"
 #ifndef TRADECENTRE_H
 #define TRADECENTRE_H
 class TradeCentre
