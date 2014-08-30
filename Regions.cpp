@@ -60,7 +60,7 @@ void Region::drawMenu()
 
 bool Region::handleInput()
 {
-	if (city.isClickedOn())
+	if (city.isClickedOnRelative())
 	{
 		if (selectedCity == &city)  // Already selected.
 		{

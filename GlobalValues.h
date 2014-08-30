@@ -77,6 +77,8 @@ extern bool previousLeftClickState;  // Left click on previous refresh.
 extern double mouseX;		// Mouse coords since sf::Mouse::getPosition(*window).x is too long.
 extern double mouseY;
 
+extern double relativeMouseX;		// Mouse coords since sf::Mouse::getPosition(*window).x is too long.
+extern double relativeMouseY;
 
 extern int getMonitorWidth();
 extern int getMonitorHeight();

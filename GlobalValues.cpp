@@ -38,6 +38,8 @@ bool previousLeftClickState = sf::Mouse::isButtonPressed(sf::Mouse::Left);  // L
 double mouseX = 0;		// Mouse coords since sf::Mouse::getPosition(*window).x is too long.
 double mouseY = 0;
 
+double relativeMouseX = 0;		// Mouse coords since sf::Mouse::getPosition(*window).x is too long.
+double relativeMouseY = 0;
 
 
 // The size of the whole monitor.

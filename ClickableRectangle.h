@@ -21,5 +21,6 @@ public:
 	bool isHovering(double pointX, double pointY);
 	// Checks if the player has clicked on the button.
 	bool isClickedOn();
+	bool isClickedOnRelative();
 };
 #endif /* CLICKABLERECTANGLE_H */

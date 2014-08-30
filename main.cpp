@@ -58,7 +58,9 @@ sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
 
 
  mouseX = sf::Mouse::getPosition(*window).x;
+ relativeMouseX = worldPos.x;
  mouseY = sf::Mouse::getPosition(*window).y;
+ relativeMouseY = worldPos.y;
 	mouseScroll = 0; // Reset it, will be set later if MouseWheelMoved event has happened.
 
 
