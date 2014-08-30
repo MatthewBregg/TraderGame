@@ -113,7 +113,7 @@ void GameViews::scroll(const sf::Time& clock)
 	}
       window->setView(*view);
     }
-  if (keys[17])
+  if (keys[17])		// What is this?
     {
       view->setCenter(400,300); //These should later not be hardcoded, to better handle resizing.
       window->setView(*view);
