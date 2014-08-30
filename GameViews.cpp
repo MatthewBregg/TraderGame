@@ -43,9 +43,15 @@ void GameViews::render()
 
 		}
 
+
+
+		window->setView(*view);
 		world.draw();
-		world.drawMenu();
+
+		window->setView(window->getDefaultView());
 		EndTurn::draw();
+		world.drawMenu();
+		window->setView(*view);
 	}
 }
 void GameViews::scroll(const sf::Time& clock)
