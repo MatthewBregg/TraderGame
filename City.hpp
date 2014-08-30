@@ -12,7 +12,7 @@ public:
 
 	void draw();
 	void drawMenu(double x, double y);
-	void refreshAfterTurn(double upkeepFromInfrastructures);
+	void refreshAfterTurn();
 	
 	double getBuyingPrice();
 	unsigned int getPopulationFoodReq();
@@ -20,6 +20,7 @@ public:
 	bool cityWouldAcceptDeal(double offeredPrice);
 	void acceptDeal(double price);
 	double getGold();
+	void addGold(double howMuch);
 
 private:
 	string name;

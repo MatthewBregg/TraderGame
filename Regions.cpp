@@ -8,9 +8,9 @@
 
 City* Region::selectedCity = nullptr;
 
-Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture, string cityName):
+Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture, string cityName, double cityGold):
 	texture(nullptr),
-	city(cityName, Resources(40, 0, 0), 20, poses.at(0).x + 75, poses.at(0).y + 70),
+	city(cityName, Resources(40, 0, 0), cityGold, poses.at(0).x + 75, poses.at(0).y + 70),
 	farm(1, 6, 10, 0, 170, 120),
 	mill(0, 0, 0, 0, 0, 0),
 	mine(0, 0, 0, 0, 0, 0),
@@ -46,10 +46,6 @@ void Region::draw()
 	//mill.draw(400, 210);
 	//mine.draw(400, 260);
 
-	// To check if there are any bugs when exchanging gold.
-	drawText(strPlusX("Total gold: ", city.getGold() + farm.getGold()), 150, 500);
-
-
 	drawMenu();
 }
 void Region::drawMenu()
@@ -79,21 +75,11 @@ bool Region::handleInput()
 	return false;
 }
 
-double buyingPrice = 0;
-double sellingPrice = 0;
 void Region::updateAfterTurn()
 {
-	while (city.cityWouldAcceptDeal(farm.wouldSellFor())) 
-	{
-		city.acceptDeal(farm.wouldSellFor());
-		farm.acceptDeal();
-	}
-
-	// Farm also returns the upkeep value to the city.
-	// I don't like this, since each function is doing several things.
-	city.refreshAfterTurn(
-		farm.refreshAfterTurn()
-		);
+	double farmUpkeep = farm.refreshAfterTurn();
+	city.addGold(farmUpkeep);
+	city.refreshAfterTurn();
 
 	//mill.refreshAfterTurn();
 	//mine.refreshAfterTurn();
@@ -112,7 +98,8 @@ void Region::setTexture(sf::Texture* tex)
 World world;
 
 // Hexes are structured like this:
-// 8  9 11 12 13 
+//  12 13 14 15 
+// 8  9 10 11  
 //  4  5  6  7  
 // 0  1  2  3    
 // This method, given an index, returns the world px position.
@@ -134,14 +121,22 @@ World::World()
 	hexPos.push_back(getHexPos(4));
 	hexPos.push_back(getHexPos(1));
 	hexPos.push_back(getHexPos(5));
-	regions.push_back(Region(hexPos, elfFaction, grassLandsHex, "Rivendell"));
+	regions.push_back(Region(hexPos, elfFaction, woodlandsHex, "Rivendell", 10));
 	hexPos.clear();
 
 	hexPos.push_back(getHexPos(2));
 	hexPos.push_back(getHexPos(6));
 	hexPos.push_back(getHexPos(3));
 	hexPos.push_back(getHexPos(7));
-	regions.push_back(Region(hexPos, dwarfFaction, woodlandsHex, "Khazad-dum"));
+	regions.push_back(Region(hexPos, dwarfFaction, hillHex, "Khazad-dum", 40));
+	hexPos.clear();
+
+	hexPos.push_back(getHexPos(8));
+	hexPos.push_back(getHexPos(12));
+	hexPos.push_back(getHexPos(9));
+	hexPos.push_back(getHexPos(13));
+	regions.push_back(Region(hexPos, elfFaction, grassLandsHex, "Shire", 5));
+	hexPos.clear();
 }
 
 void World::draw()
@@ -153,10 +148,16 @@ void World::draw()
 }
 void World::drawMenu()
 {
-	for (auto& i : regions)
+	double totalGold = 0;
+	for (auto& region : regions)
 	{
-		i.drawMenu();
+		region.drawMenu();
+		totalGold += region.city.getGold() + region.farm.getGold();
 	}
+
+	// To check if there are any bugs when exchanging gold.
+	drawText(strPlusX("Total gold: ", totalGold), 150, 500);
+
 }
 bool World::handleInput()
 {
@@ -175,11 +176,79 @@ bool World::handleInput()
 	return false;
 }
 
+
+void World::handleTrading()
+{
+	// Tries to make a deal between the city offering the most money, and
+	// the infrastructure asking the smallest price. 
+
+	bool aNewDealCanOccur = true;
+	while (aNewDealCanOccur)
+	{
+		// Find the city offering the most for food.
+		City* cityOfferingTheMost = getMaxBuyingPrice();
+		// Find the farm that sells for the smallest price.
+		Farm* farmAskingTheLeast = getMinSellingPrice();
+
+		if (cityOfferingTheMost != nullptr && 
+			farmAskingTheLeast != nullptr && 
+			cityOfferingTheMost->cityWouldAcceptDeal(farmAskingTheLeast->wouldSellFor()))
+		{
+			// The buyer offers more than the seller asks for, a deal occurs.
+			cityOfferingTheMost->acceptDeal(farmAskingTheLeast->wouldSellFor());
+			farmAskingTheLeast->acceptDeal();
+		}
+		else
+		{
+			// The cheapest farm is asking for more gold than the most expensive city
+			// can offer. No other deals can occur.
+			aNewDealCanOccur = false;
+		}
+	}
+}
+
 void World::updateAfterTurn()
 {
-	for ( auto& i : regions)
+	handleTrading();
+
+	for ( auto& region : regions)
     {
-		i.updateAfterTurn();
+		region.updateAfterTurn();
     }
 }
 
+// ------------- Private
+
+// Returns the city offering the largest price for 1 unit of food.
+City* World::getMaxBuyingPrice()
+{
+	City* cityOfferingTheMost = nullptr;
+	double maxBuyingPrice = 0;
+	for (auto& region : regions)
+	{
+		double citiesBuyingPrice = region.city.getBuyingPrice();
+		if (maxBuyingPrice < citiesBuyingPrice)
+		{
+			maxBuyingPrice = region.city.getBuyingPrice();
+			cityOfferingTheMost = &region.city;
+		}
+	}
+	return cityOfferingTheMost;
+}
+
+// Returns the farm asking for the smallest price for 1 unit of food. 
+Farm* World::getMinSellingPrice()
+{
+	Farm* farmAskingTheLeast = nullptr;
+	double minSellingPrice = 100000000;
+	for (auto& region : regions)
+	{
+		double farmWouldSellFor = region.farm.wouldSellFor();
+		if (minSellingPrice > farmWouldSellFor)
+		{
+			minSellingPrice = region.farm.wouldSellFor();
+			farmAskingTheLeast = &region.farm;
+		}
+	}
+	return farmAskingTheLeast;
+}

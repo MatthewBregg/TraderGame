@@ -11,6 +11,7 @@ enum TextureIndex
 	buttonTexture1,
 	grassLandsHex,
 	woodlandsHex,
+	hillHex,
 	deepSeaHex,
 
 	randomCityTexture,

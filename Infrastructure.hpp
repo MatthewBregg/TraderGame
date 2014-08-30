@@ -11,7 +11,7 @@ public:
 
 	void draw();
 	void drawMenu(double x, double y);
-	// Returns the upkeep for that turn.
+	// Updates the infrastructure and returns the upkeep for that turn.
 	double refreshAfterTurn();
  
 	double wouldSellFor();

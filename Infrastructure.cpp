@@ -36,30 +36,32 @@ void Infrastructure::drawMenu(double x, double y)
 
 }
 
-// Returns the upkeep for that turn.
+const double LEVEL_UPGRADE_COST = 6;
+// Updates the infrastructure and returns the upkeep for that turn.
 double Infrastructure::refreshAfterTurn()
 {
 	inStock += level + 1;
 
-	double returnedUpkeep = 0;
-	if ((gold >= 5 + upkeep()*2) && level < maxLevel)
+	double returnedUpkeep = upkeep();
+	if (gold >= upkeep())
 	{
-		level++;
-		returnedUpkeep += 4;  // Upgrade a level.
-		returnedUpkeep += upkeep(); 
-		gold -= 4;
-		gold -= upkeep(); 
+		// Enough money, all is good.
+		gold -= upkeep();
 	}
-	else if (gold >= upkeep())
+	else  
 	{
-		gold -= upkeep(); 
-		returnedUpkeep += upkeep(); 
-	}
-	else
-	{
-		returnedUpkeep += gold;
+		// Bankrupt, drop a level and give all the remaining gold as upkeep.
+		returnedUpkeep = gold;
 		gold = 0;
 		level--;
+	}
+
+	if ((gold >= LEVEL_UPGRADE_COST + upkeep() * 3) && level < maxLevel)
+	{
+		// Loads a money, upgrade a level.
+		level++;
+		returnedUpkeep += LEVEL_UPGRADE_COST;
+		gold -= LEVEL_UPGRADE_COST;
 	}
 
 	return returnedUpkeep;
@@ -69,9 +71,10 @@ double Infrastructure::wouldSellFor()
 {
 	if (inStock <= 0)
 	{
-		return 100000;
+		return 1000000;
 	}
-	return (upkeep() + gold + 1) / double(inStock);
+	// inStock * 2 - eager to sell of excess stock.
+	return (upkeep() + gold + 1) / double(inStock * 2); 
 }
 double Infrastructure::upkeep()
 {

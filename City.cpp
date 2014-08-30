@@ -38,9 +38,8 @@ void City::drawMenu(double x, double y)
 	drawText(strPlusX("Buys food for: ", getBuyingPrice()), x + 20, y + 85);
 }
 
-void City::refreshAfterTurn(double upkeepFromInfrastructures)
+void City::refreshAfterTurn()
 {
-	gold += upkeepFromInfrastructures;
 	updatePopulation();
 }
 
@@ -98,7 +97,10 @@ double City::getGold()
 {
 	return gold;
 }
-
+void City::addGold(double howMuch)
+{
+	gold += howMuch;
+}
 // ------------------------------ Private
 
 void City::updatePopulation()
