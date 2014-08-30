@@ -50,10 +50,10 @@ extern sf::View* view;
 		#define RESOURCE_PATH "Resources\\"
 	#endif
 	#ifdef __linux__
-		#define RESOURCE_PATH "Resources/"
+		#define RESOURCE_PATH "../Resources/"
 	#endif
 	#ifdef __APPLE__
-		#define RESOURCE_PATH "Resources/" //Should work fine for osx also
+		#define RESOURCE_PATH "../Resources/" //Should work fine for osx also
 	#endif  
 #endif
 
