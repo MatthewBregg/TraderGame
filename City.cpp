@@ -101,6 +101,12 @@ void City::addGold(double howMuch)
 {
 	gold += howMuch;
 }
+
+unsigned int City::getPopulation()
+{
+	return population;
+}
+
 // ------------------------------ Private
 
 void City::updatePopulation()

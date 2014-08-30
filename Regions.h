@@ -1,12 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-//#include <stack>
+#include <vector>
+
 #include "Infrastructure.h"
 #include "City.h"
 #include "Faction.h"
 #include "TradeCentre.h"
 #include "Texture.h"
-#include <vector>
+#include "Graph.h"
 
 #ifndef REGIONS_H
 #define REGIONS_H
@@ -61,6 +62,8 @@ public:
   void handleTrading();
   void updateAfterTurn();
 private:
+	Graph populationGraph;
+
 	std::vector<Region> regions;
 
 	// Returns the city offering the largest price for 1 unit of food.

@@ -21,7 +21,7 @@ public:
 	void acceptDeal(double price);
 	double getGold();
 	void addGold(double howMuch);
-
+	unsigned int getPopulation();
 private:
 	string name;
 	Resources resources;

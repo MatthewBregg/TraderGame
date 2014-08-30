@@ -113,7 +113,8 @@ sf::Vector2f getHexPos(int index)
 		);
 }
 
-World::World() 
+World::World():
+populationGraph(50, 400)
 {
 	std::vector<sf::Vector2f> hexPos;
 
@@ -158,6 +159,7 @@ void World::drawMenu()
 	// To check if there are any bugs when exchanging gold.
 	drawText(strPlusX("Total gold: ", totalGold), 150, 500);
 
+	populationGraph.draw();
 }
 bool World::handleInput()
 {
@@ -215,6 +217,8 @@ void World::updateAfterTurn()
     {
 		region.updateAfterTurn();
     }
+
+	populationGraph.update(regions.at(0).city.getPopulation(), regions.at(1).city.getPopulation(), regions.at(2).city.getPopulation());
 }
 
 // ------------- Private
