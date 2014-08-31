@@ -10,7 +10,8 @@ City::City(string setName, Resources r, int g, int xPos, int yPos):
 	name(setName),
 	resources(r),
 	gold(g),
-	population(10000)
+	population(10000),
+	sellToButton(0, 0, 50, 20, "Sell", button1, 14)
  {
 	citySprite.setPosition(xPos, yPos);
 	citySprite.setTexture(getTexture(randomCityTexture));
@@ -31,11 +32,22 @@ void City::drawMenu(double x, double y)
 	drawText(popString.str(), x + 20, y + 40);
 
 	stringstream foodStockString;
-	foodStockString << "Food in stock: " << resources.getFood() << "(-" << getPopulationFoodReq() << ")";
+	foodStockString << "Food in stock: " << resources.get(foodResource) << "(-" << getPopulationFoodReq() << ")";
 	drawText(foodStockString.str(), x + 20, y + 55);
 
 	drawText(strPlusX("Gold: ", gold), x + 20, y + 70);
 	drawText(strPlusX("Buys food for: ", getBuyingPrice()), x + 20, y + 85);
+}
+
+void City::drawSellingButton(double x, double y)
+{
+	sellToButton.setPos(x + 160, y + 60);
+	sellToButton.draw();
+}
+
+bool City::isSellingButtonClickedOn()
+{
+	return sellToButton.isClickedOnRelative();
 }
 
 void City::refreshAfterTurn()
@@ -45,7 +57,7 @@ void City::refreshAfterTurn()
 
 double City::getBuyingPrice()
 {
-	double buyingPrice = (gold + getPopulationFoodReq() + 1) / (resources.getFood() + 2);
+	double buyingPrice = (gold + getPopulationFoodReq() + 1) / (resources.get(foodResource) + 2);
 	if (buyingPrice > gold)  // Can't buy more than you have. 
 	{
 		return gold;
@@ -64,7 +76,7 @@ const double POPULATION_GROWTH_DIFF = MAX_POPULATION_GROWTH - MIN_POPULATION_GRO
 double City::getPopulationChange()
 {
 	double populationChange = MIN_POPULATION_GROWTH + 
-		(double(resources.getFood()) / double(getPopulationFoodReq())) * POPULATION_GROWTH_DIFF;
+		(double(resources.get(foodResource)) / double(getPopulationFoodReq())) * POPULATION_GROWTH_DIFF;
 	if (populationChange > MAX_POPULATION_GROWTH)
 	{
 		populationChange = MAX_POPULATION_GROWTH;
@@ -76,7 +88,7 @@ bool City::cityWouldAcceptDeal(double offeredPrice)
 {
 	// Can only accept the deal if the price is less than the one we would like,
 	// as well as we have enough gold in the first place for the deal to occur.
-	if (getBuyingPrice() > offeredPrice && gold > offeredPrice)
+	if (getBuyingPrice() >= offeredPrice && gold >= offeredPrice)
 	{
 		return true;
 	}
@@ -86,7 +98,7 @@ bool City::cityWouldAcceptDeal(double offeredPrice)
 void City::acceptDeal(double price)
 {
 	gold -= price;
-	resources.addFood(1);
+	resources.change(foodResource, 1);
 }
 
 double City::getGold()
@@ -107,6 +119,6 @@ unsigned int City::getPopulation()
 
 void City::updatePopulation()
 {
-	resources.subtractFood(getPopulationFoodReq());
+	resources.change(foodResource, -getPopulationFoodReq());
 	population *= getPopulationChange();
 }

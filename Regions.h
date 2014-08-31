@@ -24,18 +24,17 @@ public:
 
 	Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture, string cityName, double cityGold);
 	void draw();
-	void drawMenu();
 	bool handleInput();
+	void drawMenu();
+	bool handleMenuInput();
 	void updateAfterTurn();
-	
-  static City* selectedCity;
+
   friend World;
 protected:
 	void setPosition(const sf::Vector2f& pos);
-
 	void setTexture(sf::Texture* tex);
-private:
 
+	static Region* selectedRegion;
 
 	std::vector<sf::Sprite> hexagons;
     sf::Texture* texture;
@@ -49,8 +48,12 @@ private:
 	FactionEnum origOwner;
 
 	sf::Sprite menu;
-
+	
+	static Resources playerResources;
+	static double playerGold;
 };
+
+
 class World
 {
 public:
@@ -62,7 +65,9 @@ public:
 
   void handleTrading();
   void updateAfterTurn();
-private:
+protected:
+
+
 	Graph populationGraph;
 
 	std::vector<Region> regions;

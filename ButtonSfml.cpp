@@ -1,16 +1,17 @@
 #include "ButtonSfml.h"
 
 
-ButtonSfml::ButtonSfml(double setX, double setY, double setW, double setH, string setText, TextureIndex setTexture):
+ButtonSfml::ButtonSfml(double setX, double setY, double setW, double setH, string setText, TextureIndex setTexture, int setCharSize):
 	ClickableRectangle(setX, setY, setW, setH),
-	textureIndex(setTexture)
+	textureIndex(setTexture),
+	characterSize(setCharSize)
 {
 	button.setPosition(setX, setY);
 	button.setTexture(getTexture(textureIndex));
 	button.setScale(w / getTexture(textureIndex).getSize().x, h / getTexture(textureIndex).getSize().y);
 	
 	buttonText.setFont(getCustomFont()); 
-	buttonText.setCharacterSize(30); 
+	buttonText.setCharacterSize(setCharSize);
 	buttonText.setString(setText);
 	buttonText.setPosition(button.getPosition());
 }
@@ -21,7 +22,7 @@ void ButtonSfml::draw()
 
 	// Width of the string in text, used for centering the text on the buttons.
 	double textWidth = getStringWidth(buttonText.getString(), *(buttonText.getFont()), buttonText.getCharacterSize());
-	buttonText.setPosition(int(button.getPosition().x + w / 2 - (textWidth / 2)), int(button.getPosition().y + h / 3));
+	buttonText.setPosition(int(button.getPosition().x + w / 2 - (textWidth / 2)), int(button.getPosition().y + h / 2.0 - characterSize/1.5));
 
 	window->draw(buttonText);
 }
@@ -30,7 +31,7 @@ void ButtonSfml::setText(string setText)
 {
 	buttonText.setString(setText);
 }
-void ButtonSfml::setPoz(double newX, double newY)
+void ButtonSfml::setPos(double newX, double newY)
 {
 	x = newX;
 	y = newY;

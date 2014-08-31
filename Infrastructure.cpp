@@ -1,14 +1,17 @@
 #include <iostream>
 #include "GlobalValues.h"
+#include "Texture.h"
 
 #include "Infrastructure.h"
 
 
+
 Infrastructure::Infrastructure(unsigned int setLevel, unsigned int setMaxLevel, double setGold, int setStock, int xPos, int yPos):
-  level(setLevel),
-  maxLevel(setMaxLevel),
-  gold(setGold),
-  inStock(setStock)
+level(setLevel),
+maxLevel(setMaxLevel),
+gold(setGold),
+inStock(setStock),
+buyFromButton(0, 0, 50, 20, "Buy", button1, 14)
 {
 	infrastructureText.setFont(getCustomFont()); 
 	infrastructureText.setCharacterSize(16); 
@@ -33,7 +36,17 @@ void Infrastructure::drawMenu(double x, double y)
 
 	drawText(strPlusX("Stock: ", inStock), x + 20, y + 45);
 	drawText(strPlusX("Sells for: ", wouldSellFor()), x + 20, y + 60);
+}
 
+void Infrastructure::drawBuyingButton(double x, double y)
+{
+	buyFromButton.setPos(x + 160, y + 60);
+	buyFromButton.draw();
+}
+
+bool Infrastructure::isBuyingButtonClickedOn()
+{
+	return buyFromButton.isClickedOnRelative();
 }
 
 const double LEVEL_UPGRADE_COST = 6;

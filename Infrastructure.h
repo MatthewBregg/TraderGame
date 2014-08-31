@@ -1,5 +1,6 @@
 #include <iostream>
 #include "GlobalValues.h"
+#include "ButtonSfml.h"
 
 #ifndef INFRASTRUCTURE_H
 #define INFRASTRUCTURE_H
@@ -11,6 +12,9 @@ public:
 
 	void draw();
 	void drawMenu(double x, double y);
+	void drawBuyingButton(double x, double y);
+	bool isBuyingButtonClickedOn();
+
 	// Updates the infrastructure and returns the upkeep for that turn.
 	double refreshAfterTurn();
  
@@ -22,6 +26,7 @@ public:
   virtual string getName() = 0;
 protected:
 	sf::Text infrastructureText;
+	ButtonSfml buyFromButton;
 
 	unsigned int level;
 	unsigned int maxLevel;

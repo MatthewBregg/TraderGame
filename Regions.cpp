@@ -6,7 +6,10 @@
 #include "Regions.h"
 
 
-City* Region::selectedCity = nullptr;
+Region* Region::selectedRegion = nullptr;
+
+Resources Region::playerResources(5, 0, 0);
+double Region::playerGold(10);
 
 Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture, string cityName, double cityGold):
 	texture(nullptr),
@@ -14,10 +17,9 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 	farm(1, 6, 10, 0, 170, 120),
 	mill(0, 0, 0, 0, 0, 0),
 	mine(0, 0, 0, 0, 0, 0),
-	tradeCentre(),
+	tradeCentre(poses.at(1).x + 75, poses.at(1).y + 70),
 	currentOwner(setFaction),
 	origOwner(setFaction)
-
 {
 	for (auto& pos : poses)
 	{
@@ -43,32 +45,71 @@ void Region::draw()
 
 	city.draw();
 	farm.draw();
+	tradeCentre.draw();
 	//mill.draw(400, 210);
 	//mine.draw(400, 260);
 
 	drawMenu();
 }
-void Region::drawMenu()
-{
-	if (selectedCity == &city)
-	{
-		window->draw(menu);
-		city.drawMenu(menu.getPosition().x, menu.getPosition().y);
-		farm.drawMenu(menu.getPosition().x, menu.getPosition().y + 150);
-	}
-}
 
 bool Region::handleInput()
 {
-	if (city.isClickedOnRelative())
+	if (city.isClickedOnRelative() || tradeCentre.isClickedOnRelative())
 	{
-		if (selectedCity == &city)  // Already selected.
+		if (selectedRegion == this)  // Already selected.
 		{
-			selectedCity = nullptr;  // So deselect.
+			selectedRegion = nullptr;  // So deselect.
 		}
 		else
 		{
-			selectedCity = &city;
+			selectedRegion = this;
+		}
+		return true;
+	}
+
+	return false;
+}
+
+void Region::drawMenu()
+{
+	if (selectedRegion == this)
+	{
+		window->draw(menu);
+		city.drawMenu(menu.getPosition().x, menu.getPosition().y);
+		farm.drawMenu(menu.getPosition().x, menu.getPosition().y + 125);
+		if (tradeCentre.hasBeenBuilt())
+		{
+			// Draw the buttons that allow the player to sell/buy.
+			city.drawSellingButton(menu.getPosition().x + 50, menu.getPosition().y + 25);
+			farm.drawBuyingButton(menu.getPosition().x, menu.getPosition().y + 125);
+
+			drawText(strPlusX("Player gold: ", playerGold), menu.getPosition().x + 20, menu.getPosition().y + 240);
+			drawText(strPlusX("Player food: ", playerResources.get(foodResource)), menu.getPosition().x + 20, menu.getPosition().y + 255);
+			drawText(strPlusX("Player wood: ", playerResources.get(woodResource)), menu.getPosition().x + 20, menu.getPosition().y + 270);
+			drawText(strPlusX("Player steel: ", playerResources.get(steelResource)), menu.getPosition().x + 20, menu.getPosition().y + 285);
+		}
+	}
+}
+
+bool Region::handleMenuInput()
+{
+	if (farm.isBuyingButtonClickedOn())
+	{
+		if (playerGold >= farm.wouldSellFor())
+		{
+			playerGold -= farm.wouldSellFor();
+			playerResources.change(foodResource, 1);
+			farm.acceptDeal();
+		}
+		return true;
+	}
+	if (city.isSellingButtonClickedOn())
+	{
+		if (playerResources.get(foodResource) > 0)
+		{
+			playerGold += city.getBuyingPrice();
+			city.acceptDeal(city.getBuyingPrice());
+			playerResources.change(foodResource, -1);
 		}
 		return true;
 	}
@@ -159,7 +200,7 @@ void World::draw()
 }
 void World::drawMenu()
 {
-	double totalGold = 0;
+	double totalGold = Region::playerGold;
 	for (auto& region : regions)
 	{
 		region.drawMenu();
@@ -173,6 +214,14 @@ void World::drawMenu()
 }
 bool World::handleInput()
 {
+	if (Region::selectedRegion != nullptr)
+	{
+		if (Region::selectedRegion->handleMenuInput())
+		{
+			return true;
+		}
+	}
+		
 	for (auto& i : regions)
 	{
 		if (i.handleInput())
@@ -182,8 +231,8 @@ bool World::handleInput()
 	}
 	if (leftClickPressed)
 	{
-		// Some empty spot clicked, deselect the city.
-		Region::selectedCity = nullptr;
+		// Some empty spot clicked, deselect the city and trade centre.
+		Region::selectedRegion = nullptr;
 	}
 	return false;
 }

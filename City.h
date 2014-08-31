@@ -2,6 +2,7 @@
 #include "Resources.h"
 #include "GlobalValues.h"
 #include "ClickableRectangle.h"
+#include "ButtonSfml.h"
 #ifndef CITY_H
 #define CITY_H
 
@@ -12,6 +13,8 @@ public:
 
 	void draw();
 	void drawMenu(double x, double y);
+	void drawSellingButton(double x, double y);
+	bool isSellingButtonClickedOn();
 	void refreshAfterTurn();
 	
 	double getBuyingPrice();
@@ -29,6 +32,7 @@ private:
 	unsigned int population;
 
 	sf::Sprite citySprite;
+	ButtonSfml sellToButton;
 
 
 	void updatePopulation();

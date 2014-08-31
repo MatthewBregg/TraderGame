@@ -1,6 +1,15 @@
 #include <iostream>
 #ifndef RESOURCES_H
 #define RESOURCES_H
+
+enum ResourceEnum
+{
+	foodResource,
+	woodResource,
+	steelResource,
+
+};
+
 class Resources
 {
 public:
@@ -15,17 +24,15 @@ public:
 	void add(const Resources& addedResources);
 	// Subtracts reducedResources number of resources from the caller.
 	void subtract(const Resources& reducedResources);
-
   
-	unsigned int getFood();
-	void addFood(int foodAdded);
-	void subtractFood(int foodLost);
+	unsigned int get(ResourceEnum resource);
+	void change(ResourceEnum resource, int howMuchChanged);
 
 private:
 
-  unsigned int food;
-  unsigned int wood;
-  unsigned int iron;
+	int food;
+	int wood;
+	int steel;
 };
 
 

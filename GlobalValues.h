@@ -3,11 +3,11 @@
 
 
 #include <iostream>			//File output un input
-#include <assert.h>
 using namespace std;
 #include <SFML/Graphics.hpp>
 
 #include <string>
+#include <assert.h>
 #include <ctime> // Needed for the true randomization
 #include <cstdlib> 
 #include <vector>	
@@ -48,7 +48,6 @@ extern sf::View* view;
 		#define RESOURCE_PATH "../Resources/" //Should work fine for osx also
 	#endif  
 #endif
-
 
 extern string getResourcePath();
 

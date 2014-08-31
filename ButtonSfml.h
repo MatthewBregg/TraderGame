@@ -10,15 +10,16 @@
 class ButtonSfml: public ClickableRectangle
 {
 public:
-	ButtonSfml(double setX, double setY, double setW, double setH, string setText, TextureIndex setTexture);
+	ButtonSfml(double setX, double setY, double setW, double setH, string setText, TextureIndex setTexture, int setCharSize = 24);
 
 	void draw();
 
 	void setText(string setText);
 
-	void setPoz(double newX, double newY);
+	void setPos(double newX, double newY);
 protected:
 	TextureIndex textureIndex;
+	int characterSize;
 
 	sf::Sprite button;
 	sf::Text buttonText;

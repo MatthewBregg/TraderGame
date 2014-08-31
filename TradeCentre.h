@@ -1,14 +1,22 @@
-#include <iostream>
 #include "Resources.h"
+#include "GlobalValues.h"
+#include "ClickableRectangle.h"
+
 #ifndef TRADECENTRE_H
 #define TRADECENTRE_H
-class TradeCentre
+
+
+class TradeCentre : public ClickableRectangle
 {
 public:
-  TradeCentre():resources(0,0,0){};  
-  TradeCentre(Resources& r):resources(r){};
+	TradeCentre(int xPos, int yPos);
+
+	void draw();
+	bool hasBeenBuilt();
 private:
-  Resources resources;
+	bool isBuilt;
+	sf::Sprite tradeCentreSprite;
+
 };
 
 

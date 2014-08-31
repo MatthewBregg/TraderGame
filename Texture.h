@@ -9,12 +9,14 @@
 enum TextureIndex
 {
 	randomBg,
+	button1,
 	grassLandsHex,
 	woodlandsHex,
 	hillHex,
 	deepSeaHex,
 
 	randomCityTexture,
+	tradeCentreTexture,
 
 	totalTextures,
 };
