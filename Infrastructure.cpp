@@ -24,18 +24,17 @@ void Infrastructure::draw()
 }
 void Infrastructure::drawMenu(double x, double y)
 {
-	drawText(getName(), x + 60, y);
+	stringstream nameString;
+	nameString << getName() << "(" << "Level: " << level << "/" << maxLevel << ")";
+
+	drawText(nameString.str(), x + 60, y);
 
 	stringstream goldString;
 	goldString << "Gold: " << gold << "(-" << upkeep() << ")";
 	drawText(goldString.str(), x + 20, y + 15);
 
-	stringstream levelString;
-	levelString << "Level: " << level << "/" << maxLevel;
-	drawText(levelString.str(), x + 20, y + 30);
-
-	drawText(strPlusX("Stock: ", inStock), x + 20, y + 45);
-	drawText(strPlusX("Sells for: ", wouldSellFor()), x + 20, y + 60);
+	drawText(strPlusX("Stock: ", inStock), x + 20, y + 30);
+	drawText(strPlusX("Sells for: ", wouldSellFor()), x + 20, y + 45);
 }
 
 void Infrastructure::drawBuyingButton(double x, double y)

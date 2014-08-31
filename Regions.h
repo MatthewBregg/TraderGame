@@ -41,7 +41,7 @@ protected:
   
 	City city;
 	Farm farm;
-	WoodMill mill;
+	WoodMill woodmill;
 	Mine mine;
 	TradeCentre tradeCentre;
 	FactionEnum currentOwner;

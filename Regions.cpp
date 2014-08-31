@@ -15,7 +15,7 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 	texture(nullptr),
 	city(cityName, Resources(40, 0, 0), cityGold, poses.at(0).x + 75, poses.at(0).y + 70),
 	farm(1, 6, 10, 0, 170, 120),
-	mill(0, 0, 0, 0, 0, 0),
+	woodmill(0, 0, 0, 0, 0, 0),
 	mine(0, 0, 0, 0, 0, 0),
 	tradeCentre(poses.at(1).x + 75, poses.at(1).y + 70),
 	currentOwner(setFaction),
@@ -31,9 +31,9 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 		hexagons.push_back(temp);
 	}
 
-	menu.setPosition(500, 80);
+	menu.setPosition(500, 50);
 	menu.setTexture(getTexture(randomBg));
-	menu.setScale(290.0 / getTexture(randomBg).getSize().x, 350.0 / getTexture(randomBg).getSize().y);
+	menu.setScale(290.0 / getTexture(randomBg).getSize().x, 400.0 / getTexture(randomBg).getSize().y);
 };
 
 void Region::draw()
@@ -46,8 +46,8 @@ void Region::draw()
 	city.draw();
 	farm.draw();
 	tradeCentre.draw();
-	//mill.draw(400, 210);
-	//mine.draw(400, 260);
+	woodmill.draw();
+	mine.draw();
 
 	drawMenu();
 }
@@ -76,33 +76,27 @@ void Region::drawMenu()
 	{
 		window->draw(menu);
 		city.drawMenu(menu.getPosition().x, menu.getPosition().y);
-		farm.drawMenu(menu.getPosition().x, menu.getPosition().y + 125);
+		farm.drawMenu(menu.getPosition().x, menu.getPosition().y + 110);
+		woodmill.drawMenu(menu.getPosition().x, menu.getPosition().y + 175);
+		mine.drawMenu(menu.getPosition().x, menu.getPosition().y + 240);
 		if (tradeCentre.hasBeenBuilt())
 		{
 			// Draw the buttons that allow the player to sell/buy.
 			city.drawSellingButton(menu.getPosition().x + 50, menu.getPosition().y + 25);
-			farm.drawBuyingButton(menu.getPosition().x, menu.getPosition().y + 125);
+			farm.drawBuyingButton(menu.getPosition().x, menu.getPosition().y + 90);
+			woodmill.drawBuyingButton(menu.getPosition().x, menu.getPosition().y + 155);
+			mine.drawBuyingButton(menu.getPosition().x, menu.getPosition().y + 220);
 
-			drawText(strPlusX("Player gold: ", playerGold), menu.getPosition().x + 20, menu.getPosition().y + 240);
-			drawText(strPlusX("Player food: ", playerResources.get(foodResource)), menu.getPosition().x + 20, menu.getPosition().y + 255);
-			drawText(strPlusX("Player wood: ", playerResources.get(woodResource)), menu.getPosition().x + 20, menu.getPosition().y + 270);
-			drawText(strPlusX("Player steel: ", playerResources.get(steelResource)), menu.getPosition().x + 20, menu.getPosition().y + 285);
+			drawText(strPlusX("Player gold: ", playerGold), menu.getPosition().x + 20, menu.getPosition().y + 310);
+			drawText(strPlusX("Player food: ", playerResources.get(foodResource)), menu.getPosition().x + 20, menu.getPosition().y + 330);
+			drawText(strPlusX("Player wood: ", playerResources.get(woodResource)), menu.getPosition().x + 20, menu.getPosition().y + 345);
+			drawText(strPlusX("Player steel: ", playerResources.get(steelResource)), menu.getPosition().x + 20, menu.getPosition().y + 360);
 		}
 	}
 }
 
 bool Region::handleMenuInput()
 {
-	if (farm.isBuyingButtonClickedOn())
-	{
-		if (playerGold >= farm.wouldSellFor())
-		{
-			playerGold -= farm.wouldSellFor();
-			playerResources.change(foodResource, 1);
-			farm.acceptDeal();
-		}
-		return true;
-	}
 	if (city.isSellingButtonClickedOn())
 	{
 		if (playerResources.get(foodResource) > 0)
@@ -113,6 +107,39 @@ bool Region::handleMenuInput()
 		}
 		return true;
 	}
+	if (farm.isBuyingButtonClickedOn())
+	{
+		if (playerGold >= farm.wouldSellFor())
+		{
+			playerGold -= farm.wouldSellFor();
+			playerResources.change(foodResource, 1);
+			farm.acceptDeal();
+		}
+		return true;
+	}
+
+	if (woodmill.isBuyingButtonClickedOn())
+	{
+		if (playerGold >= woodmill.wouldSellFor())
+		{
+			playerGold -= woodmill.wouldSellFor();
+			playerResources.change(woodResource, 1);
+			woodmill.acceptDeal();
+		}
+		return true;
+	}
+
+	if (mine.isBuyingButtonClickedOn())
+	{
+		if (playerGold >= mine.wouldSellFor())
+		{
+			playerGold -= mine.wouldSellFor();
+			playerResources.change(steelResource, 1);
+			mine.acceptDeal();
+		}
+		return true;
+	}
+
 	return false;
 }
 

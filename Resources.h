@@ -7,32 +7,27 @@ enum ResourceEnum
 	foodResource,
 	woodResource,
 	steelResource,
-
+	TOTAL_RESOURCES,
 };
 
 class Resources
 {
 public:
-	Resources(int f, int w, int i);
+	Resources(int setFood, int setWood, int setSteel);
  
   
 	// Returns true if the caller has enough resources to be subtracted from
 	// reducedResources without going into the negative. Returns false otherwise.
 	bool canSubtract(const Resources& reducedResources);
 
-	// Adds addedResources to the caller.
-	void add(const Resources& addedResources);
-	// Subtracts reducedResources number of resources from the caller.
-	void subtract(const Resources& reducedResources);
-  
-	unsigned int get(ResourceEnum resource);
+	int get(ResourceEnum resource);
+
+	void change(const Resources& howMuchChanged);
 	void change(ResourceEnum resource, int howMuchChanged);
 
 private:
 
-	int food;
-	int wood;
-	int steel;
+	int resources[TOTAL_RESOURCES];
 };
 
 
