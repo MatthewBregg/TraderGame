@@ -11,7 +11,7 @@ const sf::Texture& getTexture(TextureIndex textureIndex)
 
 	if (texturePointer[textureIndex].getSize().x == 0 && texturePointer[textureIndex].getSize().y == 0)
 	{
-		if (!texturePointer[buttonTexture1].loadFromFile(getResourcePath() + "buttonNext.png")			|| 
+		if (!texturePointer[randomBg].loadFromFile(getResourcePath() + "randomBg.png")					||
 			!texturePointer[grassLandsHex].loadFromFile(getResourcePath() + "grasslandsHex.png")		||
 			!texturePointer[woodlandsHex].loadFromFile(getResourcePath() + "woodlandsHex.png")			||
 			!texturePointer[hillHex].loadFromFile(getResourcePath() + "hillHex.png")					||

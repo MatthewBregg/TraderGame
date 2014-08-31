@@ -56,24 +56,20 @@ unsigned int City::getPopulationFoodReq()
 {
 	return ceil(double(population)/2000.0);
 }
+
+const double MIN_POPULATION_GROWTH = 0.7;
+const double MAX_POPULATION_GROWTH = 1.1;
+// How much the population growth can be affected by food.
+const double POPULATION_GROWTH_DIFF = MAX_POPULATION_GROWTH - MIN_POPULATION_GROWTH;
 double City::getPopulationChange()
 {
-	if (resources.getFood() == 0)		// Nothing to eat.
+	double populationChange = MIN_POPULATION_GROWTH + 
+		(double(resources.getFood()) / double(getPopulationFoodReq())) * POPULATION_GROWTH_DIFF;
+	if (populationChange > MAX_POPULATION_GROWTH)
 	{
-		return 0.7;	// Litte food, population plummets.
+		populationChange = MAX_POPULATION_GROWTH;
 	}
-	else if (resources.getFood() >= getPopulationFoodReq())
-	{
-		return 1.1;	// Lots of food, population increases.
-	}
-	else if (resources.getFood() >= getPopulationFoodReq() * 0.8)
-	{
-		return  1;	 // Stays the same.
-	}
-	else 
-	{
-		return 0.9;		// Litte food, population decreases.
-	}
+	return populationChange;
 }
 
 bool City::cityWouldAcceptDeal(double offeredPrice)

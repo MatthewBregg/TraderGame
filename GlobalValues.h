@@ -2,26 +2,19 @@
 #define GlobalValues_H
 
 
-#include <iostream>
+#include <iostream>			//File output un input
 #include <assert.h>
 using namespace std;
 #include <SFML/Graphics.hpp>
 
 #include <string>
-
-
-#include <iostream>
 #include <ctime> // Needed for the true randomization
 #include <cstdlib> 
-
-
-#include <SFML/Graphics.hpp>
 #include <vector>	
-#include <iostream>			//File output un input
 #include <fstream>    // fstream provides an interface to read and write data from files as input/output streams.
 #include <sstream>
 
-#include <string>
+#include "TextManager.h"
 
 
 extern sf::RenderWindow* window;
@@ -66,7 +59,6 @@ extern sf::Clock runtime;
 
 extern sf::RectangleShape mapSize;
 
-extern sf::Font* getCustomFont();
 
 // sf::Mouse::isButtonPressed(sf::Mouse::Left) since it is always true while the click is down. 
 // (Meaning buttons will get clicked 20 times per sec. leftClickPressed resets to false after 1 
@@ -88,20 +80,6 @@ extern int getWindowHeight();
 
 extern bool keys[256];
 extern int mouseScroll; // Negative or positive depending on which way the player scrolls.
-
-
-// Some methods for drawing text like this "something: x".
-extern void drawText(string text, int x, int y);
-
-template <typename SOME_VALUE>
-// Methods for adding string and some value together, be it a string or a number or 
-// whatever. As long as stringstream supports it. 
-string strPlusX(string text, SOME_VALUE value)
-{
-	stringstream textString;	textString << text << value;
-	return textString.str();
-}
-
 
 
 #endif /* GlobalValues_H */

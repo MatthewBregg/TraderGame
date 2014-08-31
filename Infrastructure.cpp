@@ -10,7 +10,7 @@ Infrastructure::Infrastructure(unsigned int setLevel, unsigned int setMaxLevel, 
   gold(setGold),
   inStock(setStock)
 {
-	infrastructureText.setFont(*getCustomFont()); 
+	infrastructureText.setFont(getCustomFont()); 
 	infrastructureText.setCharacterSize(16); 
 	infrastructureText.setPosition(200, 200);
 };

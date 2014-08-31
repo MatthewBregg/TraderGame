@@ -30,8 +30,8 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 	}
 
 	menu.setPosition(500, 80);
-	menu.setTexture(getTexture(buttonTexture1));
-	menu.setScale(290.0 / getTexture(buttonTexture1).getSize().x, 350.0 / getTexture(buttonTexture1).getSize().y);
+	menu.setTexture(getTexture(randomBg));
+	menu.setScale(290.0 / getTexture(randomBg).getSize().x, 350.0 / getTexture(randomBg).getSize().y);
 };
 
 void Region::draw()
@@ -114,15 +114,17 @@ sf::Vector2f getHexPos(int index)
 }
 
 World::World():
-populationGraph(50, 400)
+populationGraph("Population", 50, 400)
 {
 	std::vector<sf::Vector2f> hexPos;
+	vector <string> cityNames;
 
 	hexPos.push_back(getHexPos(0));
 	hexPos.push_back(getHexPos(4));
 	hexPos.push_back(getHexPos(1));
 	hexPos.push_back(getHexPos(5));
 	regions.push_back(Region(hexPos, elfFaction, woodlandsHex, "Rivendell", 10));
+	cityNames.push_back("Rivendell");
 	hexPos.clear();
 
 	hexPos.push_back(getHexPos(2));
@@ -130,6 +132,7 @@ populationGraph(50, 400)
 	hexPos.push_back(getHexPos(3));
 	hexPos.push_back(getHexPos(7));
 	regions.push_back(Region(hexPos, dwarfFaction, hillHex, "Khazad-dum", 40));
+	cityNames.push_back("Khazad-dum");
 	hexPos.clear();
 
 	hexPos.push_back(getHexPos(8));
@@ -137,9 +140,14 @@ populationGraph(50, 400)
 	hexPos.push_back(getHexPos(9));
 	hexPos.push_back(getHexPos(13));
 	regions.push_back(Region(hexPos, elfFaction, grassLandsHex, "Shire", 5));
+	cityNames.push_back("Shire");
 	hexPos.clear();
 
-	populationGraph.initialise(regions.size(), vector < sf::Color > { sf::Color::Red, sf::Color::Green, sf::Color::Blue });
+	populationGraph.initialise(
+		regions.size(), 
+		vector < sf::Color > {sf::Color::Red, sf::Color::Green, sf::Color::Blue}, 
+		cityNames
+	);
 }
 
 void World::draw()
@@ -159,7 +167,7 @@ void World::drawMenu()
 	}
 
 	// To check if there are any bugs when exchanging gold.
-	drawText(strPlusX("Total gold: ", totalGold), 150, 500);
+	drawText(strPlusX("Total gold: ", totalGold), 350, 500);
 
 	populationGraph.draw();
 }

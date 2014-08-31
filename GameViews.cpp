@@ -43,8 +43,6 @@ void GameViews::render()
 
 		}
 
-
-
 		window->setView(*view);
 		world.draw();
 
@@ -56,16 +54,24 @@ void GameViews::render()
 }
 void GameViews::scroll(const sf::Time& clock)
 {
+	if (keys[71])
+	{
+		int breakpoint = 1;
+	}
+
   static sf::Time lasttime(sf::seconds(0));
   static int oldchange(0);
-  //71 is left, 72 is right, 73 is up, 74 is downs
-  if (lasttime.asMicroseconds() != 0)
-    {
-      if (abs(lasttime.asMicroseconds() - clock.asMicroseconds()) > lasttime.asMicroseconds()) // a bit spaghetti, but whatever
-	{
-	  return;
-	}
-    }
+	//71 is left, 72 is right, 73 is up, 74 is downs
+	
+  // What was the point of this? It was causing breaking the scrolling for me.
+ 
+	//if (lasttime.asMicroseconds() != 0)
+	//{
+	//	if (abs(lasttime.asMicroseconds() - clock.asMicroseconds()) > lasttime.asMicroseconds()) // a bit spaghetti, but whatever
+	//	{
+	//		return;
+	//	}
+	//}
   int change = ((((clock + lasttime)).asMicroseconds())/2)/100 * SCROLL_SPEED;
   change = (change+oldchange)/2;
    if ( change > 50 )

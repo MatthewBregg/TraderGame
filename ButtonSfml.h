@@ -15,14 +15,13 @@ public:
 	void draw();
 
 	void setText(string setText);
-	void setText(wstring setText);
 
 	void setPoz(double newX, double newY);
 protected:
 	TextureIndex textureIndex;
 
+	sf::Sprite button;
 	sf::Text buttonText;
-	sf::Sprite sprite;
 };
 
 #endif /* BUTTONSFML_H */

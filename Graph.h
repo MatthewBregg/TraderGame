@@ -8,12 +8,15 @@
 class Graph
 {
 public:
-	Graph(int setX, int setY);
+	Graph(string setName, int setX, int setY);
 	void draw();
 	void update(unsigned int index, int newValue);
-
-	void initialise(int numberOfEntities, vector<sf::Color> setColors);
+	
+	// Goes through all the values to find the largest one and return it.
+	double findMaxValue();
+	void initialise(int numberOfEntities, vector<sf::Color> setColors, vector<string> setNames);
 protected:
+	string name;
 	bool initialised;
 	int xPos;
 	int yPos;
@@ -21,6 +24,8 @@ protected:
 
 	vector<vector<double>> entities;
 	vector<sf::Color> colors;
+	vector<string> names; 
+
 	sf::Sprite background;
 
 };

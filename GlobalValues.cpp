@@ -16,20 +16,6 @@ int getRandomNumber(int range)
 	return rand()%range; 
 }
 
-sf::Font* getCustomFont()
-{
-	static bool fontInitialised = false;
-	static sf::Font font;
-	if (fontInitialised == false)
-	{
-		string filename = getResourcePath() + "mplus-1p-medium.ttf";
-		if (!font.loadFromFile(filename)){	/*error**/ }
-		else {
-			fontInitialised = true;
-		}
-	}
-	return &font;
-}
 
 // Can't use sf::Mouse::isButtonPressed(sf::Mouse::Left) since it is always true. This one resets to false after doing some action
 // and is set to true only when left click is pressed again. 
@@ -71,17 +57,6 @@ double SCROLL_SPEED = 10;
 bool keys[256];
 int mouseScroll = 0; // Negative or positive depending on which way the player scrolls.
 sf::RectangleShape mapSize(sf::Vector2f(2000,2000));
-
-sf::Text freeText;
-// Some methods for drawing text without having to create text objects on their side. 
-void drawText(string text, int x, int y)
-{
-	freeText.setFont(*getCustomFont()); 
-	freeText.setCharacterSize(14); 
-	freeText.setString(text);
-	freeText.setPosition(x, y);
-	window->draw(freeText);
-}
 
 
 
