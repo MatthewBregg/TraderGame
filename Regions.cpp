@@ -29,7 +29,6 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 					  DEFAULT_HEX_SIZE / getTexture(hexTexture).getSize().y);
 		hexagons.push_back(temp);
 	}
-
 	menu.setPosition(500, 10);
 	menu.setTexture(getTexture(randomBg));
 	menu.setScale(290.0 / getTexture(randomBg).getSize().x, 440.0 / getTexture(randomBg).getSize().y);
@@ -47,8 +46,6 @@ void Region::draw()
 	tradeCentre.draw();
 	woodmill.draw();
 	mine.draw();
-
-
 }
 
 bool Region::handleInput()
