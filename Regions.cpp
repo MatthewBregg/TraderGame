@@ -15,8 +15,8 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 	texture(nullptr),
 	city(cityName, Resources(40, 0, 0), cityGold, poses.at(0).x + 75, poses.at(0).y + 70),
 	farm(1, 6, 10, 0, 170, 120),
-	woodmill(0, 0, 0, 0, 0, 0),
-	mine(0, 0, 0, 0, 0, 0),
+	woodmill(0, 4, 0, 0, 0, 0),
+	mine(0, 4, 0, 0, 0, 0),
 	tradeCentre(poses.at(1).x + 75, poses.at(1).y + 70),
 	currentOwner(setFaction),
 	origOwner(setFaction)
@@ -31,9 +31,9 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 		hexagons.push_back(temp);
 	}
 
-	menu.setPosition(500, 50);
+	menu.setPosition(500, 10);
 	menu.setTexture(getTexture(randomBg));
-	menu.setScale(290.0 / getTexture(randomBg).getSize().x, 400.0 / getTexture(randomBg).getSize().y);
+	menu.setScale(290.0 / getTexture(randomBg).getSize().x, 440.0 / getTexture(randomBg).getSize().y);
 };
 
 void Region::draw()
@@ -75,38 +75,46 @@ void Region::drawMenu()
 	if (selectedRegion == this)
 	{
 		window->draw(menu);
-		city.drawMenu(menu.getPosition().x, menu.getPosition().y);
-		farm.drawMenu(menu.getPosition().x, menu.getPosition().y + 110);
-		woodmill.drawMenu(menu.getPosition().x, menu.getPosition().y + 175);
-		mine.drawMenu(menu.getPosition().x, menu.getPosition().y + 240);
+		city.drawMenu(menu.getPosition().x, menu.getPosition().y - 10);
+		farm.drawMenu(menu.getPosition().x, menu.getPosition().y + 160);
+		woodmill.drawMenu(menu.getPosition().x, menu.getPosition().y + 225);
+		mine.drawMenu(menu.getPosition().x, menu.getPosition().y + 290);
 		if (tradeCentre.hasBeenBuilt())
 		{
 			// Draw the buttons that allow the player to sell/buy.
-			city.drawSellingButton(menu.getPosition().x + 50, menu.getPosition().y + 25);
-			farm.drawBuyingButton(menu.getPosition().x, menu.getPosition().y + 90);
-			woodmill.drawBuyingButton(menu.getPosition().x, menu.getPosition().y + 155);
-			mine.drawBuyingButton(menu.getPosition().x, menu.getPosition().y + 220);
+			city.drawSellingButtons();
+			farm.drawBuyingButton();
+			woodmill.drawBuyingButton();
+			mine.drawBuyingButton();
 
-			drawText(strPlusX("Player gold: ", playerGold), menu.getPosition().x + 20, menu.getPosition().y + 310);
-			drawText(strPlusX("Player food: ", playerResources.get(foodResource)), menu.getPosition().x + 20, menu.getPosition().y + 330);
-			drawText(strPlusX("Player wood: ", playerResources.get(woodResource)), menu.getPosition().x + 20, menu.getPosition().y + 345);
-			drawText(strPlusX("Player steel: ", playerResources.get(steelResource)), menu.getPosition().x + 20, menu.getPosition().y + 360);
+			static int playerInfoY = menu.getPosition().y + 370;
+			drawText(strPlusX("Player gold: ", playerGold), menu.getPosition().x + 20, playerInfoY);
+			drawText(strPlusX("Player food: ", playerResources.get(foodResource)), menu.getPosition().x + 20, playerInfoY + 15);
+			drawText(strPlusX("Player wood: ", playerResources.get(woodResource)), menu.getPosition().x + 20, playerInfoY + 30);
+			drawText(strPlusX("Player steel: ", playerResources.get(steelResource)), menu.getPosition().x + 20, playerInfoY + 45);
 		}
 	}
 }
 
 bool Region::handleMenuInput()
 {
-	if (city.isSellingButtonClickedOn())
+	// Check if player wants to sell something to the city.
+	for (int i = 0; i < TOTAL_RESOURCES; ++i)
 	{
-		if (playerResources.get(foodResource) > 0)
+		ResourceEnum resource = static_cast<ResourceEnum>(i);
+
+		if (city.isSellingButtonClickedOn(resource))
 		{
-			playerGold += city.getBuyingPrice();
-			city.acceptDeal(city.getBuyingPrice());
-			playerResources.change(foodResource, -1);
+			if (playerResources.get(resource) > 0)
+			{
+				playerGold += city.getBuyingPrice(resource);
+				city.acceptDeal(resource, city.getBuyingPrice(resource));
+				playerResources.change(resource, -1);
+			}
+			return true;
 		}
-		return true;
 	}
+
 	if (farm.isBuyingButtonClickedOn())
 	{
 		if (playerGold >= farm.wouldSellFor())
@@ -117,7 +125,6 @@ bool Region::handleMenuInput()
 		}
 		return true;
 	}
-
 	if (woodmill.isBuyingButtonClickedOn())
 	{
 		if (playerGold >= woodmill.wouldSellFor())
@@ -128,7 +135,6 @@ bool Region::handleMenuInput()
 		}
 		return true;
 	}
-
 	if (mine.isBuyingButtonClickedOn())
 	{
 		if (playerGold >= mine.wouldSellFor())
@@ -145,12 +151,9 @@ bool Region::handleMenuInput()
 
 void Region::updateAfterTurn()
 {
-	double farmUpkeep = farm.refreshAfterTurn();
+	double farmUpkeep = farm.refreshAfterTurn() + woodmill.refreshAfterTurn() + mine.refreshAfterTurn();
 	city.addGold(farmUpkeep);
 	city.refreshAfterTurn();
-
-	//mill.refreshAfterTurn();
-	//mine.refreshAfterTurn();
 }
 
 void Region::setTexture(sf::Texture* tex)
@@ -231,7 +234,7 @@ void World::drawMenu()
 	for (auto& region : regions)
 	{
 		region.drawMenu();
-		totalGold += region.city.getGold() + region.farm.getGold();
+		totalGold += region.city.getGold() + region.farm.getGold() + region.woodmill.getGold() + region.mine.getGold();
 	}
 
 	// To check if there are any bugs when exchanging gold.
@@ -273,18 +276,21 @@ void World::handleTrading()
 	bool aNewDealCanOccur = true;
 	while (aNewDealCanOccur)
 	{
+		// Find the resource that would be payed for the most. 
+		ResourceEnum mostWantedResource = getMostWantedResource();
+
 		// Find the city offering the most for food.
-		City* cityOfferingTheMost = getMaxBuyingPrice();
+		City* cityOfferingTheMost = getMaxBuyingPrice(mostWantedResource);
 		// Find the farm that sells for the smallest price.
-		Farm* farmAskingTheLeast = getMinSellingPrice();
+		Infrastructure* infrastructureAskingTheLeast = getMinSellingPrice(mostWantedResource);
 
 		if (cityOfferingTheMost != nullptr && 
-			farmAskingTheLeast != nullptr && 
-			cityOfferingTheMost->cityWouldAcceptDeal(farmAskingTheLeast->wouldSellFor()))
+			infrastructureAskingTheLeast != nullptr &&
+			cityOfferingTheMost->wouldAcceptDeal(mostWantedResource, infrastructureAskingTheLeast->wouldSellFor()))
 		{
 			// The buyer offers more than the seller asks for, a deal occurs.
-			cityOfferingTheMost->acceptDeal(farmAskingTheLeast->wouldSellFor());
-			farmAskingTheLeast->acceptDeal();
+			cityOfferingTheMost->acceptDeal(mostWantedResource, infrastructureAskingTheLeast->wouldSellFor());
+			infrastructureAskingTheLeast->acceptDeal();
 		}
 		else
 		{
@@ -308,36 +314,86 @@ void World::updateAfterTurn()
 
 // ------------- Private
 
+// Returns the resource that would be payed for the most. 
+// For example, city a pays (1, 5, 6) for each resource.
+// City b pays (7, 3, 4). The most wanted resource is the 
+// first one, as someone would pay 7 gold for it. 
+ResourceEnum World::getMostWantedResource()
+{
+	ResourceEnum mostWantedResource = foodResource;
+	double maxBuyingPrice = 0;
+	for (auto& region : regions)
+	{
+		for (int resource = 0; resource < TOTAL_RESOURCES; ++resource)
+		{
+			ResourceEnum resourceIndex = static_cast<ResourceEnum>(resource);
+			double citiesBuyingPrice = region.city.getBuyingPrice(resourceIndex);
+			if (maxBuyingPrice < citiesBuyingPrice)
+			{
+				maxBuyingPrice = citiesBuyingPrice;
+				mostWantedResource = resourceIndex;
+			}
+		}
+	}
+	return mostWantedResource;
+}
+
 // Returns the city offering the largest price for 1 unit of food.
-City* World::getMaxBuyingPrice()
+City* World::getMaxBuyingPrice(ResourceEnum resource)
 {
 	City* cityOfferingTheMost = nullptr;
 	double maxBuyingPrice = 0;
 	for (auto& region : regions)
 	{
-		double citiesBuyingPrice = region.city.getBuyingPrice();
+		double citiesBuyingPrice = region.city.getBuyingPrice(resource);
 		if (maxBuyingPrice < citiesBuyingPrice)
 		{
-			maxBuyingPrice = region.city.getBuyingPrice();
+			maxBuyingPrice = citiesBuyingPrice;
 			cityOfferingTheMost = &region.city;
 		}
 	}
 	return cityOfferingTheMost;
 }
 
-// Returns the farm asking for the smallest price for 1 unit of food. 
-Farm* World::getMinSellingPrice()
+// Returns the infrastructure asking the smallest price for the given resource.
+Infrastructure* World::getMinSellingPrice(ResourceEnum resource)
 {
-	Farm* farmAskingTheLeast = nullptr;
+	Infrastructure* infrastructureAskingTheLeast = nullptr;
 	double minSellingPrice = 100000000;
+
 	for (auto& region : regions)
 	{
-		double farmWouldSellFor = region.farm.wouldSellFor();
-		if (minSellingPrice > farmWouldSellFor)
+		if (resource == foodResource)
 		{
-			minSellingPrice = region.farm.wouldSellFor();
-			farmAskingTheLeast = &region.farm;
+			double farmWouldSellFor = region.farm.wouldSellFor();
+			if (minSellingPrice > farmWouldSellFor)
+			{
+				minSellingPrice = region.farm.wouldSellFor();
+				infrastructureAskingTheLeast = &region.farm;
+			}
+		}
+		else if (resource == woodResource)
+		{
+			double woodmillWouldSellFor = region.woodmill.wouldSellFor();
+			if (minSellingPrice > woodmillWouldSellFor)
+			{
+				minSellingPrice = region.woodmill.wouldSellFor();
+				infrastructureAskingTheLeast = &region.woodmill;
+			}
+		}
+		else if (resource == steelResource)
+		{
+			double mineWouldSellFor = region.mine.wouldSellFor();
+			if (minSellingPrice > mineWouldSellFor)
+			{
+				minSellingPrice = region.mine.wouldSellFor();
+				infrastructureAskingTheLeast = &region.mine;
+			}
+		}
+		else
+		{
+			assert(0 && "Not existing resource buying price requested.");
 		}
 	}
-	return farmAskingTheLeast;
+	return infrastructureAskingTheLeast;
 }

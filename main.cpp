@@ -92,17 +92,14 @@ sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
 		}
 	
 	}
-    
-
 }
 
 int main()
 {
-
 	GameViews::init();
 
 	window = new sf::RenderWindow(sf::VideoMode(getWindowWidth(), getWindowHeight()), "Traps are the best");
-	view = new sf::View(sf::Vector2f(400,300), sf::Vector2f(800,600));
+	view = new sf::View(sf::Vector2f(getWindowWidth() / 2, getWindowHeight() / 2), sf::Vector2f(getWindowWidth(), getWindowHeight()));
 	window->setView(*view);
 
 	window->setFramerateLimit(60);	

@@ -1,5 +1,5 @@
-#include <iostream>
 #include "Resources.h"
+#include <array>
 #include "GlobalValues.h"
 #include "ClickableRectangle.h"
 #include "ButtonSfml.h"
@@ -13,15 +13,16 @@ public:
 
 	void draw();
 	void drawMenu(double x, double y);
-	void drawSellingButton(double x, double y);
-	bool isSellingButtonClickedOn();
+	void drawSellingButtons();
+	bool isSellingButtonClickedOn(ResourceEnum resource);
 	void refreshAfterTurn();
 	
-	double getBuyingPrice();
+	double getBuyingPrice(ResourceEnum resource);
+
 	unsigned int getPopulationFoodReq();
 	double getPopulationChange();
-	bool cityWouldAcceptDeal(double offeredPrice);
-	void acceptDeal(double price);
+	bool wouldAcceptDeal(ResourceEnum resourceTraded, double offeredPrice);
+	void acceptDeal(ResourceEnum resourceTraded, double price);
 	double getGold();
 	void addGold(double howMuch);
 	unsigned int getPopulation();
@@ -30,13 +31,16 @@ private:
 	Resources resources;
 	double gold;
 	unsigned int population;
+	unsigned int soldiers;
 
 	sf::Sprite citySprite;
-	ButtonSfml sellToButton;
-
+	array<ButtonSfml, TOTAL_RESOURCES> sellToButtons;
 
 	void updatePopulation();
-
+	
+	double foodBuyingPrice();
+	double woodBuyingPrice();
+	double steelBuyingPrice();
 };
 
 

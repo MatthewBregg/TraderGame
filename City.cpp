@@ -11,12 +11,13 @@ City::City(string setName, Resources r, int g, int xPos, int yPos):
 	resources(r),
 	gold(g),
 	population(10000),
-	sellToButton(0, 0, 50, 20, "Sell", button1, 14)
+	soldiers(0),
+	sellToButtons({ ButtonSfml(0, 0, 50, 20, "Sell", button1, 14), ButtonSfml(0, 0, 50, 20, "Sell", button1, 14), ButtonSfml(0, 0, 50, 20, "Sell", button1, 14) })
  {
+
 	citySprite.setPosition(xPos, yPos);
 	citySprite.setTexture(getTexture(randomCityTexture));
 	citySprite.setScale(CITY_SIZE / getTexture(randomCityTexture).getSize().x, CITY_SIZE / getTexture(randomCityTexture).getSize().y);
-
  };
 
 void City::draw()
@@ -31,23 +32,40 @@ void City::drawMenu(double x, double y)
 	popString << "Population: " << population << "(*" << getPopulationChange() << ")";
 	drawText(popString.str(), x + 20, y + 40);
 
+	drawText(strPlusX("Gold: ", gold), x + 20, y + 55);
+
 	stringstream foodStockString;
 	foodStockString << "Food in stock: " << resources.get(foodResource) << "(-" << getPopulationFoodReq() << ")";
-	drawText(foodStockString.str(), x + 20, y + 55);
+	drawText(foodStockString.str(), x + 20, y + 70);
+	drawText(strPlusX("Buys food for: ", getBuyingPrice(foodResource)), x + 20, y + 85);
 
-	drawText(strPlusX("Gold: ", gold), x + 20, y + 70);
-	drawText(strPlusX("Buys food for: ", getBuyingPrice()), x + 20, y + 85);
+	stringstream woodStockString;
+	woodStockString << "Wood in stock: " << resources.get(woodResource);
+	drawText(woodStockString.str(), x + 20, y + 100);
+	drawText(strPlusX("Buys wood for: ", getBuyingPrice(woodResource)), x + 20, y + 115);
+
+	stringstream steelStockString;
+	steelStockString << "Steel in stock: " << resources.get(steelResource);
+	drawText(steelStockString.str(), x + 20, y + 130);
+	drawText(strPlusX("Buys steel for: ", getBuyingPrice(steelResource)), x + 20, y + 145);
+
+	for (int i = 0; i < TOTAL_RESOURCES; ++i)
+	{
+		sellToButtons[i].setPos(x + 230, y + 80 + 30 * i);
+	}
 }
 
-void City::drawSellingButton(double x, double y)
+void City::drawSellingButtons()
 {
-	sellToButton.setPos(x + 160, y + 60);
-	sellToButton.draw();
+	for (auto& button : sellToButtons)
+	{
+		button.draw();
+	}
 }
 
-bool City::isSellingButtonClickedOn()
+bool City::isSellingButtonClickedOn(ResourceEnum resource)
 {
-	return sellToButton.isClickedOnRelative();
+	return sellToButtons[resource].isClickedOn();
 }
 
 void City::refreshAfterTurn()
@@ -55,15 +73,28 @@ void City::refreshAfterTurn()
 	updatePopulation();
 }
 
-double City::getBuyingPrice()
+double City::getBuyingPrice(ResourceEnum resource)
 {
-	double buyingPrice = (gold + getPopulationFoodReq() + 1) / (resources.get(foodResource) + 2);
-	if (buyingPrice > gold)  // Can't buy more than you have. 
+	if (resource == foodResource)
 	{
-		return gold;
+		return foodBuyingPrice();
 	}
-	return buyingPrice;
+	else if (resource == woodResource)
+	{
+		return woodBuyingPrice();
+	}
+	else if (resource == steelResource)
+	{
+		return steelBuyingPrice();
+	}
+	else
+	{
+		assert(0 && "Not existing resource buying price requested.");
+	}
+	return 0;
 }
+
+
 unsigned int City::getPopulationFoodReq()
 {
 	return ceil(double(population)/2000.0);
@@ -84,21 +115,21 @@ double City::getPopulationChange()
 	return populationChange;
 }
 
-bool City::cityWouldAcceptDeal(double offeredPrice)
+bool City::wouldAcceptDeal(ResourceEnum resourceTraded, double offeredPrice)
 {
 	// Can only accept the deal if the price is less than the one we would like,
 	// as well as we have enough gold in the first place for the deal to occur.
-	if (getBuyingPrice() >= offeredPrice && gold >= offeredPrice)
+	if (getBuyingPrice(resourceTraded) >= offeredPrice && gold >= offeredPrice)
 	{
 		return true;
 	}
 	return false;
 }
 
-void City::acceptDeal(double price)
+void City::acceptDeal(ResourceEnum resourceTraded, double price)
 {
 	gold -= price;
-	resources.change(foodResource, 1);
+	resources.change(resourceTraded, 1);
 }
 
 double City::getGold()
@@ -121,4 +152,36 @@ void City::updatePopulation()
 {
 	resources.change(foodResource, -getPopulationFoodReq());
 	population *= getPopulationChange();
+}
+
+double City::foodBuyingPrice()
+{
+	double buyingPrice = (gold + getPopulationFoodReq() + 1) / (resources.get(foodResource) + 2);
+	if (buyingPrice > gold)  // Can't buy more than you have. 
+	{
+		return gold;
+	}
+	return buyingPrice;
+}
+
+// How many people from the population are required to be solders.
+const double REQUIRED_NO_SOLDIERS = 0.1;
+double City::woodBuyingPrice()
+{
+	double buyingPrice = (gold + double(REQUIRED_NO_SOLDIERS * population - soldiers) / double(200)) / (resources.get(woodResource) + 2);
+	if (buyingPrice > gold)  // Can't buy more than you have. 
+	{
+		return gold;
+	}
+	return buyingPrice;
+}
+
+double City::steelBuyingPrice()
+{
+	double buyingPrice = (gold + double(REQUIRED_NO_SOLDIERS * population - soldiers) / double(200)) / (resources.get(steelResource) + 2);
+	if (buyingPrice > gold)  // Can't buy more than you have. 
+	{
+		return gold;
+	}
+	return buyingPrice;
 }

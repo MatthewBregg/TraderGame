@@ -22,6 +22,7 @@ void Infrastructure::draw()
 {
 
 }
+
 void Infrastructure::drawMenu(double x, double y)
 {
 	stringstream nameString;
@@ -35,11 +36,12 @@ void Infrastructure::drawMenu(double x, double y)
 
 	drawText(strPlusX("Stock: ", inStock), x + 20, y + 30);
 	drawText(strPlusX("Sells for: ", wouldSellFor()), x + 20, y + 45);
+
+	buyFromButton.setPos(x + 160, y + 43);
 }
 
-void Infrastructure::drawBuyingButton(double x, double y)
+void Infrastructure::drawBuyingButton()
 {
-	buyFromButton.setPos(x + 160, y + 60);
 	buyFromButton.draw();
 }
 

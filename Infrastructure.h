@@ -12,7 +12,7 @@ public:
 
 	void draw();
 	void drawMenu(double x, double y);
-	void drawBuyingButton(double x, double y);
+	void drawBuyingButton();
 	bool isBuyingButtonClickedOn();
 
 	// Updates the infrastructure and returns the upkeep for that turn.

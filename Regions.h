@@ -71,11 +71,15 @@ protected:
 	Graph populationGraph;
 
 	std::vector<Region> regions;
-
+	// Returns the resource that would be payed for the most. 
+	// For example, city a pays (1, 5, 6) for each resource.
+	// City b pays (7, 3, 4). The most wanted resource is the 
+	// first one, as someone would pay 7 gold for it. 
+	ResourceEnum getMostWantedResource();
 	// Returns the city offering the largest price for 1 unit of food.
-	City* getMaxBuyingPrice();
-	// Returns the farm asking for the smallest price for 1 unit of food. 
-	Farm* getMinSellingPrice();
+	City* getMaxBuyingPrice(ResourceEnum resource);
+	// Returns the infrastructure asking the smallest price for the given resource.
+	Infrastructure* getMinSellingPrice(ResourceEnum resource);
 };
 
 extern World world;
