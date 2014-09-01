@@ -70,7 +70,8 @@ void Graph::draw()
 }
 void Graph::update(unsigned int index, int newValue)
 {
-	assert(index < entities.size(), "Incorrect index provided.");
+
+  assert(index < entities.size() && "Incorrect index provided.");
 
 	vector<double>* entity = &entities.at(index);
 	entity->push_back(newValue);
