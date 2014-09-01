@@ -48,7 +48,7 @@ void Region::draw()
 	woodmill.draw();
 	mine.draw();
 
-	drawMenu();
+
 }
 
 bool Region::handleInput()
