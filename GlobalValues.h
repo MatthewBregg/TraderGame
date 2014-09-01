@@ -11,6 +11,7 @@ using namespace std;
 #include <ctime> // Needed for the true randomization
 #include <cstdlib> 
 #include <vector>	
+#include <array>
 #include <fstream>    // fstream provides an interface to read and write data from files as input/output streams.
 #include <sstream>
 

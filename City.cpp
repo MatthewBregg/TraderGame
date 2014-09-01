@@ -5,13 +5,13 @@
 
 const double CITY_SIZE = 100;
 
-City::City(string setName, Resources r, int g, int xPos, int yPos):
+City::City(string setName, Resources r, int g, int xPos, int yPos, FactionEnum setFaction):
 	ClickableRectangle(xPos, yPos, CITY_SIZE, CITY_SIZE),
 	name(setName),
 	resources(r),
 	gold(g),
 	population(10000),
-	soldiers(0),
+	factionIndex(setFaction),
 	sellToButtons({ ButtonSfml(0, 0, 50, 20, "Sell", button1, 14), ButtonSfml(0, 0, 50, 20, "Sell", button1, 14), ButtonSfml(0, 0, 50, 20, "Sell", button1, 14) })
  {
 
@@ -31,6 +31,8 @@ void City::drawMenu(double x, double y)
 	stringstream popString;
 	popString << "Population: " << population << "(*" << getPopulationChange() << ")";
 	drawText(popString.str(), x + 20, y + 40);
+
+	drawText(strPlusX("", getFaction(factionIndex)->getSoldiers()), x + 220, y + 40);
 
 	drawText(strPlusX("Gold: ", gold), x + 20, y + 55);
 
@@ -71,6 +73,7 @@ bool City::isSellingButtonClickedOn(ResourceEnum resource)
 void City::refreshAfterTurn()
 {
 	updatePopulation();
+	updateSolders();
 }
 
 double City::getBuyingPrice(ResourceEnum resource)
@@ -154,6 +157,22 @@ void City::updatePopulation()
 	population *= getPopulationChange();
 }
 
+// How many soldiers can be created using 1 wood and 1 steel.
+const int SOLDIERS_CREATED = 20;
+
+// Creates soldiers if there is enough wood and steel (and population).
+void City::updateSolders()
+{
+	if (resources.get(woodResource) >= 1 && resources.get(steelResource) >= 1 && population >= 1000)
+	{
+		population -= SOLDIERS_CREATED;
+		resources.change(woodResource, -1);
+		resources.change(steelResource, -1);
+		
+		getFaction(factionIndex)->changeSolders(SOLDIERS_CREATED);
+	}
+}
+
 double City::foodBuyingPrice()
 {
 	double buyingPrice = (gold + getPopulationFoodReq() + 1) / (resources.get(foodResource) + 2);
@@ -168,7 +187,13 @@ double City::foodBuyingPrice()
 const double REQUIRED_NO_SOLDIERS = 0.1;
 double City::woodBuyingPrice()
 {
-	double buyingPrice = (gold + double(REQUIRED_NO_SOLDIERS * population - soldiers) / double(200)) / (resources.get(woodResource) + 2);
+	double missingSoldiers = REQUIRED_NO_SOLDIERS * population - getFaction(factionIndex)->getSoldiers();
+	if (missingSoldiers <= 0)
+	{
+		missingSoldiers = 0;
+	}
+
+	double buyingPrice = (gold * (missingSoldiers / double(population))) / (resources.get(woodResource) + 2);
 	if (buyingPrice > gold)  // Can't buy more than you have. 
 	{
 		return gold;
@@ -178,7 +203,13 @@ double City::woodBuyingPrice()
 
 double City::steelBuyingPrice()
 {
-	double buyingPrice = (gold + double(REQUIRED_NO_SOLDIERS * population - soldiers) / double(200)) / (resources.get(steelResource) + 2);
+	double missingSoldiers = REQUIRED_NO_SOLDIERS * population - getFaction(factionIndex)->getSoldiers();
+	if (missingSoldiers <= 0)
+	{
+		missingSoldiers = 0;
+	}
+
+	double buyingPrice = (gold * (missingSoldiers / double(population))) / (resources.get(steelResource) + 2);
 	if (buyingPrice > gold)  // Can't buy more than you have. 
 	{
 		return gold;

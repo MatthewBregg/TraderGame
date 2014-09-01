@@ -29,7 +29,7 @@ include_directories("${PROJECT_BINARY_DIR}")
 
 # Define sources and executable
 set(EXECUTABLE_NAME "myproject")
-add_executable(${EXECUTABLE_NAME} main.cpp Regions.cpp ButtonSfml.cpp Graph.cpp Texture.cpp GameViews.cpp GlobalValues.cpp ClickableRectangle.cpp Resources.cpp TradeCentre.cpp Infrastructure.cpp City.cpp EndTurn.cpp TextManager.cpp)
+add_executable(${EXECUTABLE_NAME} main.cpp Regions.cpp ButtonSfml.cpp Graph.cpp Texture.cpp GameViews.cpp GlobalValues.cpp ClickableRectangle.cpp Resources.cpp TradeCentre.cpp Infrastructure.cpp City.cpp EndTurn.cpp TextManager.cpp Faction.cpp)
 
 
 

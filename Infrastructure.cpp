@@ -87,8 +87,8 @@ double Infrastructure::wouldSellFor()
 	{
 		return 1000000;
 	}
-	// inStock * 2 - eager to sell of excess stock.
-	return (upkeep() + gold + 1) / double(inStock * 2); 
+	// inStock * inStock - eager to sell of excess stock.
+	return (upkeep() + gold + 1) / double(inStock * inStock);
 }
 double Infrastructure::upkeep()
 {

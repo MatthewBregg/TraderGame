@@ -1,5 +1,4 @@
-﻿#include <iostream>
-#include "Texture.h"
+﻿#include "Texture.h"
 #include "GlobalValues.h"
 
 
@@ -13,7 +12,7 @@ double Region::playerGold(10);
 
 Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture, string cityName, double cityGold):
 	texture(nullptr),
-	city(cityName, Resources(40, 0, 0), cityGold, poses.at(0).x + 75, poses.at(0).y + 70),
+	city(cityName, Resources(40, 0, 0), cityGold, poses.at(0).x + 75, poses.at(0).y + 70, setFaction),
 	farm(1, 6, 10, 0, 170, 120),
 	woodmill(0, 4, 0, 0, 0, 0),
 	mine(0, 4, 0, 0, 0, 0),
@@ -210,7 +209,7 @@ populationGraph("Population", 50, 400)
 	hexPos.push_back(getHexPos(12));
 	hexPos.push_back(getHexPos(9));
 	hexPos.push_back(getHexPos(13));
-	regions.push_back(Region(hexPos, elfFaction, grassLandsHex, "Shire", 5));
+	regions.push_back(Region(hexPos, demonFaction, grassLandsHex, "Shire", 5));
 	cityNames.push_back("Shire");
 	hexPos.clear();
 
@@ -267,21 +266,37 @@ bool World::handleInput()
 	return false;
 }
 
+// Returns true if any of the array elements is true.
+bool canNewDealsOccur(const array<bool, TOTAL_RESOURCES>* aNewDealCanOccur)
+{
+	bool canNewDealsOccurReturn = false;
+	for (int i = 0; i < aNewDealCanOccur->size(); i++)
+	{
+		// As long as there is some element that might be traded, a new deal can occur.
+		if (aNewDealCanOccur->at(i))
+		{
+			canNewDealsOccurReturn = true;
+		}
+	}
+	return canNewDealsOccurReturn;
+}
 
 void World::handleTrading()
 {
 	// Tries to make a deal between the city offering the most money, and
 	// the infrastructure asking the smallest price. 
-
-	bool aNewDealCanOccur = true;
-	while (aNewDealCanOccur)
+	// Checks if any particular resource can be traded. Needed as we start
+	// trading starting with the most wanted resource. Even if noone might
+	// afford it, there might be some other resources that can be traded.
+	array<bool, TOTAL_RESOURCES> aNewDealCanOccur = { true, true, true };
+	while (canNewDealsOccur(&aNewDealCanOccur))
 	{
-		// Find the resource that would be payed for the most. 
-		ResourceEnum mostWantedResource = getMostWantedResource();
+		// Find the resource that would be payed for the most (as long as a deal can occur for it).
+		ResourceEnum mostWantedResource = getMostWantedResource(&aNewDealCanOccur);
 
-		// Find the city offering the most for food.
+		// Find the city offering the most for that resource.
 		City* cityOfferingTheMost = getMaxBuyingPrice(mostWantedResource);
-		// Find the farm that sells for the smallest price.
+		// Find the infrastructure that sells for the smallest price.
 		Infrastructure* infrastructureAskingTheLeast = getMinSellingPrice(mostWantedResource);
 
 		if (cityOfferingTheMost != nullptr && 
@@ -294,9 +309,11 @@ void World::handleTrading()
 		}
 		else
 		{
-			// The cheapest farm is asking for more gold than the most expensive city
-			// can offer. No other deals can occur.
-			aNewDealCanOccur = false;
+			// The cheapest infrastructure is asking for more gold than the most expensive city
+			// can offer. No other deals can occur FOR THIS PARTICULAR RESOURCE. Since
+			// we start with the most expensive resource, there might be some other, cheaper
+			// resources that we can trade.
+			aNewDealCanOccur[mostWantedResource] = false;
 		}
 	}
 }
@@ -314,24 +331,36 @@ void World::updateAfterTurn()
 
 // ------------- Private
 
-// Returns the resource that would be payed for the most. 
-// For example, city a pays (1, 5, 6) for each resource.
-// City b pays (7, 3, 4). The most wanted resource is the 
-// first one, as someone would pay 7 gold for it. 
-ResourceEnum World::getMostWantedResource()
+// Returns the resource that would be payed for the most. For example, city a pays
+// (1, 5, 6) for each resource. City b pays (7, 3, 4). The most wanted resource is the 
+// first one, as someone would pay 7 gold for it.
+// Only elements for whom a new deal can occur are considered.
+ResourceEnum World::getMostWantedResource(const array<bool, TOTAL_RESOURCES>* aNewDealCanOccur)
 {
-	ResourceEnum mostWantedResource = foodResource;
+	ResourceEnum mostWantedResource = TOTAL_RESOURCES; // Initialise to an invalid index.
+	// Initialise to some proper resource.
+	for (int resource = 0; resource < TOTAL_RESOURCES; ++resource)
+	{
+		if (aNewDealCanOccur->at(resource))
+		{
+			mostWantedResource = static_cast<ResourceEnum>(resource);
+		}
+	}
+
 	double maxBuyingPrice = 0;
 	for (auto& region : regions)
 	{
 		for (int resource = 0; resource < TOTAL_RESOURCES; ++resource)
 		{
-			ResourceEnum resourceIndex = static_cast<ResourceEnum>(resource);
-			double citiesBuyingPrice = region.city.getBuyingPrice(resourceIndex);
-			if (maxBuyingPrice < citiesBuyingPrice)
+			if (aNewDealCanOccur->at(resource))
 			{
-				maxBuyingPrice = citiesBuyingPrice;
-				mostWantedResource = resourceIndex;
+				ResourceEnum resourceIndex = static_cast<ResourceEnum>(resource);
+				double citiesBuyingPrice = region.city.getBuyingPrice(resourceIndex);
+				if (maxBuyingPrice < citiesBuyingPrice)
+				{
+					maxBuyingPrice = citiesBuyingPrice;
+					mostWantedResource = resourceIndex;
+				}
 			}
 		}
 	}

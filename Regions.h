@@ -1,5 +1,4 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include <vector>
 
 #include "Infrastructure.h"
@@ -71,11 +70,11 @@ protected:
 	Graph populationGraph;
 
 	std::vector<Region> regions;
-	// Returns the resource that would be payed for the most. 
-	// For example, city a pays (1, 5, 6) for each resource.
-	// City b pays (7, 3, 4). The most wanted resource is the 
-	// first one, as someone would pay 7 gold for it. 
-	ResourceEnum getMostWantedResource();
+	// Returns the resource that would be payed for the most. For example, city a pays
+	// (1, 5, 6) for each resource. City b pays (7, 3, 4). The most wanted resource is the 
+	// first one, as someone would pay 7 gold for it.
+	// Only elements for whom a new deal can occur are considered.
+	ResourceEnum getMostWantedResource(const array<bool, TOTAL_RESOURCES>* aNewDealCanOccur);
 	// Returns the city offering the largest price for 1 unit of food.
 	City* getMaxBuyingPrice(ResourceEnum resource);
 	// Returns the infrastructure asking the smallest price for the given resource.
