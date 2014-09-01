@@ -14,6 +14,9 @@ const double DATA_POINT_X_OFFSET = 6;
 const double DATA_POINT_Y_OFFSET = 6;
 const int MAX_POINTS = 32; 
 const int TEXT_CHAR_SIZE = 14;
+// By how much the max value is increased. Needed so that the data does not 
+// take up the top part of the graph. I think it looks better that way.
+const double MAX_VALUE_INCREASE = 1.3;
 
 Graph::Graph(string setName, int setX, int setY) :
 name(setName),
@@ -102,7 +105,7 @@ double Graph::findMaxValue()
 		}
 	}
 
-	return newMaxValue;
+	return int(newMaxValue * MAX_VALUE_INCREASE);
 }
 
 void Graph::initialise(int numberOfEntities, vector<sf::Color> setColors, vector<string> setNames)

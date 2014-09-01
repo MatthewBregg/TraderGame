@@ -1,15 +1,18 @@
-#include "GlobalValues.h"
 
 
 #include "Faction.h"
 
-array<Faction, TOTAL_FACTIONS> factions = { Faction(), Faction(), Faction() };
+array<Faction, TOTAL_FACTIONS> factions = { Faction("Elves"), Faction("Dwarves"), Faction("Demons") };
 
 
-Faction::Faction():
+Faction::Faction(string setName):
+name(setName),
 soldiers(100)
 {
-
+	for (int i = 0; i < TOTAL_FACTIONS; ++i)
+	{
+		relations.push_back(0);  // At the start of the game, all relations are neutral.
+	}
 }
 
 int Faction::getSoldiers()

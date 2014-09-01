@@ -7,12 +7,12 @@
 
 Region* Region::selectedRegion = nullptr;
 
-Resources Region::playerResources(5, 0, 0);
-double Region::playerGold(10);
+Resources Region::playerResources(vector<unsigned int> {0, 0, 0});
+double Region::playerGold(1);
 
 Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture, string cityName, double cityGold):
 	texture(nullptr),
-	city(cityName, Resources(40, 0, 0), cityGold, poses.at(0).x + 75, poses.at(0).y + 70, setFaction),
+	city(cityName, Resources(vector<unsigned int> {40, 0, 0}), cityGold, poses.at(0).x + 75, poses.at(0).y + 70, setFaction),
 	farm(1, 6, 10, 0, 170, 120),
 	woodmill(0, 4, 0, 0, 0, 0),
 	mine(0, 4, 0, 0, 0, 0),
@@ -266,8 +266,8 @@ bool World::handleInput()
 	return false;
 }
 
-// Returns true if any of the array elements is true.
-bool canNewDealsOccur(const array<bool, TOTAL_RESOURCES>* aNewDealCanOccur)
+// Returns true if any of the given elements is true.
+bool canNewDealsOccur(const vector<bool>* aNewDealCanOccur)
 {
 	bool canNewDealsOccurReturn = false;
 	for (int i = 0; i < aNewDealCanOccur->size(); i++)
@@ -288,7 +288,12 @@ void World::handleTrading()
 	// Checks if any particular resource can be traded. Needed as we start
 	// trading starting with the most wanted resource. Even if noone might
 	// afford it, there might be some other resources that can be traded.
-	array<bool, TOTAL_RESOURCES> aNewDealCanOccur = { true, true, true };
+	vector<bool> aNewDealCanOccur;	
+	for (int i = 0; i < TOTAL_RESOURCES; ++i)	
+	{	
+		aNewDealCanOccur.push_back(true);
+	}
+
 	while (canNewDealsOccur(&aNewDealCanOccur))
 	{
 		// Find the resource that would be payed for the most (as long as a deal can occur for it).
@@ -313,7 +318,7 @@ void World::handleTrading()
 			// can offer. No other deals can occur FOR THIS PARTICULAR RESOURCE. Since
 			// we start with the most expensive resource, there might be some other, cheaper
 			// resources that we can trade.
-			aNewDealCanOccur[mostWantedResource] = false;
+			aNewDealCanOccur.at(mostWantedResource) = false;
 		}
 	}
 }
@@ -335,7 +340,7 @@ void World::updateAfterTurn()
 // (1, 5, 6) for each resource. City b pays (7, 3, 4). The most wanted resource is the 
 // first one, as someone would pay 7 gold for it.
 // Only elements for whom a new deal can occur are considered.
-ResourceEnum World::getMostWantedResource(const array<bool, TOTAL_RESOURCES>* aNewDealCanOccur)
+ResourceEnum World::getMostWantedResource(const vector<bool>* aNewDealCanOccur)
 {
 	ResourceEnum mostWantedResource = TOTAL_RESOURCES; // Initialise to an invalid index.
 	// Initialise to some proper resource.

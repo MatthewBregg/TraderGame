@@ -47,7 +47,7 @@ void Infrastructure::drawBuyingButton()
 
 bool Infrastructure::isBuyingButtonClickedOn()
 {
-	return buyFromButton.isClickedOnRelative();
+	return buyFromButton.isClickedOn();
 }
 
 const double LEVEL_UPGRADE_COST = 6;

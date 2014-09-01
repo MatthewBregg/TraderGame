@@ -1,12 +1,11 @@
 #include <SFML/Graphics.hpp>
-#include <vector>
-
 #include "Infrastructure.h"
 #include "City.h"
 #include "Faction.h"
 #include "TradeCentre.h"
 #include "Texture.h"
 #include "Graph.h"
+#include "GlobalValues.h"
 
 #ifndef REGIONS_H
 #define REGIONS_H
@@ -74,7 +73,7 @@ protected:
 	// (1, 5, 6) for each resource. City b pays (7, 3, 4). The most wanted resource is the 
 	// first one, as someone would pay 7 gold for it.
 	// Only elements for whom a new deal can occur are considered.
-	ResourceEnum getMostWantedResource(const array<bool, TOTAL_RESOURCES>* aNewDealCanOccur);
+	ResourceEnum getMostWantedResource(const vector<bool>* aNewDealCanOccur);
 	// Returns the city offering the largest price for 1 unit of food.
 	City* getMaxBuyingPrice(ResourceEnum resource);
 	// Returns the infrastructure asking the smallest price for the given resource.

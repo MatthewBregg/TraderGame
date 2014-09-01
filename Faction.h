@@ -1,6 +1,7 @@
 #ifndef FACTION_H
 #define FACTION_H
 
+#include "GlobalValues.h"
 
 enum FactionEnum
 {
@@ -13,13 +14,15 @@ enum FactionEnum
 class Faction
 {
 public:
-	Faction();
+	Faction(string setName);
 
 	int getSoldiers();
 	void changeSolders(int byHowMuch);
 private:
+	string name;
 	int soldiers;
-
+	// Relationships with other factions. -1 - worst, 1 - best. 
+	vector<double> relations;
 };
 extern Faction* getFaction(FactionEnum factionIndex);
 

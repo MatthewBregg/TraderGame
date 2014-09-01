@@ -175,7 +175,7 @@ void City::updateSolders()
 
 double City::foodBuyingPrice()
 {
-	double buyingPrice = (gold + getPopulationFoodReq() + 1) / (resources.get(foodResource) + 2);
+	double buyingPrice = (gold + getPopulationFoodReq() + 1) / (sqrt(resources.get(foodResource)) + 2);
 	if (buyingPrice > gold)  // Can't buy more than you have. 
 	{
 		return gold;

@@ -2,11 +2,13 @@
 
 #include "Resources.h"
 
-Resources::Resources(int setFood, int setWood, int setSteel)
+Resources::Resources(vector<unsigned int> setResources)
 {
-	resources[foodResource] = setFood;
-	resources[woodResource] = setWood;
-	resources[steelResource] = setSteel;
+	assert(setResources.size() != TOTAL_RESOURCES + 1 && "Incorrect number of values provided for initialising resources.");
+	for (int i = 0; i < TOTAL_RESOURCES; ++i)
+	{
+		resources.push_back(setResources.at(i));
+	}
 };
 
 // Returns true if the caller has enough resources to be subtracted from
@@ -16,7 +18,7 @@ bool Resources::canSubtract(const Resources& reducedResources)
 	bool enoughResources = true;
 	for (int i = 0; i < TOTAL_RESOURCES; ++i)
 	{
-		if (resources[i] < reducedResources.resources[i])
+		if (resources.at(i) < reducedResources.resources.at(i))
 		{
 			enoughResources = false;
 			break;
@@ -27,22 +29,22 @@ bool Resources::canSubtract(const Resources& reducedResources)
 
 int Resources::get(ResourceEnum resource)
 {
-	return resources[resource];
+	return resources.at(resource);
 }
 
 void Resources::change(const Resources& howMuchChanged)
 {
 	for (int i = 0; i < TOTAL_RESOURCES; ++i)
 	{
-		resources[i] += howMuchChanged.resources[i];
+		resources.at(i) += howMuchChanged.resources.at(i);
 	}
 }
 
 void Resources::change(ResourceEnum resource, int howMuchChanged)
 {
-	resources[resource] += howMuchChanged;
-	if (resources[resource] < 0)
+	resources.at(resource) += howMuchChanged;
+	if (resources.at(resource) < 0)
 	{
-		resources[resource] = 0;
+		resources.at(resource) = 0;
 	}
 }

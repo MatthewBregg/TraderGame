@@ -1,4 +1,5 @@
-#include <iostream>
+#include "GlobalValues.h"
+
 #ifndef RESOURCES_H
 #define RESOURCES_H
 
@@ -13,7 +14,7 @@ enum ResourceEnum
 class Resources
 {
 public:
-	Resources(int setFood, int setWood, int setSteel);
+	Resources(vector<unsigned int> setResources);
  
   
 	// Returns true if the caller has enough resources to be subtracted from
@@ -27,7 +28,7 @@ public:
 
 private:
 
-	int resources[TOTAL_RESOURCES];
+	vector<int> resources;
 };
 
 
