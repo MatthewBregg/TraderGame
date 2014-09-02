@@ -18,6 +18,9 @@ public:
 
 	int getSoldiers();
 	void changeSolders(int byHowMuch);
+
+	// Draws the relations between the factions as a table.
+	static void drawRelations(int x, int y);
 private:
 	string name;
 	int soldiers;
