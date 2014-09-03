@@ -77,7 +77,7 @@ void City::greyOutSellingButtons(const Resources& player)
 
 
 
-    for ( int A = getFirstResourceEnum(); A != TOTAL_RESOURCES; ++A)
+    for ( int A = getFirstResourceEnum(); A != TOTAL_RESOURCES; ++A) //Slightly dangerous, relies on enums being contigious
     	{
     	    if (player.get(A) == 0)
     		{
