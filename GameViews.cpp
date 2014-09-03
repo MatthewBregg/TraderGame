@@ -52,6 +52,14 @@ void GameViews::render()
 		window->setView(*view);
 	}
 }
+void GameViews::resizeCheck()
+{
+    if (abs(((double)window->getSize().x/(double)window->getSize().y) - 1.3333) > .1)
+	{
+	    //If window is ever not 4/3, then fix that.
+	    window->setSize(sf::Vector2u((int)(window->getSize().y*1.33),(window->getSize().y)));
+	}
+}
 void GameViews::scroll(const sf::Time& clock)
 {
   static sf::Time lasttime(sf::seconds(0));

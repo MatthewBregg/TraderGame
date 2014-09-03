@@ -13,6 +13,7 @@ class GameViews
 {
 public:
   static void scroll(const sf::Time& Time );
+  static void resizeCheck();
 
   static void init();
   static void render();

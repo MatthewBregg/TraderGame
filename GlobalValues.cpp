@@ -4,6 +4,8 @@
 sf::RenderWindow* window;
 sf::View* view;
 
+
+
 string getResourcePath()
 {
 	return RESOURCE_PATH;

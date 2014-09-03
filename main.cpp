@@ -37,6 +37,7 @@ sf::Clock fpsTime;
 // }
 
 // Checks for input events (mouse, keyboard). 
+
 void pollEvents(sf::RenderWindow* window)
 {
     sf::Event event;
@@ -56,46 +57,54 @@ void pollEvents(sf::RenderWindow* window)
 sf::Vector2i pixelPos = sf::Mouse::getPosition(*window);
 sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
 
+ if ( window->getSize().y != 0 && window->getSize().x != 0)
+     {
+	 mouseX = (double)sf::Mouse::getPosition(*window).x * (800.0/(double)window->getSize().x);
+	 relativeMouseX = worldPos.x;
+	 mouseY = (double)sf::Mouse::getPosition(*window).y * (600.0/(double)window->getSize().y); //The window will autoscale the mouse clicks. Our objects don't like that, so this scales them back. I guess we'll get a divide by zero error if someone makes a window of size zero, but should we really check for that?
+	 relativeMouseY = worldPos.y;
+	 mouseScroll = 0; // Reset it, will be set later if MouseWheelMoved event has happened.
+     }
 
- mouseX = sf::Mouse::getPosition(*window).x;
- relativeMouseX = worldPos.x;
- mouseY = sf::Mouse::getPosition(*window).y;
- relativeMouseY = worldPos.y;
-	mouseScroll = 0; // Reset it, will be set later if MouseWheelMoved event has happened.
 
 
     while (window->pollEvent(event))
     {
 
-
+	
         if (event.type == sf::Event::Closed)
             window->close();
-		if (event.type == sf::Event::MouseWheelMoved)
-		{
-			mouseScroll = event.mouseWheel.delta; // Negative or positive depending on which way the player scrolls.
-		}
-		if (event.type == sf::Event::KeyPressed)
-		{
+	if (event.type == sf::Event::MouseWheelMoved)
+	    {
+		mouseScroll = event.mouseWheel.delta; // Negative or positive depending on which way the player scrolls.
+	    }
+	if (event.type == sf::Event::KeyPressed)
+	    {
 
-			keys[event.key.code] = true;
+		keys[event.key.code] = true;
 
 		
 	
 
-		}
+	    }
 
 
-		if (event.type == sf::Event::KeyReleased)
-		{
-			keys[event.key.code] = false;
+	if (event.type == sf::Event::KeyReleased)
+	    {
+		keys[event.key.code] = false;
 
-		}
+	    }
+	if (event.type == sf::Event::Resized)
+	    {
+
+	    }
 	
-	}
+    }
 }
 
 int main()
 {
+   
 	GameViews::init();
 
 	window = new sf::RenderWindow(sf::VideoMode(getWindowWidth(), getWindowHeight()), "Traps are the best");
@@ -103,7 +112,7 @@ int main()
 	window->setView(*view);
 
 	window->setFramerateLimit(60);	
-	
+
 	while (window->isOpen())
 	  {
 
@@ -112,12 +121,14 @@ int main()
 		
 	    window->clear(sf::Color(60, 60, 60));
 	    GameViews::render();
+	    GameViews::resizeCheck();
 	    //	    sf::Time avgFPS = getAverageFPSTime();
 	    GameViews::scroll(fpsTime.getElapsedTime());		
 	    //   window->draw(mapSize); //Turn this on to see the map boundaries
 	    window->display();
-
 	    fpsTime.restart();
+
+
 
 
 	  }
