@@ -54,10 +54,32 @@ void GameViews::render()
 }
 void GameViews::resizeCheck()
 {
-    if (abs(((double)window->getSize().x/(double)window->getSize().y) - 1.3333) > .1)
+    static sf::Clock count;
+    static bool fullscreen = false;
+    static sf::Vector2u oldsize(sf::Vector2u(800,600));
+    if (((keys[42] && keys[5]) || (keys[38] && keys[5])) && count.getElapsedTime() > sf::seconds(1))
+	{
+	    count.restart();
+	    if (!fullscreen)
+		{
+		    oldsize=window->getSize();
+		    window->setSize(sf::Vector2u(sf::VideoMode::getDesktopMode().height * 1.333, sf::VideoMode::getDesktopMode().height));
+		    fullscreen = true;
+		}
+	    else
+		{
+
+		    window->setSize(sf::Vector2u(800,600)); //Return to normal window size
+		    fullscreen = false;
+		}
+	    return;
+
+	}
+    if (abs(((double)view->getSize().x/(double)view->getSize().y) - 1.3333) > .1)
 	{
 	    //If window is ever not 4/3, then fix that.
 	    window->setSize(sf::Vector2u((int)(window->getSize().y*1.33),(window->getSize().y)));
+	    return;
 	}
 }
 void GameViews::scroll(const sf::Time& clock)

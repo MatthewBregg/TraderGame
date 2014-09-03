@@ -82,10 +82,6 @@ sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
 	    {
 
 		keys[event.key.code] = true;
-
-		
-	
-
 	    }
 
 
