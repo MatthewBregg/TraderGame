@@ -1,4 +1,4 @@
-
+#include "Texture.h"
 
 #include "Faction.h"
 
@@ -11,7 +11,7 @@ soldiers(100)
 {
 	for (int i = 0; i < TOTAL_FACTIONS; ++i)
 	{
-		relations.push_back(0);  // At the start of the game, all relations are neutral.
+		relations.push_back(1.0 - double(getRandomNumber(2000)) / 1000.0);  // At the start of the game, all relations are neutral.
 	}
 }
 
@@ -29,6 +29,56 @@ void Faction::changeSolders(int byHowMuch)
 	}
 }
 
+
+const int DIST_BETWEEN_ROWS = 20;
+const int DIST_BETWEEN_COLUMNS = 65;
+const int X_OFFSET = 8;
+const int Y_OFFSET = 4;
+static sf::Sprite background;
+// Temp as relations should go into another menu (the journal)
+const double TEMP_WIDTH = 270;
+const double TEMP_HEIGHT = 100;
+
+// Draws the relations between the factions as a table.
+void Faction::drawRelations(int x, int y)
+{
+	background.setPosition(x, y);
+	background.setTexture(getTexture(randomBg));
+	background.setScale(TEMP_WIDTH / getTexture(randomBg).getSize().x, TEMP_HEIGHT / getTexture(randomBg).getSize().y);
+	window->draw(background);
+
+	for (int row = 0; row < factions.size(); ++row)
+	{
+		drawText(factions[row].name, x + X_OFFSET, y + Y_OFFSET + DIST_BETWEEN_ROWS * (row + 1));
+		drawText(factions[row].name, x + X_OFFSET + DIST_BETWEEN_COLUMNS * (row + 1), y + Y_OFFSET);
+
+		for (int column = 0; column < factions.size(); ++column)
+		{
+			if (row != column)
+			{
+				sf::Color colorUsed = sf::Color::Black;
+				if (factions[row].relations[column] < - 0.4)
+				{
+					colorUsed = sf::Color::Red;
+				}
+				else if (factions[row].relations[column] > 0.4)
+				{
+					colorUsed = sf::Color::Green;
+				}
+				drawText(strPlusX("", 
+								  factions[row].relations[column]),
+								  x + X_OFFSET + DIST_BETWEEN_COLUMNS * (column + 1),
+								  y + Y_OFFSET + DIST_BETWEEN_ROWS * (row + 1),
+								  14, 
+								  colorUsed);
+			}
+			else // Dont draw Dwarf to Dwarf relations, as they have no effect.
+			{
+				drawText("X", x + X_OFFSET + DIST_BETWEEN_COLUMNS * (column + 1), y + Y_OFFSET + DIST_BETWEEN_ROWS * (row + 1));
+			}
+		}
+	}
+}
 
 
 Faction* getFaction(FactionEnum factionIndex)

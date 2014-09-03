@@ -9,10 +9,18 @@ string getResourcePath()
 	return RESOURCE_PATH;
 }
 
+void initRandom()
+{
+	srand(time(0)); // This will ensure a really randomized number by help of time.
+}
 // Given 15, will return a rand nr between 0-14
 int getRandomNumber(int range)
 {
-	srand(time(0)); // This will ensure a really randomized number by help of time.
+	static bool randNotInitialised = false;
+	if (randNotInitialised)
+	{
+		initRandom();
+	}
 	return rand()%range; 
 }
 

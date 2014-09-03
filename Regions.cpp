@@ -279,6 +279,9 @@ void World::drawMenu()
 	drawText(strPlusX("Total gold: ", totalGold), 350, 500);
 
 	populationGraph.draw();
+
+	// Draws the relations between the factions as a table.
+	Faction::drawRelations(50, 250);
 }
 bool World::handleInput()
 {
