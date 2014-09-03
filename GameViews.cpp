@@ -64,8 +64,8 @@ void GameViews::scroll(const sf::Time& clock)
        change = 50;
      }  
    lasttime = clock;
-   std::cout << "POS IS " << view->getCenter().x << " " << view->getCenter().y << std::endl; 
-   cout << "Change is " << change << endl;
+   // std::cout << "POS IS " << view->getCenter().x << " " << view->getCenter().y << std::endl; 
+   // cout << "Change is " << change << endl;
 
   if (keys[71])
     {
