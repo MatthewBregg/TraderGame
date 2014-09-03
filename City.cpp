@@ -24,6 +24,12 @@ void City::draw()
 {
 	window->draw(citySprite);
 }
+
+void City::draw(const Resources player)
+{
+	window->draw(citySprite);
+	greyOutSellingButtons(player);
+}
 void City::drawMenu(double x, double y)
 {
 	drawText(name, x + 60, y + 20);
@@ -59,12 +65,32 @@ void City::drawMenu(double x, double y)
 
 void City::drawSellingButtons()
 {
+
 	for (auto& button : sellToButtons)
 	{
 		button.draw();
 	}
 }
 
+void City::greyOutSellingButtons(const Resources& player)
+{
+
+
+
+    for ( int A = getFirstResourceEnum(); A != TOTAL_RESOURCES; ++A)
+    	{
+    	    if (player.get(A) == 0)
+    		{
+    		    sellToButtons[A].setGrey();
+    		}
+    	    else
+    		{
+    		    sellToButtons[A].unsetGrey();
+    		}
+    	}
+
+ 
+}
 bool City::isSellingButtonClickedOn(ResourceEnum resource)
 {
 	return sellToButtons[resource].isClickedOn();

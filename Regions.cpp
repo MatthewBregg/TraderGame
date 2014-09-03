@@ -41,7 +41,7 @@ void Region::draw()
 		window->draw(hexSprite);
 	}
 
-	city.draw();
+	city.draw(playerResources); //By making this method call the greyer out, keeps more encapsulation and crap. 
 	farm.draw();
 	tradeCentre.draw();
 	woodmill.draw();

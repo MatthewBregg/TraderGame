@@ -5,11 +5,14 @@
 
 enum ResourceEnum
 {
-	foodResource,
-	woodResource,
-	steelResource,
-	TOTAL_RESOURCES,
+	foodResource = 0,
+	woodResource = 1,
+	steelResource = 2,
+	TOTAL_RESOURCES = 3,
 };
+
+ResourceEnum getFirstResourceEnum();
+
 
 class Resources
 {
@@ -21,8 +24,8 @@ public:
 	// reducedResources without going into the negative. Returns false otherwise.
 	bool canSubtract(const Resources& reducedResources);
 
-	int get(ResourceEnum resource);
-
+	int get(ResourceEnum resource) const;
+	int get(int resource) const;
 	void change(const Resources& howMuchChanged);
 	void change(ResourceEnum resource, int howMuchChanged);
 

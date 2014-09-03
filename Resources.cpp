@@ -26,12 +26,22 @@ bool Resources::canSubtract(const Resources& reducedResources)
 	}
 	return enoughResources;
 }
+ResourceEnum getFirstResourceEnum()
+{
+    return ResourceEnum(foodResource);
+}
 
-int Resources::get(ResourceEnum resource)
+
+
+int Resources::get(ResourceEnum resource) const
 {
 	return resources.at(resource);
 }
 
+int Resources::get(int resource) const
+{
+	return resources.at(resource);
+}
 void Resources::change(const Resources& howMuchChanged)
 {
 	for (int i = 0; i < TOTAL_RESOURCES; ++i)

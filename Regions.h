@@ -16,9 +16,6 @@ class World;
 class Region
 {
 public:
-	//should probably write a copy and descructor 
-		// Why? If you mean saving, there should be a constructor that takes raw binary data, but that comes later.
-  //Originally had pointers, now we don't so not needed
 
 	Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture, string cityName, double cityGold);
 	void draw();

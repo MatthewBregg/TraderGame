@@ -12,6 +12,7 @@ public:
 	City(string setName, Resources r, int g, int xPos, int yPos, FactionEnum setFaction);
 
 	void draw();
+	void draw(const Resources player);
 	void drawMenu(double x, double y);
 	void drawSellingButtons();
 	bool isSellingButtonClickedOn(ResourceEnum resource);
@@ -26,16 +27,17 @@ public:
 	double getGold();
 	void addGold(double howMuch);
 	unsigned int getPopulation();
+
+
 private:
 	string name;
 	Resources resources;
 	double gold;
 	unsigned int population;
 	FactionEnum factionIndex;
-
 	sf::Sprite citySprite;
 	array<ButtonSfml, TOTAL_RESOURCES> sellToButtons;
-
+	void greyOutSellingButtons(const Resources& player);
 	void updatePopulation();
 	// Creates soldiers if there is enough wood and steel (and population).
 	void updateSolders();
