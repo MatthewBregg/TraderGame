@@ -7,7 +7,7 @@
 #include "Texture.h"
 
 
-jclass ButtonSfml: public ClickableRectangle
+class ButtonSfml: public ClickableRectangle
 {
 public:
 	ButtonSfml(double setX, double setY, double setW, double setH, string setText, TextureIndex setTexture, int setCharSize = 24);
