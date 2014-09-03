@@ -95,8 +95,6 @@ void Region::drawMenu()
 
 void Region::greyoutBuyButtons()
 {
-	if (farm.isBuyingButtonClickedOn())
-	{
 		if (playerGold >= farm.wouldSellFor())
 		{
 		    farm.unsetBuyButtonGrey();
@@ -105,9 +103,6 @@ void Region::greyoutBuyButtons()
 		    {
 			farm.setBuyButtonGrey();
 		    }
-	}
-	if (woodmill.isBuyingButtonClickedOn())
-	{
 		if (playerGold >= woodmill.wouldSellFor())
 		{
 		    woodmill.unsetBuyButtonGrey();
@@ -116,9 +111,6 @@ void Region::greyoutBuyButtons()
 		    {
 			woodmill.setBuyButtonGrey();
 		    }
-	}
-	if (mine.isBuyingButtonClickedOn())
-	{
 		if (playerGold >= mine.wouldSellFor())
 		{
 		    mine.unsetBuyButtonGrey();
@@ -127,8 +119,6 @@ void Region::greyoutBuyButtons()
 		    {
 			mine.setBuyButtonGrey();
 		    }
-	}
-
 }
 bool Region::handleMenuInput()
 {
