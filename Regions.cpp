@@ -77,6 +77,7 @@ void Region::drawMenu()
 		mine.drawMenu(menu.getPosition().x, menu.getPosition().y + 290);
 		if (tradeCentre.hasBeenBuilt())
 		{
+		        greyoutBuyButtons();// Detemined what should be greyed out
 			// Draw the buttons that allow the player to sell/buy.
 			city.drawSellingButtons();
 			farm.drawBuyingButton();
@@ -92,6 +93,43 @@ void Region::drawMenu()
 	}
 }
 
+void Region::greyoutBuyButtons()
+{
+	if (farm.isBuyingButtonClickedOn())
+	{
+		if (playerGold >= farm.wouldSellFor())
+		{
+		    farm.unsetBuyButtonGrey();
+		}
+		else
+		    {
+			farm.setBuyButtonGrey();
+		    }
+	}
+	if (woodmill.isBuyingButtonClickedOn())
+	{
+		if (playerGold >= woodmill.wouldSellFor())
+		{
+		    woodmill.unsetBuyButtonGrey();
+		}
+		else
+		    {
+			woodmill.setBuyButtonGrey();
+		    }
+	}
+	if (mine.isBuyingButtonClickedOn())
+	{
+		if (playerGold >= mine.wouldSellFor())
+		{
+		    mine.unsetBuyButtonGrey();
+		}
+		else
+		    {
+			mine.setBuyButtonGrey();
+		    }
+	}
+
+}
 bool Region::handleMenuInput()
 {
 	// Check if player wants to sell something to the city.
@@ -110,37 +148,41 @@ bool Region::handleMenuInput()
 			return true;
 		}
 	}
-
+	greyoutBuyButtons(); //No need to check twice if we can buy from, if we've greyed it out, the buttons can't be clicked.
+	//Also don't have to worry about changing these values twice.
 	if (farm.isBuyingButtonClickedOn())
-	{
-		if (playerGold >= farm.wouldSellFor())
-		{
+	    {
+		if (!farm.isGreyed())
+		    {
 			playerGold -= farm.wouldSellFor();
 			playerResources.change(foodResource, 1);
 			farm.acceptDeal();
-		}
-		return true;
-	}
+			return true;
+		    }
+		return true; //These are nessecary so that clicking on a buy button when greyed won't close menu
+	    }
 	if (woodmill.isBuyingButtonClickedOn())
-	{
-		if (playerGold >= woodmill.wouldSellFor())
-		{
+	    {
+		if (!woodmill.isGreyed())
+		    {
 			playerGold -= woodmill.wouldSellFor();
 			playerResources.change(woodResource, 1);
 			woodmill.acceptDeal();
-		}
+			return true;
+		    }
 		return true;
-	}
+	    }
 	if (mine.isBuyingButtonClickedOn())
-	{
-		if (playerGold >= mine.wouldSellFor())
-		{
+	    {
+		if (!mine.isGreyed())
+		    {
 			playerGold -= mine.wouldSellFor();
 			playerResources.change(steelResource, 1);
 			mine.acceptDeal();
-		}
+			return true;
+		    }
 		return true;
-	}
+	    }
 
 	return false;
 }

@@ -27,8 +27,9 @@ public:
 	bool handleMenuInput();
 	void updateAfterTurn();
 
-  friend World;
+        friend World;
 protected:
+	void greyoutBuyButtons();
 	void setPosition(const sf::Vector2f& pos);
 	void setTexture(sf::Texture* tex);
 

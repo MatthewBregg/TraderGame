@@ -11,7 +11,8 @@ level(setLevel),
 maxLevel(setMaxLevel),
 gold(setGold),
 inStock(setStock),
-buyFromButton(0, 0, 50, 20, "Buy", button1, 14)
+buyFromButton(0, 0, 50, 20, "Buy", button1, 14),
+greyed(false)
 {
 	infrastructureText.setFont(getCustomFont()); 
 	infrastructureText.setCharacterSize(16); 
@@ -22,7 +23,22 @@ void Infrastructure::draw()
 {
 
 }
+void Infrastructure::toggleBuyButtonGrey()
+{
+    buyFromButton.toggleGrey();
+    greyed = !greyed;
+}
 
+void Infrastructure::setBuyButtonGrey()
+{
+    buyFromButton.setGrey();
+    greyed = true;
+}
+void Infrastructure::unsetBuyButtonGrey()
+{
+    buyFromButton.unsetGrey();
+    greyed = false;
+}
 void Infrastructure::drawMenu(double x, double y)
 {
 	stringstream nameString;
@@ -44,10 +60,13 @@ void Infrastructure::drawBuyingButton()
 {
 	buyFromButton.draw();
 }
-
+bool Infrastructure::isGreyed()
+{
+    return greyed;
+}
 bool Infrastructure::isBuyingButtonClickedOn()
 {
-	return buyFromButton.isClickedOn();
+	    return buyFromButton.isClickedOn();
 }
 
 const double LEVEL_UPGRADE_COST = 6;

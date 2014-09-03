@@ -1,12 +1,12 @@
 #include <iostream>
 #include "GlobalValues.h"
 #include "ButtonSfml.h"
-
 #ifndef INFRASTRUCTURE_H
 #define INFRASTRUCTURE_H
-
 class Infrastructure
 {
+	
+
 public:
 	Infrastructure(unsigned int setLevel, unsigned int setMaxLevel, double setGold, int setStock, int xPos, int yPos);
 
@@ -22,16 +22,19 @@ public:
 	double upkeep();
 	void acceptDeal();
 	double getGold();
-
-  virtual string getName() = 0;
+	void toggleBuyButtonGrey();
+	void setBuyButtonGrey();
+	void unsetBuyButtonGrey();
+	virtual string getName() = 0;
+	bool isGreyed();
 protected:
 	sf::Text infrastructureText;
 	ButtonSfml buyFromButton;
-
 	unsigned int level;
 	unsigned int maxLevel;
 	double gold;
 	unsigned int inStock;
+	bool greyed;
 };
 
 
