@@ -105,6 +105,7 @@ int main()
 
 	window = new sf::RenderWindow(sf::VideoMode(getWindowWidth(), getWindowHeight()), "Traps are the best");
 	view = new sf::View(sf::Vector2f(getWindowWidth() / 2, getWindowHeight() / 2), sf::Vector2f(getWindowWidth(), getWindowHeight()));
+	DEFAULT_VIEW = new sf::View(window->getDefaultView());
 	window->setView(*view);
 
 	window->setFramerateLimit(60);	

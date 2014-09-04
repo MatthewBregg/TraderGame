@@ -21,7 +21,7 @@ using namespace std;
 extern sf::RenderWindow* window;
 extern sf::View* view;
 
-
+extern sf::View* DEFAULT_VIEW;
 
 // Defines the resource folder path. Debug has different paths, as the exes might
 // be generated to different folders. 

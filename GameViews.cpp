@@ -46,7 +46,7 @@ void GameViews::render()
 		window->setView(*view);
 		world.draw();
 
-		window->setView(window->getDefaultView());
+		window->setView(*DEFAULT_VIEW);
 		EndTurn::draw();
 		world.drawMenu();
 		window->setView(*view);
@@ -54,33 +54,30 @@ void GameViews::render()
 }
 void GameViews::resizeCheck()
 {
-    static sf::Clock count;
-    static bool fullscreen = false;
-    static sf::Vector2u oldsize(sf::Vector2u(800,600));
-    if (((keys[42] && keys[5]) || (keys[38] && keys[5])) && count.getElapsedTime() > sf::seconds(1))
-	{
-	    count.restart();
-	    if (!fullscreen)
-		{
-		    oldsize=window->getSize();
-		    window->setSize(sf::Vector2u(sf::VideoMode::getDesktopMode().height * 1.333, sf::VideoMode::getDesktopMode().height));
-		    fullscreen = true;
-		}
-	    else
-		{
+    //static double zoomLevel = 1;
+    int newH = (800.0*window->getSize().y)/window->getSize().x;
+        cout << newH << std::endl;
 
-		    window->setSize(sf::Vector2u(800,600)); //Return to normal window size
-		    fullscreen = false;
-		}
-	    return;
-
-	}
-    if (abs(((double)view->getSize().x/(double)view->getSize().y) - 1.3333) > .1)
+    if (newH >= 600)
 	{
-	    //If window is ever not 4/3, then fix that.
-	    window->setSize(sf::Vector2u((int)(window->getSize().y*1.33),(window->getSize().y)));
-	    return;
+	    view->setSize(800,newH);
+	    DEFAULT_VIEW->setSize(800,newH);
 	}
+    else
+	{
+	    newH = (600.0*window->getSize().x)/window->getSize().y;
+	    view->setSize(newH,600);
+	    DEFAULT_VIEW->setSize(newH,600);
+	}
+    //DEFAULT_VIEW->zoom(zoomLevel);
+    //view->zoom(zoomLevel);
+
+    // if (abs(((double)view->getSize().x/(double)view->getSize().y) - 1.3333) > .1)
+    // 	{
+    // 	    //If window is ever not 4/3, then fix that.
+    // 	    window->setSize(sf::Vector2u((int)(window->getSize().y*1.33),(window->getSize().y)));
+    // 	    return;
+    // 	}
 }
 void GameViews::scroll(const sf::Time& clock)
 {

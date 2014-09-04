@@ -4,7 +4,7 @@
 sf::RenderWindow* window;
 sf::View* view;
 
-
+sf::View* DEFAULT_VIEW;
 
 string getResourcePath()
 {
