@@ -63,7 +63,6 @@ sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
 	 relativeMouseX = worldPos.x;
 	 mouseY = (double)sf::Mouse::getPosition(*window).y * (600.0/(double)window->getSize().y); //The window will autoscale the mouse clicks. Our objects don't like that, so this scales them back. I guess we'll get a divide by zero error if someone makes a window of size zero, but should we really check for that?
 	 relativeMouseY = worldPos.y;
-	 GameViews::zoom(mouseScroll);
 	 mouseScroll = 0; // Reset it, will be set later if MouseWheelMoved event has happened.
      }
 

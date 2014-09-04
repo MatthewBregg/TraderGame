@@ -19,7 +19,6 @@ public:
   static void render();
 
   static void cleanUp();
-  static void zoom(int delta);
 
 
 };
