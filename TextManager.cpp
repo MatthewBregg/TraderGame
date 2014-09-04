@@ -37,13 +37,21 @@ double getStringWidth(string givenString, const sf::Font& font, int characterSiz
 
 // A method for drawing text without having to create text object on your own. 
 sf::Text freeText;
-void drawText(string text, int x, int y, int characterSize, sf::Color color)
+void drawText(string text, int x, int y, int characterSize, sf::Color color, bool centered)
 {
-	freeText.setFont(getCustomFont());
-	freeText.setCharacterSize(characterSize);
 	freeText.setString(text);
+	if (centered)
+	{
+		freeText.setPosition(x - getStringWidth(text, getCustomFont(), characterSize) / 2.0, y);
+	}
+	else
+	{
+		freeText.setPosition(x, y);
+	}
+	freeText.setCharacterSize(characterSize);
 	freeText.setColor(color);
-	freeText.setPosition(x, y);
+
+	freeText.setFont(getCustomFont());
 	window->draw(freeText);
 }
 

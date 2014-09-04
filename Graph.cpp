@@ -39,7 +39,7 @@ void Graph::draw()
 	
 	// Draw the graph name, centered, on top of the graph.
 	double nameWidth = getStringWidth(name, getCustomFont(), TEXT_CHAR_SIZE);
-	drawText(name, xPos + GRAPH_WIDTH / 2.0 - nameWidth / 2.0, yPos - 25);
+	drawText(name, xPos + GRAPH_WIDTH / 2.0, yPos - 25, TEXT_CHAR_SIZE, sf::Color::Black, true);
 
 	// Draw the number on the graphs' left. 
 	// If the numbers get longer, they will adjust they position.

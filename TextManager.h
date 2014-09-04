@@ -13,7 +13,7 @@ extern const sf::Font& getCustomFont();
 extern double getStringWidth(string givenString, const sf::Font& font, int characterSize);
 
 // A method for drawing text without having to create text object on your own. 
-extern void drawText(string text, int x, int y, int characterSize = 14, sf::Color color = sf::Color::Black);
+extern void drawText(string text, int x, int y, int characterSize = 14, sf::Color color = sf::Color::Black, bool centered = false);
 
 template <typename SOME_VALUE>
 // Methods for adding string and some value together, be it a string or a number or 

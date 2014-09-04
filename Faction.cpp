@@ -65,8 +65,7 @@ void Faction::drawRelations(int x, int y)
 				{
 					colorUsed = sf::Color::Green;
 				}
-				drawText(strPlusX("", 
-								  factions[row].relations[column]),
+				drawText(strPlusX("", factions[row].relations[column]),
 								  x + X_OFFSET + DIST_BETWEEN_COLUMNS * (column + 1),
 								  y + Y_OFFSET + DIST_BETWEEN_ROWS * (row + 1),
 								  14, 

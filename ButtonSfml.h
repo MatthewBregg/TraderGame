@@ -22,11 +22,10 @@ public:
 	void unsetGrey();
 protected:
 	TextureIndex textureIndex;
+	string text;
 	int characterSize;
 
-
 	sf::Sprite button;
-	sf::Text buttonText;
 	sf::Color color;
 };
 
