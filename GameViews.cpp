@@ -56,7 +56,6 @@ void GameViews::resizeCheck()
 {
     //static double zoomLevel = 1;
     int newH = (800.0*window->getSize().y)/window->getSize().x;
-        cout << newH << std::endl;
 
     if (newH >= 600)
 	{
@@ -78,6 +77,17 @@ void GameViews::resizeCheck()
     // 	    window->setSize(sf::Vector2u((int)(window->getSize().y*1.33),(window->getSize().y)));
     // 	    return;
     // 	}
+}
+void GameViews::zoom(int delta)
+{
+    static int zoomLevel = 1;
+    zoomLevel += delta;
+    if (zoomLevel < 1)
+	{
+	    zoomLevel = 1;
+	}
+    //DEFAULT_VIEW->zoom(zoomLevel);
+    view->zoom(zoomLevel);
 }
 void GameViews::scroll(const sf::Time& clock)
 {
