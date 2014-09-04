@@ -54,23 +54,23 @@ void GameViews::render()
 }
 void GameViews::resizeCheck()
 {
-    //static double zoomLevel = 1;
-    int newH = (800.0*window->getSize().y)/window->getSize().x;
+    int newVal = (800.0*window->getSize().y)/window->getSize().x; //Calculate what the y axis has to be set to to mantain 4:3 aspect
 
-    if (newH >= 600)
+    if (newVal >= 600) //If that's greater than the height of the window, then...
 	{
-	    view->setSize(800,newH);
-	    DEFAULT_VIEW->setSize(800,newH);
+	    view->setSize(800,newVal);
+	    DEFAULT_VIEW->setSize(800,newVal);
 	}
     else
 	{
-	    newH = (600.0*window->getSize().x)/window->getSize().y;
-	    view->setSize(newH,600);
-	    DEFAULT_VIEW->setSize(newH,600);
+	    newVal = (600.0*window->getSize().x)/window->getSize().y; //We instead calculate a new value for x. 
+	    view->setSize(newVal,600);
+	    DEFAULT_VIEW->setSize(newVal,600);
 	}
-    //DEFAULT_VIEW->zoom(zoomLevel);
+    //static double zoomLevel = 1;
+    //DEFAULT_VIEW->zoom(zoomLevel); 
     //view->zoom(zoomLevel);
-
+    //The old hacky resize. Works, but awkwarder. Advantage is it limits what can be seen. Can probably do that with enough fucking around with views though
     // if (abs(((double)view->getSize().x/(double)view->getSize().y) - 1.3333) > .1)
     // 	{
     // 	    //If window is ever not 4/3, then fix that.
