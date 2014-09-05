@@ -2,7 +2,6 @@
 
 #include "Graph.h"
 
-
 const int DIST_BETWEEN_POINTS = 6;
 const double GRAPH_WIDTH = 200;
 const double GRAPH_HEIGHT = 100;
@@ -18,16 +17,20 @@ const int TEXT_CHAR_SIZE = 14;
 // take up the top part of the graph. I think it looks better that way.
 const double MAX_VALUE_INCREASE = 1.3;
 
-Graph::Graph(string setName, int setX, int setY) :
+Graph::Graph(
+	string setName, 
+	int setPosX,
+	int setPosY
+) :
 name(setName),
+x(setPosX),
+y(setPosY),
 initialised(false),
-xPos(setX),
-yPos(setY),
 maxValue(20000)
 {
-	background.setPosition(xPos, yPos);
-	background.setTexture(getTexture(randomBg));
-	background.setScale(GRAPH_WIDTH / getTexture(randomBg).getSize().x, GRAPH_HEIGHT / getTexture(randomBg).getSize().y);
+	background.setPosition(x, y);
+	background.setTexture(getTexture(genericBg));
+	background.setScale(GRAPH_WIDTH / getTexture(genericBg).getSize().x, GRAPH_HEIGHT / getTexture(genericBg).getSize().y);
 }
 
 sf::CircleShape dataPoint(1);
@@ -39,33 +42,33 @@ void Graph::draw()
 	
 	// Draw the graph name, centered, on top of the graph.
 	double nameWidth = getStringWidth(name, getCustomFont(), TEXT_CHAR_SIZE);
-	drawText(name, xPos + GRAPH_WIDTH / 2.0, yPos - 25, TEXT_CHAR_SIZE, sf::Color::Black, true);
+	drawText(name, x + GRAPH_WIDTH / 2.0, y - 25, TEXT_CHAR_SIZE, sf::Color::Black, true);
 
 	// Draw the number on the graphs' left. 
 	// If the numbers get longer, they will adjust they position.
 	string maxValueInText = strPlusX("", maxValue);
 	double maxValueWidth = getStringWidth(maxValueInText, getCustomFont(), TEXT_CHAR_SIZE);
-	drawText(maxValueInText, xPos - maxValueWidth, yPos - 10);
+	drawText(maxValueInText, x - maxValueWidth, y - 10);
 	
 	double zeroStringWidth = getStringWidth("0", getCustomFont(), TEXT_CHAR_SIZE);
-	drawText("0", xPos - zeroStringWidth, yPos + GRAPH_HEIGHT - 7, TEXT_CHAR_SIZE);
+	drawText("0", x - zeroStringWidth, y + GRAPH_HEIGHT - 7, TEXT_CHAR_SIZE);
 
 	for (int entity = 0; entity < entities.size(); ++entity)
 	{
 		dataPoint.setFillColor(colors.at(entity));
 		for (int i = 0; i < entities.at(entity).size(); ++i)
 		{
-			int dataPointPos_x = xPos + DATA_POINT_X_OFFSET + i * DIST_BETWEEN_POINTS;
-			int dataPointPos_y = yPos - DATA_POINT_Y_OFFSET + GRAPH_HEIGHT - (entities.at(entity).at(i) / maxValue) * DATA_POINT_HEIGHT_SPACE;
+			int dataPointPos_x = x + DATA_POINT_X_OFFSET + i * DIST_BETWEEN_POINTS;
+			int dataPointPos_y = y - DATA_POINT_Y_OFFSET + GRAPH_HEIGHT - (entities.at(entity).at(i) / maxValue) * DATA_POINT_HEIGHT_SPACE;
 			dataPoint.setPosition(dataPointPos_x, dataPointPos_y);
 			window->draw(dataPoint);
 		}
 
 		// Draws the data point with the entity names besides it. 
 		// So players can see which data corresponds to which entity.
-		dataPoint.setPosition(int(xPos + 40), int(yPos + GRAPH_HEIGHT + 20 + 22 * entity));
+		dataPoint.setPosition(int(x + 40), int(y + GRAPH_HEIGHT + 20 + 22 * entity));
 		window->draw(dataPoint);
-		drawText(names.at(entity), xPos + 50, yPos + GRAPH_HEIGHT + 13 + 22 * entity);
+		drawText(names.at(entity), x + 50, y + GRAPH_HEIGHT + 13 + 22 * entity);
 	}
 }
 void Graph::update(unsigned int index, int newValue)

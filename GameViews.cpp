@@ -53,21 +53,14 @@ void GameViews::render()
 }
 void GameViews::resizeCheck()
 {
-    int newVal = (800.0*window->getSize().y)/window->getSize().x; //Calculate what the y axis has to be set to to mantain 4:3 aspect
-
-    if (newVal >= 600) //If that's greater than the height of the window, then...
-	{
-	    view->setSize(800,newVal);
-	    DEFAULT_VIEW->setSize(800,newVal);
-	}
-    else
-	{
-	    newVal = (600.0*window->getSize().x)/window->getSize().y; //We instead calculate a new value for x. 
-	    view->setSize(newVal,600);
-	    DEFAULT_VIEW->setSize(newVal,600);
-	}
     getAndUpdateWindowWidth();
     getAndUpdateWindowHeight();
+
+	view->setSize(window->getSize().x, window->getSize().y);
+	DEFAULT_VIEW->setSize(window->getSize().x, window->getSize().y);
+
+	DEFAULT_VIEW->setCenter(getWindowWidth() / 2, getWindowHeight() / 2);
+
     //static double zoomLevel = 1;
     //DEFAULT_VIEW->zoom(zoomLevel); 
     //view->zoom(zoomLevel);

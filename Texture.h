@@ -8,7 +8,7 @@
 
 enum TextureIndex
 {
-	randomBg,
+	genericBg,
 	button1,
 	grassLandsHex,
 	woodlandsHex,

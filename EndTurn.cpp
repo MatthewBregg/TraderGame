@@ -5,15 +5,16 @@
 
 #include "EndTurn.h"
 
-ButtonSfml EndTurnButton(getWindowWidth() - 150, getWindowHeight() - 150, 130, 130, "End turn", randomBg);
+ButtonSfml endTurnButton(0, 0, 130, 130, "End turn", genericBg);
 
 void EndTurn::draw()
 {
-	EndTurnButton.draw();
+	endTurnButton.setPos(getWindowWidth() - 150, getWindowHeight() - 150);
+	endTurnButton.draw();
 }
 bool EndTurn::handleInput()
 {
-	if (EndTurnButton.isClickedOn())
+	if (endTurnButton.isClickedOn())
 	{
 		EndTurn::endTurn();
 		return true;

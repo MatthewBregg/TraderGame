@@ -30,8 +30,8 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 		hexagons.push_back(temp);
 	}
 	menu.setPosition(500, 10);
-	menu.setTexture(getTexture(randomBg));
-	menu.setScale(290.0 / getTexture(randomBg).getSize().x, 440.0 / getTexture(randomBg).getSize().y);
+	menu.setTexture(getTexture(genericBg));
+	menu.setScale(290.0 / getTexture(genericBg).getSize().x, 440.0 / getTexture(genericBg).getSize().y);
 };
 
 void Region::draw()
@@ -70,6 +70,7 @@ void Region::drawMenu()
 {
 	if (selectedRegion == this)
 	{
+		menu.setPosition(getWindowWidth() - 300, getWindowHeight()/2 - 300);
 		window->draw(menu);
 		city.drawMenu(menu.getPosition().x, menu.getPosition().y - 10);
 		farm.drawMenu(menu.getPosition().x, menu.getPosition().y + 160);
@@ -212,6 +213,7 @@ sf::Vector2f getHexPos(int index)
 		);
 }
 
+
 World::World():
 populationGraph("Population", 50, 400)
 {
@@ -266,7 +268,7 @@ void World::drawMenu()
 	}
 
 	// To check if there are any bugs when exchanging gold.
-	drawText(strPlusX("Total gold: ", totalGold), 350, 500);
+	drawText(strPlusX("Total gold: ", totalGold), getWindowWidth() / 2, getWindowHeight() - 50);
 
 	populationGraph.draw();
 

@@ -10,13 +10,13 @@
 class ButtonSfml: public ClickableRectangle
 {
 public:
-	ButtonSfml(double setX, double setY, double setW, double setH, string setText, TextureIndex setTexture, int setCharSize = 24);
+	ButtonSfml(int setX, int setY, double setW, double setH, string setText, TextureIndex setTexture, int setCharSize = 24);
 
 	void draw();
 
 	void setText(string setText);
 
-	void setPos(double newX, double newY);
+	void setPos(int newX, int newY);
 	void toggleGrey();
 	void setGrey();
 	void unsetGrey();

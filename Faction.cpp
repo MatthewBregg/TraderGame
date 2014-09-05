@@ -43,8 +43,8 @@ const double TEMP_HEIGHT = 100;
 void Faction::drawRelations(int x, int y)
 {
 	background.setPosition(x, y);
-	background.setTexture(getTexture(randomBg));
-	background.setScale(TEMP_WIDTH / getTexture(randomBg).getSize().x, TEMP_HEIGHT / getTexture(randomBg).getSize().y);
+	background.setTexture(getTexture(genericBg));
+	background.setScale(TEMP_WIDTH / getTexture(genericBg).getSize().x, TEMP_HEIGHT / getTexture(genericBg).getSize().y);
 	window->draw(background);
 
 	for (int row = 0; row < factions.size(); ++row)

@@ -86,4 +86,5 @@ extern bool keys[256];
 extern int mouseScroll; // Negative or positive depending on which way the player scrolls.
 
 
+
 #endif /* GlobalValues_H */

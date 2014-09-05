@@ -1,7 +1,7 @@
 #include "ButtonSfml.h"
 
 
-ButtonSfml::ButtonSfml(double setX, double setY, double setW, double setH, string setText, TextureIndex setTexture, int setCharSize):
+ButtonSfml::ButtonSfml(int setX, int setY, double setW, double setH, string setText, TextureIndex setTexture, int setCharSize) :
 	ClickableRectangle(setX, setY, setW, setH),
 	textureIndex(setTexture),
 	text(setText),
@@ -27,7 +27,7 @@ void ButtonSfml::setText(string setText)
 {
 	text = setText;
 }
-void ButtonSfml::setPos(double newX, double newY)
+void ButtonSfml::setPos(int newX, int newY)
 {
 	x = newX;
 	y = newY;
