@@ -149,7 +149,7 @@ void GameViews::scroll(const sf::Time& clock)
     }
   if (keys[17])		// What is this? //This is r, so hitting r resets the view. Making make it shift R, or remove it. 
     {
-	view->setCenter(window->getSize().x/2,window->getSize().y/2); 
+	view->setCenter(getWindowWidth()/2,getWindowHeight()/2); 
       window->setView(*view);
     }
 
