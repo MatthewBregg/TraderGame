@@ -52,7 +52,9 @@ void pollEvents(sf::RenderWindow* window)
 		leftClickPressed = false;
 	}
 	previousLeftClickState = sf::Mouse::isButtonPressed(sf::Mouse::Left);
-		
+
+	GameViews::zoom(-mouseScroll); //Negative feels more natural I think
+	
 window->setView(*view);
 sf::Vector2i pixelPosRelative = sf::Mouse::getPosition(*window);
 sf::Vector2f worldPosRelative = window->mapPixelToCoords(pixelPosRelative);

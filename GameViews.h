@@ -17,7 +17,7 @@ public:
 
   static void init();
   static void render();
-
+  static void zoom(int delta);
   static void cleanUp();
 
 

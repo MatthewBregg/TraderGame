@@ -79,6 +79,15 @@ void GameViews::resizeCheck()
     // 	    return;
     // 	}
 }
+void GameViews::zoom(int delta)
+{
+    static int zoomLevel = 1;
+    if ( zoomLevel + delta >= 1)
+	{
+	    zoomLevel += delta;
+	}
+    view->zoom(zoomLevel);
+}
 void GameViews::scroll(const sf::Time& clock)
 {
   static sf::Time lasttime(sf::seconds(0));
