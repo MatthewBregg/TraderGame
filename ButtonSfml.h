@@ -7,7 +7,7 @@
 #include "Texture.h"
 
 
-class ButtonSfml: public ClickableRectangle
+class ButtonSfml : public TexturedRectangle
 {
 public:
 	ButtonSfml(int setX, int setY, double setW, double setH, string setText, TextureIndex setTexture, int setCharSize = 24);
@@ -16,7 +16,6 @@ public:
 
 	void setText(string setText);
 
-	void setPos(int newX, int newY);
 	void toggleGrey();
 	void setGrey();
 	void unsetGrey();
@@ -25,7 +24,6 @@ protected:
 	string text;
 	int characterSize;
 
-	sf::Sprite button;
 	sf::Color color;
 };
 

@@ -1,18 +1,11 @@
 #ifndef CLICKABLERECTANGLE_H
 #define CLICKABLERECTANGLE_H
 
-
-
-
-
+#include "GlobalValues.h"
+#include "Texture.h"
 
 class ClickableRectangle
 {
-protected:
-	double x;
-	double y;
-	double w;
-	double h;
 
 public:
 	ClickableRectangle(double setX, double setY, double setW, double setH);
@@ -22,5 +15,29 @@ public:
 	// Checks if the player has clicked on the button.
 	bool isClickedOn();
 	bool isClickedOnRelative();
+
+	virtual void setPos(double newX, double newY);
+
+protected:
+	double x;
+	double y;
+	double w;
+	double h;
+
 };
+
+class TexturedRectangle : public ClickableRectangle
+{
+public:
+	TexturedRectangle(double setX, double setY, double setW, double setH, TextureIndex setTexture);
+
+	virtual void setPos(double newX, double newY);
+protected:
+
+	sf::Sprite background;
+
+};
+
+
+
 #endif /* CLICKABLERECTANGLE_H */
