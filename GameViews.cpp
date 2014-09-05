@@ -82,7 +82,7 @@ void GameViews::resizeCheck()
 void GameViews::zoom(int delta)
 {
     static int zoomLevel = 1;
-    if ( zoomLevel + delta >= 1)
+    if ( zoomLevel + delta >= 1 && zoomLevel+delta <= 50)
 	{
 	    zoomLevel += delta;
 	}
@@ -147,9 +147,9 @@ void GameViews::scroll(const sf::Time& clock)
 	}
       window->setView(*view);
     }
-  if (keys[17])		// What is this?
+  if (keys[17])		// What is this? //This is r, so hitting r resets the view. Making make it shift R, or remove it. 
     {
-      view->setCenter(400,300); //These should later not be hardcoded, to better handle resizing.
+	view->setCenter(window->getSize().x/2,window->getSize().y/2); 
       window->setView(*view);
     }
 
