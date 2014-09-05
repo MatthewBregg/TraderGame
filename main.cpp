@@ -53,16 +53,19 @@ void pollEvents(sf::RenderWindow* window)
 	}
 	previousLeftClickState = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 		
-
-sf::Vector2i pixelPos = sf::Mouse::getPosition(*window);
-sf::Vector2f worldPos = window->mapPixelToCoords(pixelPos);
-
+window->setView(*view);
+sf::Vector2i pixelPosRelative = sf::Mouse::getPosition(*window);
+sf::Vector2f worldPosRelative = window->mapPixelToCoords(pixelPosRelative);
+ window->setView(*DEFAULT_VIEW);
+sf::Vector2i pixelPosAbsolute = sf::Mouse::getPosition(*window);
+sf::Vector2f worldPosAbsolute = window->mapPixelToCoords(pixelPosAbsolute);
+ window->setView(*view);
  if ( window->getSize().y != 0 && window->getSize().x != 0)
      {
-	 mouseX = (double)sf::Mouse::getPosition(*window).x * (800.0/(double)window->getSize().x);
-	 relativeMouseX = worldPos.x;
-	 mouseY = (double)sf::Mouse::getPosition(*window).y * (600.0/(double)window->getSize().y); //The window will autoscale the mouse clicks. Our objects don't like that, so this scales them back. I guess we'll get a divide by zero error if someone makes a window of size zero, but should we really check for that?
-	 relativeMouseY = worldPos.y;
+	 mouseX = worldPosAbsolute.x; //sf::Mouse::getPosition(*window).x;
+	 relativeMouseX = worldPosRelative.x;
+	 mouseY = worldPosAbsolute.y; //sf::Mouse::getPosition(*window).y;
+	 relativeMouseY = worldPosRelative.y;
 	 mouseScroll = 0; // Reset it, will be set later if MouseWheelMoved event has happened.
      }
 
