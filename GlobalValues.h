@@ -76,9 +76,11 @@ extern double relativeMouseY;
 extern int getMonitorWidth();
 extern int getMonitorHeight();
 
+extern int getAndUpdateWindowWidth(bool update = true);
+extern int getAndUpdateWindowHeight(bool update = true);
+
 extern int getWindowWidth();
 extern int getWindowHeight();
-
 
 extern bool keys[256];
 extern int mouseScroll; // Negative or positive depending on which way the player scrolls.

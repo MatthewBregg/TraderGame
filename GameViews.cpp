@@ -8,7 +8,6 @@ using namespace std;
 #include "Regions.h"
 #include "Texture.h"
 #include "EndTurn.h"
-
 #include "GameViews.h"
 
 // The different parts of the programs' execution.
@@ -67,6 +66,8 @@ void GameViews::resizeCheck()
 	    view->setSize(newVal,600);
 	    DEFAULT_VIEW->setSize(newVal,600);
 	}
+    getAndUpdateWindowWidth();
+    getAndUpdateWindowHeight();
     //static double zoomLevel = 1;
     //DEFAULT_VIEW->zoom(zoomLevel); 
     //view->zoom(zoomLevel);

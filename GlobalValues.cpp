@@ -52,15 +52,31 @@ int getMonitorHeight()
 // Returns the size of the programs' window. Can be less or eaqual to monitor size, but never larger. It should be used when creating the window.
 int getWindowWidth()
 {
+    return getAndUpdateWindowWidth(false);
+}
+int getAndUpdateWindowWidth(bool update)
+{
 	static int windowWidth = 800;
+	if (update)
+	    {
+		windowWidth = window->getSize().x;
+	    }
 
 	return windowWidth;
 }
-int getWindowHeight()
+int getAndUpdateWindowHeight(bool update)
 {
 	static int windowHeight = 600;
-
+	if(update)
+	    {
+		windowHeight = window->getSize().y;
+	    }
 	return windowHeight;
+}
+
+int getWindowHeight()
+{
+    return getAndUpdateWindowHeight(false);
 }
 sf::Clock runtime;
 double SCROLL_SPEED = 10;
