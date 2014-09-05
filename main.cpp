@@ -67,6 +67,7 @@ sf::Vector2f worldPosAbsolute = window->mapPixelToCoords(pixelPosAbsolute);
 	 mouseY = worldPosAbsolute.y; //sf::Mouse::getPosition(*window).y;
 	 relativeMouseY = worldPosRelative.y;
 	 mouseScroll = 0; // Reset it, will be set later if MouseWheelMoved event has happened.
+	 //Switch to view, get mouse click relative for map stuff, then get absolute position for menus, then set back to view
      }
 
 
