@@ -23,6 +23,11 @@ const sf::Texture& getTexture(TextureIndex textureIndex)
 			
 		// sfml already prints a message when a texture fails to load, so no need to check 
 		// if the texture is fine.
+
+	for (int i = 0; i < textureIndex; ++i)
+	    {
+		texturePointer[i].setSmooth(true);
+	    }
 	}
 	return texturePointer[textureIndex];
 }
