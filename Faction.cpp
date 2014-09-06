@@ -34,18 +34,17 @@ const int DIST_BETWEEN_ROWS = 20;
 const int DIST_BETWEEN_COLUMNS = 65;
 const int X_OFFSET = 8;
 const int Y_OFFSET = 4;
-static sf::Sprite background;
 // Temp as relations should go into another menu (the journal)
 const double TEMP_WIDTH = 270;
 const double TEMP_HEIGHT = 100;
 
+TexturedRectangle Faction::relationDisplayBg(0, 0, TEMP_WIDTH, TEMP_HEIGHT, genericBg);
+
 // Draws the relations between the factions as a table.
 void Faction::drawRelations(int x, int y)
 {
-	background.setPosition(x, y);
-	background.setTexture(getTexture(genericBg));
-	background.setScale(TEMP_WIDTH / getTexture(genericBg).getSize().x, TEMP_HEIGHT / getTexture(genericBg).getSize().y);
-	window->draw(background);
+	relationDisplayBg.setPos(x, y);
+	relationDisplayBg.drawBackground();
 
 	for (int row = 0; row < factions.size(); ++row)
 	{

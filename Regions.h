@@ -5,6 +5,7 @@
 #include "TradeCentre.h"
 #include "Texture.h"
 #include "Graph.h"
+#include "ClickableRectangle.h"
 #include "GlobalValues.h"
 
 #ifndef REGIONS_H
@@ -20,7 +21,7 @@ public:
 	Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture, string cityName, double cityGold);
 	void draw();
 	bool handleInput();
-	void drawMenu();
+	void drawMenu(const TexturedRectangle* menu);
 	bool handleMenuInput();
 	void updateAfterTurn();
 
@@ -43,7 +44,6 @@ protected:
 	FactionEnum currentOwner;
 	FactionEnum origOwner;
 
-	sf::Sprite menu;
 	
 	static Resources playerResources;
 	static double playerGold;
@@ -62,9 +62,9 @@ public:
   void handleTrading();
   void updateAfterTurn();
 protected:
-
-
+	
 	Graph populationGraph;
+	TexturedRectangle regionMenu;
 
 	std::vector<Region> regions;
 	// Returns the resource that would be payed for the most. For example, city a pays

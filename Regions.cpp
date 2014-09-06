@@ -29,9 +29,7 @@ Region::Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureI
 					  DEFAULT_HEX_SIZE / getTexture(hexTexture).getSize().y);
 		hexagons.push_back(temp);
 	}
-	menu.setPosition(500, 10);
-	menu.setTexture(getTexture(genericBg));
-	menu.setScale(290.0 / getTexture(genericBg).getSize().x, 440.0 / getTexture(genericBg).getSize().y);
+
 };
 
 void Region::draw()
@@ -66,60 +64,59 @@ bool Region::handleInput()
 	return false;
 }
 
-void Region::drawMenu()
+void Region::drawMenu(const TexturedRectangle* menu)
 {
-	if (selectedRegion == this)
-	{
-		menu.setPosition(getWindowWidth() - 300, getWindowHeight()/2 - 300);
-		window->draw(menu);
-		city.drawMenu(menu.getPosition().x, menu.getPosition().y - 10);
-		farm.drawMenu(menu.getPosition().x, menu.getPosition().y + 160);
-		woodmill.drawMenu(menu.getPosition().x, menu.getPosition().y + 225);
-		mine.drawMenu(menu.getPosition().x, menu.getPosition().y + 290);
-		if (tradeCentre.hasBeenBuilt())
-		{
-		        greyoutBuyButtons();// Detemined what should be greyed out
-			// Draw the buttons that allow the player to sell/buy.
-			city.drawSellingButtons();
-			farm.drawBuyingButton();
-			woodmill.drawBuyingButton();
-			mine.drawBuyingButton();
+	int menuX = menu->getPos().x;
+	int menuY = menu->getPos().y;
 
-			static int playerInfoY = menu.getPosition().y + 370;
-			drawText(strPlusX("Player gold: ", playerGold), menu.getPosition().x + 20, playerInfoY);
-			drawText(strPlusX("Player food: ", playerResources.get(foodResource)), menu.getPosition().x + 20, playerInfoY + 15);
-			drawText(strPlusX("Player wood: ", playerResources.get(woodResource)), menu.getPosition().x + 20, playerInfoY + 30);
-			drawText(strPlusX("Player steel: ", playerResources.get(steelResource)), menu.getPosition().x + 20, playerInfoY + 45);
-		}
+	city.drawMenu(menuX, menuY - 10);
+	farm.drawMenu(menuX, menuY + 160);
+	woodmill.drawMenu(menuX, menuY + 225);
+	mine.drawMenu(menuX, menuY + 290);
+	if (tradeCentre.hasBeenBuilt())
+	{
+		greyoutBuyButtons();// Detemine what should be greyed out.
+		// Draw the buttons that allow the player to sell/buy.
+		city.drawSellingButtons();
+		farm.drawBuyingButton();
+		woodmill.drawBuyingButton();
+		mine.drawBuyingButton();
+
 	}
+
+	int playerInfoY = menuY + 370;
+	drawText(strPlusX("Player gold: ", playerGold), menuX + 20, playerInfoY);
+	drawText(strPlusX("Player food: ", playerResources.get(foodResource)), menuX + 20, playerInfoY + 15);
+ 	drawText(strPlusX("Player wood: ", playerResources.get(woodResource)), menuX + 20, playerInfoY + 30);
+	drawText(strPlusX("Player steel: ", playerResources.get(steelResource)), menuX + 20, playerInfoY + 45);
 }
 
 void Region::greyoutBuyButtons()
 {
-		if (playerGold >= farm.wouldSellFor())
-		{
-		    farm.unsetBuyButtonGrey();
-		}
-		else
-		    {
-			farm.setBuyButtonGrey();
-		    }
-		if (playerGold >= woodmill.wouldSellFor())
-		{
-		    woodmill.unsetBuyButtonGrey();
-		}
-		else
-		    {
-			woodmill.setBuyButtonGrey();
-		    }
-		if (playerGold >= mine.wouldSellFor())
-		{
-		    mine.unsetBuyButtonGrey();
-		}
-		else
-		    {
-			mine.setBuyButtonGrey();
-		    }
+	if (playerGold >= farm.wouldSellFor())
+	{
+		farm.unsetBuyButtonGrey();
+	}
+	else
+	{
+		farm.setBuyButtonGrey();
+	}
+	if (playerGold >= woodmill.wouldSellFor())
+	{
+		woodmill.unsetBuyButtonGrey();
+	}
+	else
+	{
+		woodmill.setBuyButtonGrey();
+	}
+	if (playerGold >= mine.wouldSellFor())
+	{
+		mine.unsetBuyButtonGrey();
+	}
+	else
+	{
+		mine.setBuyButtonGrey();
+	}
 }
 bool Region::handleMenuInput()
 {
@@ -215,7 +212,8 @@ sf::Vector2f getHexPos(int index)
 
 
 World::World():
-populationGraph("Population", 50, 400)
+populationGraph("Population", 50, 400),
+regionMenu(500, 10, 290.0, 440.0, genericBg)
 {
 	std::vector<sf::Vector2f> hexPos;
 	vector <string> cityNames;
@@ -260,14 +258,20 @@ void World::draw()
 }
 void World::drawMenu()
 {
+	if (Region::selectedRegion != nullptr)
+	{
+		regionMenu.setPos(getWindowWidth() - 300, getWindowHeight() / 2 - 300);
+		regionMenu.drawBackground();
+
+		Region::selectedRegion->drawMenu(&regionMenu);
+	}
+
+	// To check if there are any bugs or rounding errors when exchanging gold.
 	double totalGold = Region::playerGold;
 	for (auto& region : regions)
 	{
-		region.drawMenu();
 		totalGold += region.city.getGold() + region.farm.getGold() + region.woodmill.getGold() + region.mine.getGold();
 	}
-
-	// To check if there are any bugs when exchanging gold.
 	drawText(strPlusX("Total gold: ", totalGold), getWindowWidth() / 2, getWindowHeight() - 50);
 
 	populationGraph.draw();

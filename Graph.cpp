@@ -22,15 +22,11 @@ Graph::Graph(
 	int setPosX,
 	int setPosY
 ) :
+TexturedRectangle(setPosX, setPosY, GRAPH_WIDTH, GRAPH_HEIGHT, genericBg),
 name(setName),
-x(setPosX),
-y(setPosY),
 initialised(false),
 maxValue(20000)
 {
-	background.setPosition(x, y);
-	background.setTexture(getTexture(genericBg));
-	background.setScale(GRAPH_WIDTH / getTexture(genericBg).getSize().x, GRAPH_HEIGHT / getTexture(genericBg).getSize().y);
 }
 
 sf::CircleShape dataPoint(1);
@@ -38,7 +34,7 @@ void Graph::draw()
 {
 	assert(initialised && "Graph should be initialised before being drawn.");
 
-	window->draw(background);
+	drawBackground();
 	
 	// Draw the graph name, centered, on top of the graph.
 	double nameWidth = getStringWidth(name, getCustomFont(), TEXT_CHAR_SIZE);

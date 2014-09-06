@@ -2,6 +2,7 @@
 #define FACTION_H
 
 #include "GlobalValues.h"
+#include "ClickableRectangle.h"
 
 enum FactionEnum
 {
@@ -26,6 +27,8 @@ private:
 	int soldiers;
 	// Relationships with other factions. -1 - worst, 1 - best. 
 	vector<double> relations;
+
+	static TexturedRectangle relationDisplayBg;
 };
 extern Faction* getFaction(FactionEnum factionIndex);
 

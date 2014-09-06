@@ -36,20 +36,38 @@ void ClickableRectangle::setPos(double newX, double newY)
 	x = newX;
 	y = newY;
 }
+
+sf::Vector2<double> ClickableRectangle::getPos() const
+{
+	return sf::Vector2<double>(x, y);
+}
+
+
 // ------------------  TexturedRectangle
 
-TexturedRectangle::TexturedRectangle(double setX, double setY, double setW, double setH, TextureIndex setTexture) :
-ClickableRectangle(setX, setY, setW, setH)
+TexturedRectangle::TexturedRectangle(
+	double setX, 
+	double setY, 
+	double setW, 
+	double setH, 
+	TextureIndex setTexture
+	) :
+	ClickableRectangle(setX, setY, setW, setH)
 {
 	background.setPosition(x, y);
 	background.setTexture(getTexture(setTexture));
 	background.setScale(w / getTexture(setTexture).getSize().x, h / getTexture(setTexture).getSize().y);
 }
 
+void TexturedRectangle::drawBackground()
+{
+	window->draw(background);
+}
+
 void TexturedRectangle::setPos(double newX, double newY)
 {
+	// Call base class setPos method.
 	ClickableRectangle::setPos(newX, newY);
 
 	background.setPosition(x, y);
 }
-

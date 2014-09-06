@@ -17,6 +17,7 @@ public:
 	bool isClickedOnRelative();
 
 	virtual void setPos(double newX, double newY);
+	sf::Vector2<double> getPos() const;
 
 protected:
 	double x;
@@ -31,8 +32,11 @@ class TexturedRectangle : public ClickableRectangle
 public:
 	TexturedRectangle(double setX, double setY, double setW, double setH, TextureIndex setTexture);
 
+	void TexturedRectangle::drawBackground();
+
 	virtual void setPos(double newX, double newY);
 protected:
+
 
 	sf::Sprite background;
 

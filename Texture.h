@@ -21,6 +21,7 @@ enum TextureIndex
 	totalTextures,
 };
 
+// Loads textures on demand.
 extern const sf::Texture& getTexture(TextureIndex textureIndex);
 
 #endif /* TEXTURE_H */

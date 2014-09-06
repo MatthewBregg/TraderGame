@@ -4,11 +4,12 @@
 
 #include "Texture.h"
 
-
+// Loads textures on demand.
 const sf::Texture& getTexture(TextureIndex textureIndex)
 {
 	static sf::Texture texturePointer[totalTextures];	
 
+	// Texture haven't been loaded properly. 
 	if (texturePointer[textureIndex].getSize().x == 0 && texturePointer[textureIndex].getSize().y == 0)
 	{
 		texturePointer[genericBg].loadFromFile(getResourcePath() + "genericBg.png");
@@ -24,9 +25,9 @@ const sf::Texture& getTexture(TextureIndex textureIndex)
 		// sfml already prints a message when a texture fails to load, so no need to check 
 		// if the texture is fine.
 
-	for (int i = 0; i < textureIndex; ++i)
+		for (int i = 0; i < textureIndex; ++i)
 	    {
-		texturePointer[i].setSmooth(true);
+			texturePointer[i].setSmooth(true);
 	    }
 	}
 	return texturePointer[textureIndex];

@@ -4,7 +4,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-class Graph
+class Graph : public TexturedRectangle
 {
 public:
 	Graph(
@@ -21,16 +21,12 @@ public:
 	void initialise(int numberOfEntities, vector<sf::Color> setColors, vector<string> setNames);
 protected:
 	string name;
-	int x;
-	int y;
 	bool initialised;
 	double maxValue;
 
 	vector<vector<double>> entities;
 	vector<sf::Color> colors;
 	vector<string> names; 
-
-	sf::Sprite background;
 };
 
 
