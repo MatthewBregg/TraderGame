@@ -109,7 +109,7 @@ int main()
    
 	GameViews::init();
 
-	window = new sf::RenderWindow(sf::VideoMode(getWindowWidth(), getWindowHeight()), "Traps are the best");
+	window = new sf::RenderWindow(sf::VideoMode(getWindowWidth(), getWindowHeight()), "TraderGame");
 	view = new sf::View(sf::Vector2f(getWindowWidth() / 2, getWindowHeight() / 2), sf::Vector2f(getWindowWidth(), getWindowHeight()));
 	DEFAULT_VIEW = new sf::View(window->getDefaultView());
 	window->setView(*view);
