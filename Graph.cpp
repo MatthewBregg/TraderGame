@@ -2,13 +2,13 @@
 
 #include "Graph.h"
 
-const int DIST_BETWEEN_POINTS = 6;
-const double GRAPH_WIDTH = 300;
+const int DIST_BETWEEN_POINTS = 3;
+const double GRAPH_WIDTH = 250;
 const double GRAPH_HEIGHT = 150;
 // Offset so the data points do not start at the very border of the graph.
 const double DATA_POINT_X_OFFSET = 5;
 const double DATA_POINT_Y_OFFSET = 5;
-const int MAX_POINTS = 40; 
+const int MAX_POINTS = 80; 
 const int TEXT_CHAR_SIZE = 14;
 // By how much the max value is increased. Needed so that the data does not 
 // take up the top part of the graph. I think it looks better that way.
@@ -17,12 +17,14 @@ const double MAX_VALUE_INCREASE = 1.3;
 Graph::Graph(
 	string setName, 
 	int setPosX,
-	int setPosY
-) :
-TexturedRectangle(setPosX, setPosY, GRAPH_WIDTH, GRAPH_HEIGHT, genericBg),
-name(setName),
-initialised(false),
-maxValue(20000)
+	int setPosY,
+	bool setIfIntegerValues
+	) :
+	TexturedRectangle(setPosX, setPosY, GRAPH_WIDTH, GRAPH_HEIGHT, genericBg),
+	name(setName),
+	initialised(false),
+	maxValue(20000),
+	integerValues(setIfIntegerValues)
 {
 }
 
@@ -95,10 +97,9 @@ void Graph::drawDataLine(int entity)
 	}
 }
 
-void Graph::update(unsigned int index, int newValue)
+void Graph::update(unsigned int index, double newValue)
 {
-
-  assert(index < entities.size() && "Incorrect index provided.");
+	assert(index < entities.size() && "Incorrect index provided.");
 
 	vector<double>* entity = &entities.at(index);
 	entity->push_back(newValue);
@@ -132,8 +133,14 @@ double Graph::findMaxValue()
 			}
 		}
 	}
-
-	return int(newMaxValue * MAX_VALUE_INCREASE);
+	if (integerValues)
+	{
+		return int(newMaxValue * MAX_VALUE_INCREASE);
+	}
+	else
+	{
+		return newMaxValue * MAX_VALUE_INCREASE;
+	}
 }
 
 void Graph::initialise(int numberOfEntities, vector<sf::Color> setColors, vector<string> setNames)

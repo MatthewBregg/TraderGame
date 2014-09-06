@@ -19,6 +19,11 @@ bool EndTurn::handleInput()
 		EndTurn::endTurn();
 		return true;
 	}
+	if (keys[57])   // Press space to fastforward.
+	{
+		EndTurn::endTurn();
+	}
+
 	return false;
 }
 

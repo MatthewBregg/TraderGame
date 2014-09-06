@@ -199,9 +199,9 @@ void Region::updateAfterTurn()
 	// farm, the price would go up (as farm would no longer have as much food in stock).
 	// Thus the min price would increase, and player could make money just by buying
 	// things from infrastructures and selling right off to cities. 
-	city.setNewLowestPrice(foodResource, world.getMinSellingPrice(foodResource)->wouldSellFor());
-	city.setNewLowestPrice(woodResource, world.getMinSellingPrice(woodResource)->wouldSellFor());
-	city.setNewLowestPrice(steelResource, world.getMinSellingPrice(steelResource)->wouldSellFor());
+	city.setNewLowestPrice(foodResource, world.getMinSellingPrice(foodResource, this)->wouldSellFor());
+	city.setNewLowestPrice(woodResource, world.getMinSellingPrice(woodResource, this)->wouldSellFor());
+	city.setNewLowestPrice(steelResource, world.getMinSellingPrice(steelResource, this)->wouldSellFor());
 }
 
 void Region::setTexture(sf::Texture* tex)
@@ -233,7 +233,8 @@ sf::Vector2f getHexPos(int index)
 }
 
 World::World():
-populationGraph("Population", 50, 375)
+populationGraph("Population", 50, 375, true),
+foodPriceGraph("Food prices", 350, 375, false)
 {
 	std::vector<sf::Vector2f> hexPos;
 	vector <string> cityNames;
@@ -266,7 +267,12 @@ populationGraph("Population", 50, 375)
 		regions.size(), 
 		vector < sf::Color > {sf::Color::Red, sf::Color::Green, sf::Color::Blue}, 
 		cityNames
-	);
+		);
+	foodPriceGraph.initialise(
+		regions.size(),
+		vector < sf::Color > {sf::Color::Red, sf::Color::Green, sf::Color::Blue},
+		cityNames
+		);
 }
 
 void World::draw()
@@ -310,7 +316,7 @@ void World::drawMenu()
 	drawText(strPlusX("Total gold: ", totalGold), getWindowWidth() / 2, getWindowHeight() - 50);
 
 	populationGraph.draw();
-
+	foodPriceGraph.draw();
 	// Draws the relations between the factions as a table.
 	Faction::drawRelations(50, 250);
 }
@@ -359,19 +365,25 @@ void World::handleTrading()
 		// Find the resource that would be payed for the most (as long as a deal can occur for it).
 		ResourceEnum mostWantedResource = getMostWantedResource(&aNewDealCanOccur);
 
-		// Find the city offering the most for that resource.
-		City* cityOfferingTheMost = getMaxBuyingPrice(mostWantedResource);
-		// Find the infrastructure that sells for the smallest price.
-		Infrastructure* infrastructureAskingTheLeast = getMinSellingPrice(mostWantedResource);
-
-		if (cityOfferingTheMost != nullptr && 
-			infrastructureAskingTheLeast != nullptr &&
-			cityOfferingTheMost->wouldAcceptDeal(mostWantedResource, infrastructureAskingTheLeast->wouldSellFor()))
+		// Find the region with the city offering the most for that resource.
+		Region* regionWithCityOfferingTheMost = getMaxBuyingPrice(mostWantedResource);
+		if (regionWithCityOfferingTheMost != nullptr)
 		{
-			// The buyer offers more than the seller asks for, a deal occurs.
-			cityOfferingTheMost->acceptDeal(mostWantedResource, infrastructureAskingTheLeast->wouldSellFor());
-			infrastructureAskingTheLeast->acceptDeal();
+			// Find the infrastructure that sells for the smallest price.
+			Infrastructure* infrastructureAskingTheLeast = getMinSellingPrice(mostWantedResource, regionWithCityOfferingTheMost);
+			if (infrastructureAskingTheLeast != nullptr &&
+				regionWithCityOfferingTheMost->city.wouldAcceptDeal(mostWantedResource, infrastructureAskingTheLeast->wouldSellFor()))
+			{
+				// The buyer offers more than the seller asks for, a deal occurs.
+				regionWithCityOfferingTheMost->city.acceptDeal(mostWantedResource, infrastructureAskingTheLeast->wouldSellFor());
+				infrastructureAskingTheLeast->acceptDeal();
+			}
+			else
+			{
+				aNewDealCanOccur.at(mostWantedResource) = false;
+			}
 		}
+
 		else
 		{
 			// The cheapest infrastructure is asking for more gold than the most expensive city
@@ -391,6 +403,7 @@ void World::updateAfterTurn()
     {
 		regions.at(i).updateAfterTurn();
 		populationGraph.update(i, regions.at(i).city.getPopulation());
+		foodPriceGraph.update(i, regions.at(i).farm.wouldSellFor());
     }
 }
 
@@ -432,10 +445,10 @@ ResourceEnum World::getMostWantedResource(const vector<bool>* aNewDealCanOccur)
 	return mostWantedResource;
 }
 
-// Returns the city offering the largest price for 1 unit of food.
-City* World::getMaxBuyingPrice(ResourceEnum resource)
+// Returns the region with the city offering the largest price for 1 unit of some resource.
+Region* World::getMaxBuyingPrice(ResourceEnum resource)
 {
-	City* cityOfferingTheMost = nullptr;
+	Region* regionWithTheCityOfferingTheMost = nullptr;
 	double maxBuyingPrice = 0;
 	for (auto& region : regions)
 	{
@@ -443,18 +456,52 @@ City* World::getMaxBuyingPrice(ResourceEnum resource)
 		if (maxBuyingPrice < citiesBuyingPrice)
 		{
 			maxBuyingPrice = citiesBuyingPrice;
-			cityOfferingTheMost = &region.city;
+			regionWithTheCityOfferingTheMost = &region;
 		}
 	}
-	return cityOfferingTheMost;
+	return regionWithTheCityOfferingTheMost;
 }
 
 // Returns the infrastructure asking the smallest price for the given resource.
-Infrastructure* World::getMinSellingPrice(ResourceEnum resource)
+// The startingRegion is where the city looking the deal is at. Needed since some regions might not
+// be able to trade with infrastructures from other regions.
+Infrastructure* World::getMinSellingPrice(ResourceEnum resource, Region* startingRegion)
 {
 	Infrastructure* infrastructureAskingTheLeast = nullptr;
 	double minSellingPrice = 100000000;
 
+	if (resource == foodResource)
+	{
+		double farmWouldSellFor = startingRegion->farm.wouldSellFor();
+		if (minSellingPrice > farmWouldSellFor)
+		{
+			minSellingPrice = startingRegion->farm.wouldSellFor();
+			infrastructureAskingTheLeast = &startingRegion->farm;
+		}
+	}
+	else if (resource == woodResource)
+	{
+		double woodmillWouldSellFor = startingRegion->woodmill.wouldSellFor();
+		if (minSellingPrice > woodmillWouldSellFor)
+		{
+			minSellingPrice = startingRegion->woodmill.wouldSellFor();
+			infrastructureAskingTheLeast = &startingRegion->woodmill;
+		}
+	}
+	else if (resource == steelResource)
+	{
+		double mineWouldSellFor = startingRegion->mine.wouldSellFor();
+		if (minSellingPrice > mineWouldSellFor)
+		{
+			minSellingPrice = startingRegion->mine.wouldSellFor();
+			infrastructureAskingTheLeast = &startingRegion->mine;
+		}
+	}
+	else
+	{
+		assert(0 && "Not existing resource buying price requested.");
+	}
+	/*
 	for (auto& region : regions)
 	{
 		if (resource == foodResource)
@@ -488,6 +535,6 @@ Infrastructure* World::getMinSellingPrice(ResourceEnum resource)
 		{
 			assert(0 && "Not existing resource buying price requested.");
 		}
-	}
+	}*/
 	return infrastructureAskingTheLeast;
 }

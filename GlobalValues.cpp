@@ -59,7 +59,7 @@ int getWindowWidth()
 }
 int getAndUpdateWindowWidth(bool update)
 {
-	static int windowWidth = 800;
+	static int windowWidth = 900;
 	if (update)
 	    {
 		windowWidth = window->getSize().x;
@@ -69,7 +69,7 @@ int getAndUpdateWindowWidth(bool update)
 }
 int getAndUpdateWindowHeight(bool update)
 {
-	static int windowHeight = 600;
+	static int windowHeight = 676;
 	if(update)
 	    {
 		windowHeight = window->getSize().y;
