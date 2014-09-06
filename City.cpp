@@ -23,7 +23,7 @@ City::City(string setName, Resources r, int g, int xPos, int yPos, FactionEnum s
 	{
 		lowestPrice.push_back(0);
 	}
- };
+};
 
 void City::draw()
 {
@@ -43,7 +43,7 @@ void City::drawMenu(double x, double y)
 	popString << "Population: " << population << "(*" << getPopulationChange() << ")";
 	drawText(popString.str(), x + 20, y + 40);
 
-	drawText(strPlusX("", getFaction(factionIndex)->getSoldiers()), x + 220, y + 40);
+	drawText(strPlusX("", Faction::get(factionIndex)->getSoldiers()), x + 220, y + 40);
 
 	drawText(strPlusX("Gold: ", gold), x + 20, y + 55);
 
@@ -75,22 +75,17 @@ void City::drawSellingButtons()
 
 void City::greyOutSellingButtons(const Resources& player)
 {
-
-
-
     for ( int A = getFirstResourceEnum(); A != TOTAL_RESOURCES; ++A) //Slightly dangerous, relies on enums being contigious
+    {
+    	if (player.get(A) == 0)
     	{
-    	    if (player.get(A) == 0)
-    		{
-    		    sellToButtons[A].setGrey();
-    		}
-    	    else
-    		{
-    		    sellToButtons[A].unsetGrey();
-    		}
+    		sellToButtons[A].setGrey();
     	}
-
- 
+    	else
+    	{
+    		sellToButtons[A].unsetGrey();
+    	}
+    }
 }
 bool City::isSellingButtonClickedOn(ResourceEnum resource)
 {
@@ -211,7 +206,7 @@ void City::updateSolders()
 		resources.change(woodResource, -1);
 		resources.change(steelResource, -1);
 		
-		getFaction(factionIndex)->changeSolders(SOLDIERS_CREATED);
+		Faction::get(factionIndex)->changeSolders(SOLDIERS_CREATED);
 	}
 }
 
@@ -229,7 +224,7 @@ double City::foodBuyingPrice()
 const double REQUIRED_NO_SOLDIERS = 0.1;
 double City::woodBuyingPrice()
 {
-	double missingSoldiers = REQUIRED_NO_SOLDIERS * population - getFaction(factionIndex)->getSoldiers();
+	double missingSoldiers = REQUIRED_NO_SOLDIERS * population - Faction::get(factionIndex)->getSoldiers();
 	if (missingSoldiers <= 0)
 	{
 		missingSoldiers = 0;
@@ -245,7 +240,7 @@ double City::woodBuyingPrice()
 
 double City::steelBuyingPrice()
 {
-	double missingSoldiers = REQUIRED_NO_SOLDIERS * population - getFaction(factionIndex)->getSoldiers();
+	double missingSoldiers = REQUIRED_NO_SOLDIERS * population - Faction::get(factionIndex)->getSoldiers();
 	if (missingSoldiers <= 0)
 	{
 		missingSoldiers = 0;

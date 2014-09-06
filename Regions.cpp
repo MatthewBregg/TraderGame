@@ -144,7 +144,7 @@ bool Region::handleMenuInput()
 
 			if (city.isSellingButtonClickedOn(resource))
 			{
-				if (playerResources.get(resource) > 0)
+				if (playerResources.get(resource) > 0 && city.wouldAcceptDeal(resource, city.getPlayerBuyingPrice(resource)))
 				{
 					playerGold += city.getPlayerBuyingPrice(resource);
 					city.acceptDeal(resource, city.getPlayerBuyingPrice(resource));

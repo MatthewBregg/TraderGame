@@ -3,16 +3,16 @@
 #include "Faction.h"
 
 array<Faction, TOTAL_FACTIONS> factions = { Faction("Elves"), Faction("Dwarves"), Faction("Demons") };
-
+// Relationships between factions. -1 - worst, 1 - best. 
+// A TOTAL_FACTIONS x TOTAL_FACTIONS table of relations.
+// It should be symetrical diagonally.
+vector<vector<double>> Faction::relations;
 
 Faction::Faction(string setName):
 name(setName),
 soldiers(100)
 {
-	for (int i = 0; i < TOTAL_FACTIONS; ++i)
-	{
-		relations.push_back(1.0 - double(getRandomNumber(2000)) / 1000.0);  // At the start of the game, all relations are neutral.
-	}
+
 }
 
 int Faction::getSoldiers()
@@ -56,15 +56,15 @@ void Faction::drawRelations(int x, int y)
 			if (row != column)
 			{
 				sf::Color colorUsed = sf::Color::Black;
-				if (factions[row].relations[column] < - 0.4)
+				if (relations.at(row).at(column) < -0.4)
 				{
 					colorUsed = sf::Color::Red;
 				}
-				else if (factions[row].relations[column] > 0.4)
+				else if (relations.at(row).at(column) > 0.4)
 				{
 					colorUsed = sf::Color::Green;
 				}
-				drawText(strPlusX("", factions[row].relations[column]),
+				drawText(strPlusX("", relations.at(row).at(column)),
 								  x + X_OFFSET + DIST_BETWEEN_COLUMNS * (column + 1),
 								  y + Y_OFFSET + DIST_BETWEEN_ROWS * (row + 1),
 								  14, 
@@ -78,8 +78,37 @@ void Faction::drawRelations(int x, int y)
 	}
 }
 
+void Faction::initRelations()
+{
+	static bool inited = false;
+	if (!inited)
+	{
+		// Relationships between factions. -1 - worst, 1 - best. 
+		for (int i = 0; i < TOTAL_FACTIONS; ++i)
+		{
+			vector<double> relationVector;
+			relations.push_back(relationVector);
+			for (int f = 0; f < TOTAL_FACTIONS; ++f)
+			{
+				// At the start of the game, randomly init factions.
+				relations.at(i).push_back(1.0 - double(getRandomNumber(2000)) / 1000.0);
+			}
+		}
+		inited = true;
 
-Faction* getFaction(FactionEnum factionIndex)
+		for (int i = 0; i < TOTAL_FACTIONS; ++i)
+		{
+			for (int f = 0; f < TOTAL_FACTIONS; ++f)
+			{
+				// Make the relations symetrical diagonally.
+				relations.at(i).at(f) = relations.at(f).at(i);
+			}
+		}
+	}
+}
+
+
+Faction* Faction::get(FactionEnum factionIndex)
 {
 	return &factions[factionIndex];
 }

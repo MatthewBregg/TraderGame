@@ -24,7 +24,7 @@ void GameViews::init()
 {
 	mapSize.setOrigin((-getWindowWidth() / 2) + mapSize.getSize().x / 2, -(getWindowHeight() / 2 - mapSize.getSize().y / 2));
 	//Should center the map boundaries.
-
+	Faction::initRelations();
 }
 
 void GameViews::render()
