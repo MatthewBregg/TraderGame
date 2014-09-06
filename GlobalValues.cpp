@@ -82,7 +82,7 @@ int getWindowHeight()
     return getAndUpdateWindowHeight(false);
 }
 sf::Clock runtime;
-double SCROLL_SPEED = 10;
+double SCROLL_SPEED = 2;
 bool keys[256];
 int mouseScroll = 0; // Negative or positive depending on which way the player scrolls.
 

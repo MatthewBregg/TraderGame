@@ -85,20 +85,21 @@ void GameViews::zoom(int delta)
 	}
     view->zoom(zoomLevel);
 }
-void GameViews::scroll(const sf::Time& clock)
+void GameViews::scroll()
 {
-  static sf::Time lasttime(sf::seconds(0));
-  static int oldchange(0);
-   int change = ((((clock + lasttime)).asMicroseconds())/2)/100 * SCROLL_SPEED;
-  change = (change+oldchange)/2;
-	//71 is left, 72 is right, 73 is up, 74 is downs
-   if ( change > 50 )
-     {
-       change = 50;
-     }  
-   lasttime = clock;
-   // std::cout << "POS IS " << view->getCenter().x << " " << view->getCenter().y << std::endl; 
-   // cout << "Change is " << change << endl;
+  // static sf::Time lasttime(sf::seconds(0));
+  // static int oldchange(0);
+  //  int change = ((((clock + lasttime)).asMicroseconds())/2)/100 * SCROLL_SPEED;
+  // change = (change+oldchange)/2;
+  // 	//71 is left, 72 is right, 73 is up, 74 is downs
+  //  if ( change > 50 )
+  //    {
+  //      change = 50;
+  //    }  
+  //  lasttime = clock;
+  //  // std::cout << "POS IS " << view->getCenter().x << " " << view->getCenter().y << std::endl; 
+  //  // cout << "Change is " << change << endl;
+    int change = 10*SCROLL_SPEED;
 
   if (keys[71])
     {

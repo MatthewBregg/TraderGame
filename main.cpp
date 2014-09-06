@@ -126,7 +126,7 @@ int main()
 	    GameViews::render();
 	    GameViews::resizeCheck();
 	    //	    sf::Time avgFPS = getAverageFPSTime();
-	    GameViews::scroll(fpsTime.getElapsedTime());		
+	    GameViews::scroll();		
 	    //   window->draw(mapSize); //Turn this on to see the map boundaries
 	    window->display();
 	    fpsTime.restart();
