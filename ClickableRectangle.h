@@ -34,7 +34,7 @@ class TexturedRectangle : public ClickableRectangle
 public:
 	TexturedRectangle(double setX, double setY, double setW, double setH, TextureIndex setTexture);
 
-	void TexturedRectangle::drawBackground();
+	void drawBackground();
 
 	virtual void setPos(double newX, double newY);
 protected:
