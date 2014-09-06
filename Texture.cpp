@@ -22,6 +22,11 @@ const sf::Texture& getTexture(TextureIndex textureIndex)
 		texturePointer[randomCityTexture].loadFromFile(getResourcePath() + "randomCityTexture.png");
 		texturePointer[tradeCentreTexture].loadFromFile(getResourcePath() + "tradeCentreTexture.png");
 			
+		texturePointer[goldIcon].loadFromFile(getResourcePath() + "goldIcon.png");
+		texturePointer[foodIcon].loadFromFile(getResourcePath() + "foodIcon.png");
+		texturePointer[woodIcon].loadFromFile(getResourcePath() + "woodIcon.png");
+		texturePointer[steelIcon].loadFromFile(getResourcePath() + "steelIcon.png");
+
 		// sfml already prints a message when a texture fails to load, so no need to check 
 		// if the texture is fine.
 

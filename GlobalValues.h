@@ -15,6 +15,7 @@ using namespace std;
 #include <fstream>    // fstream provides an interface to read and write data from files as input/output streams.
 #include <sstream>
 
+#include "Texture.h"
 #include "TextManager.h"
 
 
@@ -85,6 +86,8 @@ extern int getWindowHeight();
 extern bool keys[256];
 extern int mouseScroll; // Negative or positive depending on which way the player scrolls.
 
+
+void drawSprite(int x, int y, double w, double h, TextureIndex textureIndex);
 
 
 #endif /* GlobalValues_H */

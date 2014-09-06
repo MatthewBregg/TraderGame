@@ -45,6 +45,9 @@ protected:
 	FactionEnum origOwner;
 
 	static TexturedRectangle regionMenu;
+
+	static TexturedRectangle playerResourceMenu;
+	static void drawPlayerResourceMenu();
 	static Resources playerResources;
 	static double playerGold;
 };

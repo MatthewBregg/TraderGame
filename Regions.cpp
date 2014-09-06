@@ -7,6 +7,7 @@
 
 Region* Region::selectedRegion = nullptr;
 
+TexturedRectangle Region::playerResourceMenu(5, 5, 340, 40, genericBg);
 TexturedRectangle Region::regionMenu(500, 10, 290.0, 470.0, genericBg);
 Resources Region::playerResources(vector<unsigned int> {0, 0, 0});
 double Region::playerGold(1);
@@ -65,6 +66,23 @@ bool Region::handleInput()
 	return false;
 }
 
+void Region::drawPlayerResourceMenu()
+{
+	playerResourceMenu.drawBackground();
+
+	drawSprite(20, 9, 32, 32, goldIcon);
+	drawText(strPlusX("          ", playerGold),  20, 15);
+
+	drawSprite(130, 9, 32, 32, foodIcon);
+	drawText(strPlusX("          ", playerResources.get(foodResource)), 130, 15);
+
+	drawSprite(200, 9, 32, 32, woodIcon);
+	drawText(strPlusX("          ", playerResources.get(woodResource)), 200, 15);
+	
+	drawSprite(270, 9, 32, 32, steelIcon);
+	drawText(strPlusX("          ", playerResources.get(steelResource)), 270, 15);
+}
+
 void Region::drawMenu()
 {
 	regionMenu.setPos(getWindowWidth() - 300, getWindowHeight() / 2 - 300);
@@ -85,14 +103,7 @@ void Region::drawMenu()
 		farm.drawBuyingButton();
 		woodmill.drawBuyingButton();
 		mine.drawBuyingButton();
-
 	}
-
-	int playerInfoY = menuY + 400;
-	drawText(strPlusX("Player gold: ", playerGold), menuX + 20, playerInfoY);
-	drawText(strPlusX("Player food: ", playerResources.get(foodResource)), menuX + 20, playerInfoY + 15);
- 	drawText(strPlusX("Player wood: ", playerResources.get(woodResource)), menuX + 20, playerInfoY + 30);
-	drawText(strPlusX("Player steel: ", playerResources.get(steelResource)), menuX + 20, playerInfoY + 45);
 }
 
 void Region::greyoutBuyButtons()
@@ -288,6 +299,8 @@ void World::drawMenu()
 	{
 		Region::selectedRegion->drawMenu();
 	}
+	Region::drawPlayerResourceMenu();
+
 
 	// To check if there are any bugs or rounding errors when exchanging gold.
 	double totalGold = Region::playerGold;

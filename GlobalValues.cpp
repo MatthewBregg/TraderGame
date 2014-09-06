@@ -1,3 +1,6 @@
+
+
+
 #include "GlobalValues.h"
 
 
@@ -87,3 +90,14 @@ sf::RectangleShape mapSize(sf::Vector2f(2000,2000));
 
 
 
+// A drawing method that anyone can use. Used when the caller does not want to deal
+// with the sprite crap on his side. 
+sf::Sprite freeSprite;
+void drawSprite(int x, int y, double w, double h, TextureIndex textureIndex)
+{
+	freeSprite.setPosition(x, y);
+	freeSprite.setTexture(getTexture(textureIndex));
+	freeSprite.setScale(w / getTexture(textureIndex).getSize().x, h / getTexture(textureIndex).getSize().y);
+	window->draw(freeSprite);
+}
+	

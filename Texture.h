@@ -18,6 +18,11 @@ enum TextureIndex
 	randomCityTexture,
 	tradeCentreTexture,
 
+	goldIcon,
+	foodIcon,
+	woodIcon,
+	steelIcon,
+
 	totalTextures,
 };
 
