@@ -7,6 +7,7 @@
 
 Region* Region::selectedRegion = nullptr;
 
+TexturedRectangle Region::regionMenu(500, 10, 290.0, 440.0, genericBg);
 Resources Region::playerResources(vector<unsigned int> {0, 0, 0});
 double Region::playerGold(1);
 
@@ -64,10 +65,13 @@ bool Region::handleInput()
 	return false;
 }
 
-void Region::drawMenu(const TexturedRectangle* menu)
+void Region::drawMenu()
 {
-	int menuX = menu->getPos().x;
-	int menuY = menu->getPos().y;
+	regionMenu.setPos(getWindowWidth() - 300, getWindowHeight() / 2 - 300);
+	regionMenu.drawBackground();
+
+	int menuX = regionMenu.getPos().x;
+	int menuY = regionMenu.getPos().y;
 
 	city.drawMenu(menuX, menuY - 10);
 	farm.drawMenu(menuX, menuY + 160);
@@ -120,58 +124,55 @@ void Region::greyoutBuyButtons()
 }
 bool Region::handleMenuInput()
 {
-	// Check if player wants to sell something to the city.
-	for (int i = 0; i < TOTAL_RESOURCES; ++i)
+	if (regionMenu.isMouseHovering())
 	{
-		ResourceEnum resource = static_cast<ResourceEnum>(i);
-
-		if (city.isSellingButtonClickedOn(resource))
+		// Check if player wants to sell something to the city.
+		for (int i = 0; i < TOTAL_RESOURCES; ++i)
 		{
-			if (playerResources.get(resource) > 0)
-			{
-				playerGold += city.getBuyingPrice(resource);
-				city.acceptDeal(resource, city.getBuyingPrice(resource));
-				playerResources.change(resource, -1);
-			}
-			return true;
-		}
-	}
-	greyoutBuyButtons(); //No need to check twice if we can buy from, if we've greyed it out, the buttons can't be clicked.
-	//Also don't have to worry about changing these values twice.
-	if (farm.isBuyingButtonClickedOn())
-	    {
-		if (!farm.isGreyed())
-		    {
-			playerGold -= farm.wouldSellFor();
-			playerResources.change(foodResource, 1);
-			farm.acceptDeal();
-			return true;
-		    }
-		return true; //These are nessecary so that clicking on a buy button when greyed won't close menu
-	    }
-	if (woodmill.isBuyingButtonClickedOn())
-	    {
-		if (!woodmill.isGreyed())
-		    {
-			playerGold -= woodmill.wouldSellFor();
-			playerResources.change(woodResource, 1);
-			woodmill.acceptDeal();
-			return true;
-		    }
-		return true;
-	    }
-	if (mine.isBuyingButtonClickedOn())
-	    {
-		if (!mine.isGreyed())
-		    {
-			playerGold -= mine.wouldSellFor();
-			playerResources.change(steelResource, 1);
-			mine.acceptDeal();
-			return true;
-		    }
-		return true;
-	    }
+			ResourceEnum resource = static_cast<ResourceEnum>(i);
 
+			if (city.isSellingButtonClickedOn(resource))
+			{
+				if (playerResources.get(resource) > 0)
+				{
+					playerGold += city.getBuyingPrice(resource);
+					city.acceptDeal(resource, city.getBuyingPrice(resource));
+					playerResources.change(resource, -1);
+				}
+			}
+		}
+		greyoutBuyButtons(); //No need to check twice if we can buy from, if we've greyed it out, the buttons can't be clicked.
+		//Also don't have to worry about changing these values twice.
+		if (farm.isBuyingButtonClickedOn())
+		{
+			if (!farm.isGreyed())
+			{
+				playerGold -= farm.wouldSellFor();
+				playerResources.change(foodResource, 1);
+				farm.acceptDeal();
+			}
+		}
+		if (woodmill.isBuyingButtonClickedOn())
+		{
+			if (!woodmill.isGreyed())
+			{
+				playerGold -= woodmill.wouldSellFor();
+				playerResources.change(woodResource, 1);
+				woodmill.acceptDeal();
+			}
+		}
+		if (mine.isBuyingButtonClickedOn())
+		{
+			if (!mine.isGreyed())
+			{
+				playerGold -= mine.wouldSellFor();
+				playerResources.change(steelResource, 1);
+				mine.acceptDeal();
+			}
+		}
+		// As long as the mouse is over the menu, don't consider input for other things.
+		return true;
+	}
 	return false;
 }
 
@@ -212,8 +213,7 @@ sf::Vector2f getHexPos(int index)
 
 
 World::World():
-populationGraph("Population", 50, 400),
-regionMenu(500, 10, 290.0, 440.0, genericBg)
+populationGraph("Population", 50, 400)
 {
 	std::vector<sf::Vector2f> hexPos;
 	vector <string> cityNames;
@@ -256,14 +256,27 @@ void World::draw()
 		i.draw();
 	}
 }
+bool World::handleInput()
+{
+	for (auto& i : regions)
+	{
+		if (i.handleInput())
+		{
+			return true;
+		}
+	}
+	if (leftClickPressed)
+	{
+		// Some empty spot clicked, deselect the city and trade centre.
+		Region::selectedRegion = nullptr;
+	}
+	return false;
+}
 void World::drawMenu()
 {
 	if (Region::selectedRegion != nullptr)
 	{
-		regionMenu.setPos(getWindowWidth() - 300, getWindowHeight() / 2 - 300);
-		regionMenu.drawBackground();
-
-		Region::selectedRegion->drawMenu(&regionMenu);
+		Region::selectedRegion->drawMenu();
 	}
 
 	// To check if there are any bugs or rounding errors when exchanging gold.
@@ -279,7 +292,7 @@ void World::drawMenu()
 	// Draws the relations between the factions as a table.
 	Faction::drawRelations(50, 250);
 }
-bool World::handleInput()
+bool World::handleMenuInput()
 {
 	if (Region::selectedRegion != nullptr)
 	{
@@ -287,19 +300,6 @@ bool World::handleInput()
 		{
 			return true;
 		}
-	}
-		
-	for (auto& i : regions)
-	{
-		if (i.handleInput())
-		{
-			return true;
-		}
-	}
-	if (leftClickPressed)
-	{
-		// Some empty spot clicked, deselect the city and trade centre.
-		Region::selectedRegion = nullptr;
 	}
 	return false;
 }

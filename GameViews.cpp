@@ -22,19 +22,23 @@ GameView gameView = mapView;
 
 void GameViews::init()
 {
-  mapSize.setOrigin((-getWindowWidth()/2)+mapSize.getSize().x/2,-(getWindowHeight()/2-mapSize.getSize().y/2));
-  //Should center the map boundaries.
+	mapSize.setOrigin((-getWindowWidth() / 2) + mapSize.getSize().x / 2, -(getWindowHeight() / 2 - mapSize.getSize().y / 2));
+	//Should center the map boundaries.
 
 }
 
 void GameViews::render()
 {
-	if (gameView == mapView)										
+	if (gameView == mapView)
 	{
 		// If "end turn" is clicked on, ignore the input for the map. 
 		// Since the map might interpret the click as the player trying
 		// to select something.
-		if (EndTurn::handleInput())
+		if (world.handleMenuInput())
+		{
+
+		}
+		else if (EndTurn::handleInput())
 		{
 		}
 		else if (world.handleInput())

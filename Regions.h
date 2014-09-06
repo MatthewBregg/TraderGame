@@ -21,7 +21,7 @@ public:
 	Region(std::vector<sf::Vector2f> poses, FactionEnum setFaction, TextureIndex hexTexture, string cityName, double cityGold);
 	void draw();
 	bool handleInput();
-	void drawMenu(const TexturedRectangle* menu);
+	void drawMenu();
 	bool handleMenuInput();
 	void updateAfterTurn();
 
@@ -44,7 +44,7 @@ protected:
 	FactionEnum currentOwner;
 	FactionEnum origOwner;
 
-	
+	static TexturedRectangle regionMenu;
 	static Resources playerResources;
 	static double playerGold;
 };
@@ -56,15 +56,15 @@ public:
 	World();
 
   void draw();
-  void drawMenu();
   bool handleInput();
+  void drawMenu();
+  bool handleMenuInput();
 
   void handleTrading();
   void updateAfterTurn();
 protected:
 	
 	Graph populationGraph;
-	TexturedRectangle regionMenu;
 
 	std::vector<Region> regions;
 	// Returns the resource that would be payed for the most. For example, city a pays

@@ -20,6 +20,11 @@ bool ClickableRectangle::isHovering(double pointX, double pointY)
 	}
 	return false;
 }
+bool ClickableRectangle::isMouseHovering()
+{
+	return isHovering(mouseX, mouseY);
+}
+
 // Checks if the player has clicked on the button.
 bool ClickableRectangle::isClickedOnRelative()
 {

@@ -12,6 +12,8 @@ public:
 
 	// Checks if the point is over the rectangle.
 	bool isHovering(double pointX, double pointY);
+	bool isMouseHovering();
+
 	// Checks if the player has clicked on the button.
 	bool isClickedOn();
 	bool isClickedOnRelative();
