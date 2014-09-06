@@ -18,6 +18,11 @@ City::City(string setName, Resources r, int g, int xPos, int yPos, FactionEnum s
 	citySprite.setPosition(xPos, yPos);
 	citySprite.setTexture(getTexture(randomCityTexture));
 	citySprite.setScale(CITY_SIZE / getTexture(randomCityTexture).getSize().x, CITY_SIZE / getTexture(randomCityTexture).getSize().y);
+
+	for (int i = 0; i < TOTAL_RESOURCES; ++i)
+	{
+		lowestPrice.push_back(0);
+	}
  };
 
 void City::draw()
@@ -42,30 +47,26 @@ void City::drawMenu(double x, double y)
 
 	drawText(strPlusX("Gold: ", gold), x + 20, y + 55);
 
-	stringstream foodStockString;
-	foodStockString << "Food in stock: " << resources.get(foodResource) << "(-" << getPopulationFoodReq() << ")";
-	drawText(foodStockString.str(), x + 20, y + 70);
-	drawText(strPlusX("Buys food for: ", getBuyingPrice(foodResource)), x + 20, y + 85);
+	drawText(strPlusX("Food in stock: ", resources.get(foodResource)), x + 20, y + 70);
+	drawText(strPlusX("Buys at max: ", getBuyingPrice(foodResource)), x + 20, y + 85);
+	drawText(strPlusX("Buys from YOU at: ", lowestPrice.at(foodResource)), x + 20, y + 100);
 
-	stringstream woodStockString;
-	woodStockString << "Wood in stock: " << resources.get(woodResource);
-	drawText(woodStockString.str(), x + 20, y + 100);
-	drawText(strPlusX("Buys wood for: ", getBuyingPrice(woodResource)), x + 20, y + 115);
+	drawText(strPlusX("Wood in stock: ", resources.get(woodResource)), x + 20, y + 115);
+	drawText(strPlusX("Buys at max: ", getBuyingPrice(woodResource)), x + 20, y + 130);
+	drawText(strPlusX("Buys from YOU at: ", lowestPrice.at(woodResource)), x + 20, y + 145);
 
-	stringstream steelStockString;
-	steelStockString << "Steel in stock: " << resources.get(steelResource);
-	drawText(steelStockString.str(), x + 20, y + 130);
-	drawText(strPlusX("Buys steel for: ", getBuyingPrice(steelResource)), x + 20, y + 145);
+	drawText(strPlusX("Steel in stock: ", resources.get(steelResource)), x + 20, y + 160);
+	drawText(strPlusX("Buys at max: ", getBuyingPrice(steelResource)), x + 20, y + 175);
+	drawText(strPlusX("Buys from YOU at: ", lowestPrice.at(steelResource)), x + 20, y + 190);
 
 	for (int i = 0; i < TOTAL_RESOURCES; ++i)
 	{
-		sellToButtons[i].setPos(x + 230, y + 80 + 30 * i);
+		sellToButtons[i].setPos(x + 230, y + 98 + 45 * i);
 	}
 }
 
 void City::drawSellingButtons()
 {
-
 	for (auto& button : sellToButtons)
 	{
 		button.draw();
@@ -102,6 +103,36 @@ void City::refreshAfterTurn()
 	updateSolders();
 }
 
+bool City::wouldAcceptDeal(ResourceEnum resourceTraded, double offeredPrice)
+{
+	// Can only accept the deal if the price is less than the one we would like,
+	// as well as we have enough gold in the first place for the deal to occur.
+	if (getBuyingPrice(resourceTraded) >= offeredPrice && gold >= offeredPrice)
+	{
+		return true;
+	}
+	return false;
+}
+
+void City::acceptDeal(ResourceEnum resourceTraded, double price)
+{
+	gold -= price;
+	resources.change(resourceTraded, 1);
+}
+
+// Set the lowest price the city can get. This will be used as the price 
+// at which the city will buy from the player. Done here so it is only refreshed once.
+// If city can get food at 0.4 at the start of the turn, player will have to 
+// sell at that price for the whole turn. Otherwise, if player buys 1 food from 
+// farm, the price would go up (as farm would no longer have as much food in stock).
+// Thus the min price would increase, and player could make money just by buying
+// things from infrastructures and selling right off to cities. 
+void City::setNewLowestPrice(ResourceEnum resourceTraded, double newPrice)
+{
+	lowestPrice.at(resourceTraded) = newPrice;
+}
+
+// The price at which the city buys from infrastructures.
 double City::getBuyingPrice(ResourceEnum resource)
 {
 	if (resource == foodResource)
@@ -122,11 +153,15 @@ double City::getBuyingPrice(ResourceEnum resource)
 	}
 	return 0;
 }
-
+// The price at which the city buys from the player.
+double City::getPlayerBuyingPrice(ResourceEnum resource)
+{
+	return lowestPrice.at(resource);
+}
 
 unsigned int City::getPopulationFoodReq()
 {
-	return ceil(double(population)/2000.0);
+	return ceil(double(population) / 2000.0);
 }
 
 const double MIN_POPULATION_GROWTH = 0.7;
@@ -135,7 +170,7 @@ const double MAX_POPULATION_GROWTH = 1.1;
 const double POPULATION_GROWTH_DIFF = MAX_POPULATION_GROWTH - MIN_POPULATION_GROWTH;
 double City::getPopulationChange()
 {
-	double populationChange = MIN_POPULATION_GROWTH + 
+	double populationChange = MIN_POPULATION_GROWTH +
 		(double(resources.get(foodResource)) / double(getPopulationFoodReq())) * POPULATION_GROWTH_DIFF;
 	if (populationChange > MAX_POPULATION_GROWTH)
 	{
@@ -143,24 +178,6 @@ double City::getPopulationChange()
 	}
 	return populationChange;
 }
-
-bool City::wouldAcceptDeal(ResourceEnum resourceTraded, double offeredPrice)
-{
-	// Can only accept the deal if the price is less than the one we would like,
-	// as well as we have enough gold in the first place for the deal to occur.
-	if (getBuyingPrice(resourceTraded) >= offeredPrice && gold >= offeredPrice)
-	{
-		return true;
-	}
-	return false;
-}
-
-void City::acceptDeal(ResourceEnum resourceTraded, double price)
-{
-	gold -= price;
-	resources.change(resourceTraded, 1);
-}
-
 double City::getGold()
 {
 	return gold;
@@ -169,7 +186,6 @@ void City::addGold(double howMuch)
 {
 	gold += howMuch;
 }
-
 unsigned int City::getPopulation()
 {
 	return population;

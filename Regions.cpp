@@ -7,7 +7,7 @@
 
 Region* Region::selectedRegion = nullptr;
 
-TexturedRectangle Region::regionMenu(500, 10, 290.0, 440.0, genericBg);
+TexturedRectangle Region::regionMenu(500, 10, 290.0, 470.0, genericBg);
 Resources Region::playerResources(vector<unsigned int> {0, 0, 0});
 double Region::playerGold(1);
 
@@ -74,9 +74,9 @@ void Region::drawMenu()
 	int menuY = regionMenu.getPos().y;
 
 	city.drawMenu(menuX, menuY - 10);
-	farm.drawMenu(menuX, menuY + 160);
-	woodmill.drawMenu(menuX, menuY + 225);
-	mine.drawMenu(menuX, menuY + 290);
+	farm.drawMenu(menuX, menuY + 200);
+	woodmill.drawMenu(menuX, menuY + 265);
+	mine.drawMenu(menuX, menuY + 330);
 	if (tradeCentre.hasBeenBuilt())
 	{
 		greyoutBuyButtons();// Detemine what should be greyed out.
@@ -88,7 +88,7 @@ void Region::drawMenu()
 
 	}
 
-	int playerInfoY = menuY + 370;
+	int playerInfoY = menuY + 400;
 	drawText(strPlusX("Player gold: ", playerGold), menuX + 20, playerInfoY);
 	drawText(strPlusX("Player food: ", playerResources.get(foodResource)), menuX + 20, playerInfoY + 15);
  	drawText(strPlusX("Player wood: ", playerResources.get(woodResource)), menuX + 20, playerInfoY + 30);
@@ -135,8 +135,8 @@ bool Region::handleMenuInput()
 			{
 				if (playerResources.get(resource) > 0)
 				{
-					playerGold += city.getBuyingPrice(resource);
-					city.acceptDeal(resource, city.getBuyingPrice(resource));
+					playerGold += city.getPlayerBuyingPrice(resource);
+					city.acceptDeal(resource, city.getPlayerBuyingPrice(resource));
 					playerResources.change(resource, -1);
 				}
 			}
@@ -181,6 +181,16 @@ void Region::updateAfterTurn()
 	double farmUpkeep = farm.refreshAfterTurn() + woodmill.refreshAfterTurn() + mine.refreshAfterTurn();
 	city.addGold(farmUpkeep);
 	city.refreshAfterTurn();
+	// Set the lowest price the city can get. This will be used as the price 
+	// at which the city will buy from the player. Done here so it is only refreshed once.
+	// If city can get food at 0.4 at the start of the turn, player will have to 
+	// sell at that price for the whole turn. Otherwise, if player buys 1 food from 
+	// farm, the price would go up (as farm would no longer have as much food in stock).
+	// Thus the min price would increase, and player could make money just by buying
+	// things from infrastructures and selling right off to cities. 
+	city.setNewLowestPrice(foodResource, world.getMinSellingPrice(foodResource)->wouldSellFor());
+	city.setNewLowestPrice(woodResource, world.getMinSellingPrice(woodResource)->wouldSellFor());
+	city.setNewLowestPrice(steelResource, world.getMinSellingPrice(steelResource)->wouldSellFor());
 }
 
 void Region::setTexture(sf::Texture* tex)

@@ -5,11 +5,11 @@
 
 #include "EndTurn.h"
 
-ButtonSfml endTurnButton(0, 0, 130, 130, "End turn", genericBg);
+ButtonSfml endTurnButton(0, 0, 100, 100, "End turn", genericBg);
 
 void EndTurn::draw()
 {
-	endTurnButton.setPos(getWindowWidth() - 150, getWindowHeight() - 150);
+	endTurnButton.setPos(getWindowWidth() - 130, getWindowHeight() - 130);
 	endTurnButton.draw();
 }
 bool EndTurn::handleInput()

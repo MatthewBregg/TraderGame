@@ -55,13 +55,15 @@ class World
 public:
 	World();
 
-  void draw();
-  bool handleInput();
-  void drawMenu();
-  bool handleMenuInput();
+	void draw();
+	bool handleInput();
+	void drawMenu();
+	bool handleMenuInput();
 
-  void handleTrading();
-  void updateAfterTurn();
+	void handleTrading();
+	void updateAfterTurn();
+
+	friend Region;
 protected:
 	
 	Graph populationGraph;
