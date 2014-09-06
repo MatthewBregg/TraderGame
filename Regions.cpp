@@ -232,9 +232,8 @@ sf::Vector2f getHexPos(int index)
 		);
 }
 
-
 World::World():
-populationGraph("Population", 50, 400)
+populationGraph("Population", 50, 375)
 {
 	std::vector<sf::Vector2f> hexPos;
 	vector <string> cityNames;

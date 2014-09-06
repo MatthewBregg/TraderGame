@@ -3,15 +3,12 @@
 #include "Graph.h"
 
 const int DIST_BETWEEN_POINTS = 6;
-const double GRAPH_WIDTH = 200;
-const double GRAPH_HEIGHT = 100;
-// How much space can the data point occupy. 
-// Needed so that they do not overlap with the graph borders.
-const double DATA_POINT_HEIGHT_SPACE = 86;
+const double GRAPH_WIDTH = 300;
+const double GRAPH_HEIGHT = 150;
 // Offset so the data points do not start at the very border of the graph.
-const double DATA_POINT_X_OFFSET = 6;
-const double DATA_POINT_Y_OFFSET = 6;
-const int MAX_POINTS = 32; 
+const double DATA_POINT_X_OFFSET = 5;
+const double DATA_POINT_Y_OFFSET = 5;
+const int MAX_POINTS = 40; 
 const int TEXT_CHAR_SIZE = 14;
 // By how much the max value is increased. Needed so that the data does not 
 // take up the top part of the graph. I think it looks better that way.
@@ -29,7 +26,6 @@ maxValue(20000)
 {
 }
 
-sf::CircleShape dataPoint(1);
 void Graph::draw()
 {
 	assert(initialised && "Graph should be initialised before being drawn.");
@@ -51,22 +47,54 @@ void Graph::draw()
 
 	for (int entity = 0; entity < entities.size(); ++entity)
 	{
-		dataPoint.setFillColor(colors.at(entity));
-		for (int i = 0; i < entities.at(entity).size(); ++i)
-		{
-			int dataPointPos_x = x + DATA_POINT_X_OFFSET + i * DIST_BETWEEN_POINTS;
-			int dataPointPos_y = y - DATA_POINT_Y_OFFSET + GRAPH_HEIGHT - (entities.at(entity).at(i) / maxValue) * DATA_POINT_HEIGHT_SPACE;
-			dataPoint.setPosition(dataPointPos_x, dataPointPos_y);
-			window->draw(dataPoint);
-		}
-
-		// Draws the data point with the entity names besides it. 
-		// So players can see which data corresponds to which entity.
-		dataPoint.setPosition(int(x + 40), int(y + GRAPH_HEIGHT + 20 + 22 * entity));
-		window->draw(dataPoint);
-		drawText(names.at(entity), x + 50, y + GRAPH_HEIGHT + 13 + 22 * entity);
+		drawDataLine(entity);
 	}
 }
+
+// Used to display the color each enitity uses.
+sf::CircleShape entityColorDisplay(1);
+void Graph::drawDataLine(int entity)
+{
+	vector<double>* data = &entities.at(entity);
+	vector<sf::Vertex> line;
+	line.push_back(sf::Vector2f(x, y + GRAPH_HEIGHT));
+	for (int i = 0; i < data->size(); ++i)
+	{
+		int dataPointPos_x = x + DATA_POINT_X_OFFSET + i * DIST_BETWEEN_POINTS;
+		int dataPointPos_y = y - DATA_POINT_Y_OFFSET + GRAPH_HEIGHT - (entities.at(entity).at(i) / maxValue) * GRAPH_HEIGHT;
+		
+		// 2 points needed to define a line. The first one defines the current line end point.
+		// The other defines the next lines start point. This makes the line continuous.
+		line.push_back(sf::Vertex(sf::Vector2f(dataPointPos_x, dataPointPos_y), colors.at(entity)));
+		line.push_back(sf::Vertex(sf::Vector2f(dataPointPos_x, dataPointPos_y), colors.at(entity)));
+	}
+
+	/*   // A cool bug.
+	int dataPointPos_x = x + DATA_POINT_X_OFFSET + i * DIST_BETWEEN_POINTS;
+	int dataPointPos_y = y - DATA_POINT_Y_OFFSET + GRAPH_HEIGHT - (entities.at(entity).at(i) / maxValue) * GRAPH_HEIGHT;
+
+	// 2 points needed to define a line. Take the previous one so that the data line is continuous.
+	if (i > 0)
+	{
+	line.push_back(line.at(i - 1));
+	}
+	line.push_back(sf::Vector2f(dataPointPos_x, dataPointPos_y));
+
+	*/
+
+	// Draws the data point with the entity names besides it. 
+	// So players can see which data corresponds to which entity.
+	entityColorDisplay.setFillColor(colors.at(entity));
+	entityColorDisplay.setPosition(int(x + 40), int(y + GRAPH_HEIGHT + 20 + 22 * entity));
+	window->draw(entityColorDisplay);
+	drawText(names.at(entity), x + 50, y + GRAPH_HEIGHT + 13 + 22 * entity);
+
+	if (data->size() > 0)
+	{
+		window->draw(&line[0], line.size(), sf::Lines);
+	}
+}
+
 void Graph::update(unsigned int index, int newValue)
 {
 

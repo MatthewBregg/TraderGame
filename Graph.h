@@ -27,6 +27,8 @@ protected:
 	vector<vector<double>> entities;
 	vector<sf::Color> colors;
 	vector<string> names; 
+
+	void drawDataLine(int entity);
 };
 
 
